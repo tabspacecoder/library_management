@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:crypto/crypto.dart';
 import 'package:library_management/Constants.dart';
 import 'package:library_management/Network.dart';
+import 'package:web_socket_channel/web_socket_channel.dart';
 
 
 class Main extends StatefulWidget {
@@ -14,15 +15,18 @@ class Main extends StatefulWidget {
 var username = TextEditingController();
 var password = TextEditingController();
 
-void login() {
-  print(username.text);
-  print(password.text);
-  var netCore = Network();
-  netCore.init();
-
-}
 
 class _MainState extends State<Main> {
+  final channel = WebSocketChannel.connect(Uri.parse("ws:192.168.1.6:13579"));
+  void login() {
+    channel.sink.add(username.text);
+  }
+
+  @override
+  void dispose() {
+    channel.sink.close();
+    super.dispose();
+  }
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -55,7 +59,7 @@ class _MainState extends State<Main> {
                           padding: const EdgeInsets.all(10.0),
                           child: TextField(
                             decoration:
-                                const InputDecoration(hintText: "Username"),
+                                const InputDecoration(labelText: "Username"),
                             controller: username,
                           ),
                         ),
@@ -65,15 +69,15 @@ class _MainState extends State<Main> {
                             controller: password,
                             obscureText: true,
                             decoration:
-                                const InputDecoration(hintText: "Password"),
+                                const InputDecoration(labelText: "Password"),
                           ),
                         ),
-                        const Center(
+                        Center(
                           child: Padding(
-                              padding: EdgeInsets.all(10.0),
+                              padding: const EdgeInsets.all(10.0),
                               child: ElevatedButton(
                                 onPressed: login,
-                                child: Text("Login"),
+                                child: const Text("Login"),
                               )),
                         )
                       ],
