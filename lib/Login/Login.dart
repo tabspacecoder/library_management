@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:crypto/crypto.dart';
 import 'package:library_management/Constants.dart';
+import 'package:library_management/Network.dart';
+
 
 class Main extends StatefulWidget {
   const Main({Key? key}) : super(key: key);
@@ -15,6 +17,9 @@ var password = TextEditingController();
 void login() {
   print(username.text);
   print(password.text);
+  var netCore = Network();
+  netCore.init();
+
 }
 
 class _MainState extends State<Main> {
