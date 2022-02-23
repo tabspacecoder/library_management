@@ -2,6 +2,7 @@ import 'package:flappy_search_bar/flappy_search_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:library_management/HomePage/News/news.dart';
 // import 'package:dropdown_search/dropdown_search.dart';
+import 'package:library_management/Navbar/navbar.dart';
 import 'profile/profile.dart';
 class Home extends StatefulWidget {
   String id, username;
@@ -19,20 +20,21 @@ class _HomeState extends State<Home> {
           length: 2,
           initialIndex: 0,
           child: Scaffold(
+            drawer: NavBar(),
             body: TabBarView(
               children: [Container(), news(id: widget.id)],
             ),
             appBar: AppBar(
-              leading: IconButton(onPressed: (){},
-              icon: Icon(Icons.view_headline),),
-                automaticallyImplyLeading: false,
-                flexibleSpace: SearchBar(iconActiveColor: Colors.white,),
-
-                centerTitle: true,
+              title: Text('Library Management'),
+                // automaticallyImplyLeading: false,
+                flexibleSpace: Center(child: SizedBox(width: MediaQuery.of(context).size.width/2,child: Container(child: SearchBar(
+                  iconActiveColor: Colors.white,
+                )))),
                 actions: [
                   PopUpProfileButton(),
                 ],
-                bottom: const TabBar(
+
+                bottom: TabBar(
                   tabs: [Icon(Icons.home), Icon(Icons.add)],
                 )),
           )),

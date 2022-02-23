@@ -40,7 +40,9 @@ class _PopUpProfileButtonState extends State<PopUpProfileButton> {
     return PopupMenuButton<int>(
       child: Padding(
         padding: EdgeInsets.only(right: 4),
-        child: CircleAvatar(backgroundImage: NetworkImage('https://amrita.edu/wp-content/uploads/2019/11/Mata-Amritanandamayi.png')),
+        child: Icon(
+          Icons.account_circle_outlined,
+        ),
       ),
       itemBuilder: (context) => [
         PopupMenuItem(
