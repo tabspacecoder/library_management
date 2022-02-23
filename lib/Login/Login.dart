@@ -1,32 +1,24 @@
+import 'dart:async';
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:crypto/crypto.dart';
 import 'package:library_management/Constants.dart';
 import 'package:library_management/Network.dart';
+import 'package:library_management/HomePage/Home.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
-
-class Main extends StatefulWidget {
-  const Main({Key? key}) : super(key: key);
+class Login extends StatefulWidget {
+  const Login({Key? key}) : super(key: key);
 
   @override
-  _MainState createState() => _MainState();
+  _LoginState createState() => _LoginState();
 }
 
 var username = TextEditingController();
 var password = TextEditingController();
 
-
-class _MainState extends State<Main> {
-  final channel = WebSocketChannel.connect(Uri.parse("ws:192.168.1.6:13579"));
-  void login() {
-    channel.sink.add(username.text);
-  }
-
-  @override
-  void dispose() {
-    channel.sink.close();
-    super.dispose();
-  }
+class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -42,7 +34,7 @@ class _MainState extends State<Main> {
             child: Center(
               child: Card(
                 shadowColor: const Color.fromARGB(255, 174, 230, 252),
-                color: const Color.fromARGB(255, 200, 200, 200),
+                color: const Color.fromARGB(255, 220, 220, 220),
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(25)),
                 elevation: 5,
@@ -76,10 +68,39 @@ class _MainState extends State<Main> {
                           child: Padding(
                               padding: const EdgeInsets.all(10.0),
                               child: ElevatedButton(
-                                onPressed: login,
+                                onPressed: () async {
+                                  final channel = WebSocketChannel.connect(webSocket());
+                                  channel.sink.add(parser([
+                                    "qwerty",
+                                    Handler.Nikhil,
+                                    Header.Login,
+                                    sha512
+                                        .convert(utf8.encode(username.text))
+                                        .toString(),
+                                    sha512
+                                        .convert(utf8.encode(password.text))
+                                        .toString()
+                                  ]));
+                                  channel.stream.listen((event) async {
+                                    List<String> data = commands(event);
+                                    if (data[0] == Header.Success) {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) => Home(
+                                                    id: data[1],
+                                                    username: username.text
+                                                        .toString(),
+                                                  )));
+                                    } else if (data[0] == Header.Failed) {
+                                      _asyncConfirmDialog(context);
+                                    }
+                                    channel.sink.close();
+                                  });
+                                },
                                 child: const Text("Login"),
                               )),
-                        )
+                        ),
                       ],
                     ),
                   ),
@@ -91,6 +112,27 @@ class _MainState extends State<Main> {
       ),
     ));
   }
+}
+
+Future<void> _asyncConfirmDialog(BuildContext context) async {
+  return showDialog(
+    context: context,
+    barrierDismissible: false, // user must tap button for close dialog!
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: const Text('Invalid Credentials'),
+        content: const Text('Check your username and password.'),
+        actions: <Widget>[
+          TextButton(
+            child: const Text('Okay'),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          )
+        ],
+      );
+    },
+  );
 }
 
 AppBar appBar() {
