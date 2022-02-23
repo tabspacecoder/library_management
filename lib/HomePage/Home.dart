@@ -1,9 +1,11 @@
-import 'package:flappy_search_bar/flappy_search_bar.dart';
+
 import 'package:flutter/material.dart';
 import 'package:library_management/HomePage/News/news.dart';
 // import 'package:dropdown_search/dropdown_search.dart';
 import 'package:library_management/Navbar/navbar.dart';
 import 'profile/profile.dart';
+import 'searchbar.dart';
+
 class Home extends StatefulWidget {
   String id, username;
   Home({required this.id, required this.username});
@@ -21,19 +23,24 @@ class _HomeState extends State<Home> {
           initialIndex: 0,
           child: Scaffold(
             drawer: NavBar(),
-            body: TabBarView(
-              children: [Container(), news(id: widget.id)],
+            body: Stack(
+              fit: StackFit.expand,
+              children: [
+                TabBarView(
+                  children: [Container(), news(id: widget.id)],
+                ),
+                buildFloatingSearchBar(),
+              ],
             ),
+            // body: TabBarView(
+            //   children: [Container(), news(id: widget.id)],
+            // ),
             appBar: AppBar(
-              title: Text('Library Management'),
+                title: Text('Library Management'),
                 // automaticallyImplyLeading: false,
-                flexibleSpace: Center(child: SizedBox(width: MediaQuery.of(context).size.width/2,child: Container(child: SearchBar(
-                  iconActiveColor: Colors.white,
-                )))),
                 actions: [
                   PopUpProfileButton(),
                 ],
-
                 bottom: TabBar(
                   tabs: [Icon(Icons.home), Icon(Icons.add)],
                 )),
@@ -55,3 +62,23 @@ class _HomeState extends State<Home> {
 //                       mode: Mode.MENU,
 //                     ),
 //                   )
+
+
+
+// SizedBox(
+// width: MediaQuery.of(context).size.width / 2,
+// child: Container(
+// child: TextField(
+// decoration: InputDecoration(
+// prefixIcon: Icon(Icons.search),
+// suffixIcon: IconButton(
+// icon: Icon(Icons.clear),
+// disabledColor: Colors.white,
+// onPressed: () {
+// /* Clear the search field */
+// },
+// ),
+// hintText: 'Search...',
+// border: InputBorder.none),
+// ),
+// ))
