@@ -101,7 +101,7 @@ class _newsWindowState extends State<newsWindow> {
           image: DecorationImage(
               image: AssetImage("lib/Login/bg.jpg"), fit: BoxFit.fill)),
       height: double.infinity,
-      child: StaggeredGridView.countBuilder(
+      child: MasonryGridView.count(
           crossAxisCount: 5,
           itemCount: fetchCount,
           itemBuilder: (BuildContext context, int index) {
@@ -111,7 +111,7 @@ class _newsWindowState extends State<newsWindow> {
               return Container();
             }
           },
-          staggeredTileBuilder: (index) => const StaggeredTile.fit(1)),
+      ),
     );
   }
 }
