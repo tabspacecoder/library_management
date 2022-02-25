@@ -28,11 +28,13 @@ class _SearchBarState extends State<SearchBar> {
   final List<BookDetails> _searchHistory = [];
   String prevQuery = "";
   List<Widget> filteredSearchHistory = [];
+  List<BookDetails> filteredSearchValues = [];
   late FloatingSearchBarController controller;
 
   void fetch(String name) async {
     final channel = WebSocketChannel.connect(webSocket());
     List<Widget> ret = [];
+    List<BookDetails> ret1 = [];
     channel.sink.add(parser([widget.id, Handler.Nikhil, Search.BookName, name]));
     channel.stream.listen((event) {
       List<String> lis = commands(event);
@@ -40,19 +42,24 @@ class _SearchBarState extends State<SearchBar> {
       int size = int.parse(lis[0]);
       lis.removeAt(0);
       while (index * size+size   <= lis.length) {
+        BookDetails tmp = BookDetails(lis[index * (size)], lis[index * (size) + 4],
+            lis[index * (size) + 3], int.parse(lis[index * (size) + 5]));
+        ret1.add(tmp);
         ret.add(listItem(
           ontap: () {
-            addSearchTerm(getByName(name));
-            selectedTerm = name;
-            controller.close();
+            if(filteredSearchHistory.isNotEmpty)
+            {
+              addSearchTerm(filteredSearchValues.first);
+              selectedTerm = filteredSearchValues.first.bookName;
+              //controller.close();
+            }
           },
-          curBook: BookDetails(lis[index * (size)], lis[index * (size) + 4],
-              lis[index * (size) + 3], int.parse(lis[index * (size) + 5])),
+          curBook: tmp
         ));
         index++;
       }
-      print(ret.length);
       filteredSearchHistory = ret;
+      filteredSearchValues = ret1;
       prevQuery = name;
       channel.sink.close();
       setState(() {});
@@ -91,8 +98,11 @@ class _SearchBarState extends State<SearchBar> {
     List<Widget> widgets = details
         .map((bookDetails) => listItem(
         ontap: () {
-          addSearchTerm(getByName(bookDetails.bookName));
-          selectedTerm = bookDetails.bookName;
+          if(filteredSearchHistory.isNotEmpty)
+          {
+            addSearchTerm(filteredSearchValues.first);
+            selectedTerm = filteredSearchValues.first.bookName;
+          }
         },
         curBook: bookDetails))
         .toList()
@@ -143,10 +153,15 @@ class _SearchBarState extends State<SearchBar> {
         },
         onSubmitted: (query) {
           setState(() {
-            addSearchTerm(getByName(query));
-            selectedTerm = query;
+            if(filteredSearchHistory.isNotEmpty)
+              {
+                addSearchTerm(filteredSearchValues.first);
+                selectedTerm = filteredSearchValues.first.bookName;
+                //controller.close();
+              }
+
           });
-          controller.close();
+
         },
         builder: (context, transition) {
           return ClipRRect(
@@ -215,28 +230,31 @@ class _listItemState extends State<listItem> {
             color: Colors.deepPurpleAccent,
             child: Padding(
               padding: EdgeInsets.all(8.0),
-              child: Text('Both'),
+              child: Text(' Both '),
             ),
           ),
           title: Row(
             children: [
-              ClipOval(
-                child: Container(
-                  color: Colors.red,
-                  width: 20,
-                  height: 20,
-                  child: Center(
-                    child: Text(
-                      widget.curBook.availability,
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 12,
+              Text(widget.curBook.bookName),
+              Padding(
+                padding: const EdgeInsets.only(left: 5.0),
+                child: ClipOval(
+                  child: Container(
+                    color: Colors.red,
+                    width: 20,
+                    height: 20,
+                    child: Center(
+                      child: Text(
+                        widget.curBook.availability,
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 12,
+                        ),
                       ),
                     ),
                   ),
                 ),
               ),
-              Text(widget.curBook.bookName),
             ],
           ),
           trailing: Text(widget.curBook.author),
@@ -254,23 +272,26 @@ class _listItemState extends State<listItem> {
           ),
           title: Row(
             children: [
-              ClipOval(
-                child: Container(
-                  color: Colors.red,
-                  width: 20,
-                  height: 20,
-                  child: Center(
-                    child: Text(
-                      widget.curBook.availability,
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 12,
+              Text(widget.curBook.bookName),
+              Padding(
+                padding: const EdgeInsets.only(left: 5.0),
+                child: ClipOval(
+                  child: Container(
+                    color: Colors.red,
+                    width: 20,
+                    height: 20,
+                    child: Center(
+                      child: Text(
+                        widget.curBook.availability,
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 12,
+                        ),
                       ),
                     ),
                   ),
                 ),
               ),
-              Text(widget.curBook.bookName),
             ],
           ),
           trailing: Text(widget.curBook.author),
