@@ -73,6 +73,9 @@ class Fetch {
 
 class Search {
   static const String Books = "SearchBooks";
+  static const String BookName = "SearchBookName";
+  static const String BookISBN = "SearchBookISBN";
+  static const String BookAuthor = "SearchAuthor";
 }
 
 class Categories {
@@ -94,6 +97,6 @@ class Upload {
   static const String DigitalBook = "UploadDigitalBook";
 }
 
-const String ip = "192.168.1.3";
+const String ip = "127.0.0.1";
 const int TCPPort = 24680;
 const int WebPort = 13579;
