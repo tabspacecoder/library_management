@@ -39,7 +39,7 @@ class _SearchBarState extends State<SearchBar> {
       int index = 1;
       int size = int.parse(lis[0]);
       lis.removeAt(0);
-      while (index * (2 * size + 1) < lis.length) {
+      while (index * size+size   <= lis.length) {
         ret.add(listItem(
           ontap: () {
             addSearchTerm(getByName(name));
@@ -51,6 +51,7 @@ class _SearchBarState extends State<SearchBar> {
         ));
         index++;
       }
+      print(ret.length);
       filteredSearchHistory = ret;
       prevQuery = name;
       channel.sink.close();
