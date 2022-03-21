@@ -17,7 +17,6 @@ class newsWindow extends StatefulWidget {
 }
 
 class _newsWindowState extends State<newsWindow> {
-  late String newsData;
   bool done = false;
   int itemCount = 30;
   var jsonData;
@@ -25,11 +24,13 @@ class _newsWindowState extends State<newsWindow> {
   var i = 0;
   void fetch() async {
     final channel = WebSocketChannel.connect(webSocket());
-    channel.sink
-        .add(parser([widget.id, Handler.Nikhil, Fetch.News, widget.category]));
+    channel.sink.add(parser(packet(widget.id,Handler.Handler1, Fetch.News,category: widget.category)));
     channel.stream.listen((event) {
-      newsData = event;
-      jsonData = json.decode(commands(event)[0]);
+      event = event.split(Header.Split)[1];
+      event = json.decode(event);
+      var data = json.decode(event["Data"]);
+      var News = json.decode(data["News"]);
+      jsonData = News;
       done = true;
       fetchCount = jsonData["articles"].length;
       setState(() {});

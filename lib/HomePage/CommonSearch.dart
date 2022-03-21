@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:material_floating_search_bar/material_floating_search_bar.dart';
 import 'package:library_management/Constants.dart';
@@ -5,14 +7,6 @@ import 'package:web_socket_channel/web_socket_channel.dart';
 
 import 'package:library_management/Network.dart';
 
-class BookDetails {
-  late String bookName;
-  late String availability;
-  late String author;
-  late int state;
-
-  BookDetails(this.bookName, this.availability, this.author, this.state);
-}
 
 class SearchBar extends StatefulWidget {
   String id;
@@ -25,39 +19,37 @@ class SearchBar extends StatefulWidget {
 
 class _SearchBarState extends State<SearchBar> {
   static const historyLength = 5;
-  final List<BookDetails> _searchHistory = [];
+  final List<BookData> _searchHistory = [];
   String prevQuery = "";
   List<Widget> filteredSearchHistory = [];
-  List<BookDetails> filteredSearchValues = [];
+  List<BookData> filteredSearchValues = [];
   late FloatingSearchBarController controller;
 
   void fetch(String name) async {
     final channel = WebSocketChannel.connect(webSocket());
     List<Widget> ret = [];
-    List<BookDetails> ret1 = [];
-    channel.sink.add(parser([widget.id, Handler.Nikhil, Search.BookName, name]));
+    List<BookData> ret1 = [];
+    channel.sink.add(parser(packet(widget.id, Handler.Handler1, Search.Books,bookName: name,searchFilter: [BookParams.Name],count: 20,sort: "ASC")));
     channel.stream.listen((event) {
-      List<String> lis = commands(event);
-      int index = 1;
-      int size = int.parse(lis[0]);
-      lis.removeAt(0);
-      while (index * size+size   <= lis.length) {
-        BookDetails tmp = BookDetails(lis[index * (size)], lis[index * (size) + 4],
-            lis[index * (size) + 3], int.parse(lis[index * (size) + 5]));
-        ret1.add(tmp);
-        ret.add(listItem(
-          ontap: () {
-            if(filteredSearchHistory.isNotEmpty)
-            {
-              addSearchTerm(filteredSearchValues.first);
-              selectedTerm = filteredSearchValues.first.bookName;
-              //controller.close();
-            }
-          },
-          curBook: tmp
-        ));
-        index++;
-      }
+      event = event.split(Header.Split)[1];
+      for(dynamic i in jsonDecode(event)["Data"])
+        {
+          i = jsonDecode(i);
+          BookData tmp = BookData(i["ISBN"],i["BookName"],i["Author"],i["Availability"],i["Type"],i["Thumbnail"]);
+          ret1.add(tmp);
+          ret.add(listItem(
+              ontap: () {
+                if(filteredSearchHistory.isNotEmpty)
+                {
+                  addSearchTerm(filteredSearchValues.first);
+                  selectedTerm = filteredSearchValues.first.BookName;
+                  //controller.close();
+                }
+              },
+              curBook: tmp
+          ));
+        }
+
       filteredSearchHistory = ret;
       filteredSearchValues = ret1;
       prevQuery = name;
@@ -68,40 +60,39 @@ class _SearchBarState extends State<SearchBar> {
 
   String selectedTerm = '';
 
-  void addSearchTerm(BookDetails term) {
+  void addSearchTerm(BookData term) {
     if (_searchHistory.contains(term)) {
       putSearchTermFirst(term);
       return;
     }
 
     _searchHistory.add(term);
-    print(_searchHistory);
     if (_searchHistory.length > historyLength) {
       _searchHistory.removeRange(0, _searchHistory.length - historyLength);
     }
   }
 
-  void deleteSearchTerm(BookDetails term) {
+  void deleteSearchTerm(BookData term) {
     _searchHistory.removeWhere((t) => t == term);
   }
 
-  BookDetails getByName(String name) {
-    return _searchHistory.where((element) => element.author == name).first;
+  BookData getByName(String name) {
+    return _searchHistory.where((element) => element.Author == name).first;
   }
 
-  void putSearchTermFirst(BookDetails term) {
+  void putSearchTermFirst(BookData term) {
     deleteSearchTerm(term);
     addSearchTerm(term);
   }
 
-  List<Widget> HistoryWidgets(List<BookDetails> details) {
+  List<Widget> HistoryWidgets(List<BookData> details) {
     List<Widget> widgets = details
         .map((bookDetails) => listItem(
         ontap: () {
           if(filteredSearchHistory.isNotEmpty)
           {
             addSearchTerm(filteredSearchValues.first);
-            selectedTerm = filteredSearchValues.first.bookName;
+            selectedTerm = filteredSearchValues.first.BookName;
           }
         },
         curBook: bookDetails))
@@ -156,7 +147,7 @@ class _SearchBarState extends State<SearchBar> {
             if(filteredSearchHistory.isNotEmpty)
               {
                 addSearchTerm(filteredSearchValues.first);
-                selectedTerm = filteredSearchValues.first.bookName;
+                selectedTerm = filteredSearchValues.first.BookName;
                 //controller.close();
               }
 
@@ -213,7 +204,7 @@ class _SearchBarState extends State<SearchBar> {
 
 class listItem extends StatefulWidget {
   Function ontap;
-  BookDetails curBook;
+  BookData curBook;
   listItem({required this.ontap, required this.curBook});
 
   @override
@@ -223,8 +214,8 @@ class listItem extends StatefulWidget {
 class _listItemState extends State<listItem> {
   @override
   Widget build(BuildContext context) {
-    if (widget.curBook.state & Avail.Online != 0 &&
-        widget.curBook.state & Avail.Offline != 0) {
+    if (widget.curBook.Type & Avail.Online != 0 &&
+        widget.curBook.Type & Avail.Offline != 0) {
       return ListTile(
           leading: const Card(
             color: Colors.deepPurpleAccent,
@@ -235,7 +226,7 @@ class _listItemState extends State<listItem> {
           ),
           title: Row(
             children: [
-              Text(widget.curBook.bookName),
+              Text(widget.curBook.BookName),
               Padding(
                 padding: const EdgeInsets.only(left: 5.0),
                 child: ClipOval(
@@ -245,7 +236,7 @@ class _listItemState extends State<listItem> {
                     height: 20,
                     child: Center(
                       child: Text(
-                        widget.curBook.availability,
+                        widget.curBook.Availability.toString(),
                         style: const TextStyle(
                           color: Colors.white,
                           fontSize: 12,
@@ -257,11 +248,11 @@ class _listItemState extends State<listItem> {
               ),
             ],
           ),
-          trailing: Text(widget.curBook.author),
+          trailing: Text(widget.curBook.Author),
           onTap: () {
             widget.ontap();
           });
-    } else if (widget.curBook.state & Avail.Online == 0) {
+    } else if (widget.curBook.Type & Avail.Online == 0) {
       return ListTile(
           leading: const Card(
             color: Colors.blue,
@@ -272,8 +263,10 @@ class _listItemState extends State<listItem> {
           ),
           title: Row(
             children: [
-              Text(widget.curBook.bookName),
+              Text(widget.curBook.BookName),
               Padding(
+
+
                 padding: const EdgeInsets.only(left: 5.0),
                 child: ClipOval(
                   child: Container(
@@ -282,7 +275,7 @@ class _listItemState extends State<listItem> {
                     height: 20,
                     child: Center(
                       child: Text(
-                        widget.curBook.availability,
+                        widget.curBook.Availability.toString(),
                         style: const TextStyle(
                           color: Colors.white,
                           fontSize: 12,
@@ -294,7 +287,7 @@ class _listItemState extends State<listItem> {
               ),
             ],
           ),
-          trailing: Text(widget.curBook.author),
+          trailing: Text(widget.curBook.Author),
           onTap: () {
             widget.ontap();
           });
@@ -306,8 +299,8 @@ class _listItemState extends State<listItem> {
                 padding: EdgeInsets.all(8.0),
                 child: Text('Online'),
               )),
-          title: Text(widget.curBook.bookName),
-          trailing: Text(widget.curBook.author),
+          title: Text(widget.curBook.BookName),
+          trailing: Text(widget.curBook.Author),
           onTap: () {
             widget.ontap();
           });

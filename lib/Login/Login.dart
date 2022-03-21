@@ -69,30 +69,23 @@ class _LoginState extends State<Login> {
                               padding: const EdgeInsets.all(10.0),
                               child: ElevatedButton(
                                 onPressed: () async {
-                                  final channel = WebSocketChannel.connect(webSocket());
-                                  channel.sink.add(parser([
-                                    "qwerty",
-                                    Handler.Nikhil,
-                                    Header.Login,
-                                    sha512
-                                        .convert(utf8.encode(username.text))
-                                        .toString(),
-                                    sha512
-                                        .convert(utf8.encode(password.text))
-                                        .toString()
-                                  ]));
+                                  final channel =
+                                      WebSocketChannel.connect(webSocket());
+                                  var data = packet("",Handler.Handler1,Header.Login,username: username.text.toString(),password: sha512.convert(utf8.encode(password.text)).toString());
+                                  channel.sink.add(parser(data));
                                   channel.stream.listen((event) async {
-                                    List<String> data = commands(event);
-                                    if (data[0] == Header.Success) {
+                                    event = event.split(Header.Split)[1];
+                                    var out = jsonDecode(event);
+                                    if (out["Header"] == Header.Success) {
                                       Navigator.push(
                                           context,
                                           MaterialPageRoute(
                                               builder: (context) => Home(
-                                                    id: data[1],
+                                                    id: out["Data"],
                                                     username: username.text
                                                         .toString(),
                                                   )));
-                                    } else if (data[0] == Header.Failed) {
+                                    } else if (out["Header"] == Header.Failed) {
                                       _asyncConfirmDialog(context);
                                     }
                                     channel.sink.close();

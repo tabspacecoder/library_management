@@ -10,76 +10,130 @@ class Avail {
 }
 
 class RequestStatus {
-  static const String processing = "PROCESSING";
-  static const String approved = "APPROVED";
-  static const String declined = "DECLINED";
+  static const int processing = 1;
+  static const int approved = 2;
+  static const int declined = 4;
+}
+// Template for complex data
+
+class BookData{
+  late String ISBN;
+  late String BookName;
+  late String Author;
+  late int Availability;
+  late int Type;
+  late String Thumbnail;
+
+  BookData(this.ISBN, this.BookName, this.Author, this.Availability, this.Type,
+      this.Thumbnail);
+}
+
+class BookRequestData{
+  late String Request;
+  late String BookName;
+  late String Author;
+  late String RequestedBy;
+  late String Status;
+
+  BookRequestData(
+      this.Request, this.BookName, this.Author, this.RequestedBy, this.Status);
+}
+
+class MagazineData{
+  late String Name;
+  late String Volume;
+  late String Issue;
+  late String ReleaseDate;
+  late String Location;
+
+  MagazineData(
+      this.Name, this.Volume, this.Issue, this.ReleaseDate, this.Location);
+}
+
+class SubscriptionData{
+  late String JournalName;
+  late String UserName;
+  late String Email;
+
+  SubscriptionData(this.JournalName, this.UserName, this.Email);
+}
+
+class SubscriptionRequestData{
+  late String JournalName;
+  late String UserName;
+  late String Email;
+  late int Status;
 }
 
 // All the class below here are associated with Header class that of handling  API request and response
 class Header {
   static const String Split = "||";
   static const String Error = "Error";
-  static const String Ack = "Ack";
   static const String Success = "Success";
   static const String Failed = "Failed";
   static const String Login = "Login";
 }
 
 class Error {
-  static const String Unauthorized = "Unauthorized";
+  static const String Breach = "Breach";
   static const String Unknown = "Unknown";
-  static const String Server = "Server";
   static const String Unavailable = "Unavailable";
-  static const String Read = "Read";
-  static const String InvalidRequest = "InvalidRequest";
-  static const String Exist = "Exists";
 }
 
 class Failure {
-  static const String Unauthorized = "Unauthorized";
-  static const String Unknown = "Unknown";
-  static const String Server = "Server";
-  static const String Unavailable = "Unavailable";
-  static const String Read = "Read";
-  static const String InvalidRequest = "InvalidRequest";
+  static const String Credentials = "Credentials";
   static const String Exist = "Exists";
+  static const String Server = "Server";
 }
 
 class Handler {
-  static const String Adarsh = "Adarsh";
-  static const String Mugunth = "Mugunth";
-  static const String Nikhil = "Nikhil";
+  static const String Handler1 = "Handler1";
 }
 
 class Create {
   static const String User = "CreateUser";
   static const String Admin = "CreateAdmin";
-  static const String Users = "CreateUsers";
-  static const String Admins = "CreateAdmins";
 }
 
 class Update {
   static const String Password = "UpdatePassword";
-  static const String Permission = "UpdatePermission";
   static const String BookRecord = "UpdateRecord";
-  static const String DigitalBook = "UpdateDigitalBook";
+  static const String BookRequest = "UpdateBookRequestStatus";
+  static const String MagazineRequest = "UpdateMagazineRequestStatus";
+  static const String MagazineRecord = "UpdateMagazineRecordStatus";
 }
 
 class Fetch {
   static const String DigitalBooks = "DigitalFetchBooks";
   static const String BookRecord = "FetchBooks";
   static const String News = "FetchNews";
+  static const String BookRequest = "FetchBookRequest";
+  static const String BookRequestStatus = "FetchBookRequestStatus";
+  static const String MyMagazineRequest = "FetchMySubscriptionRequest";
+  static const String MySubscription = "FetchMySubscription";
+  static const String MagazineRequest = "FetchSubscriptionRequest";
+  static const String CurrentSubscription = "FetchCurrentSubscription";
 }
 
 class Search {
   static const String Books = "SearchBooks";
-  static const String BookName = "SearchBookName";
-  static const String BookISBN = "SearchBookISBN";
-  static const String BookAuthor = "SearchAuthor";
+  static const String Magazines = "SearchMagazine";
+}
+
+class BookParams {
+  static const String ISBN = "ISBN";
+  static const String Name = "Name";
+  static const String Author = "Author";
+  static const String Type = "Type";
+}
+
+class MagazineParams
+{
+  static const String Name = "MagazineName";
+  static const String Author = "Author";
 }
 
 class Categories {
-  static const String All = "all";
   static const String Business = "business";
   static const String Entertainment = "entertainment";
   static const String General = "general";
@@ -91,6 +145,9 @@ class Categories {
 
 class Add {
   static const String BookRecord = "AddBookRecord";
+  static const String BookRequest = "AddBookRequest";
+  static const String MagazineRecord = "AddMagazineRecord";
+  static const String MagazineSubscriptionRequest = "AddSubscriptionRequest";
 }
 
 class Upload {

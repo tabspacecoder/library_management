@@ -1,8 +1,8 @@
-
 import 'package:flutter/material.dart';
+import 'package:library_management/HomePage/CommonSearch.dart';
 import 'package:library_management/HomePage/News/news.dart';
-// import 'package:dropdown_search/dropdown_search.dart';
 import 'package:library_management/Navbar/navbar.dart';
+import 'package:material_floating_search_bar/material_floating_search_bar.dart';
 import 'profile/profile.dart';
 import 'searchbar.dart';
 
@@ -29,21 +29,24 @@ class _HomeState extends State<Home> {
                 TabBarView(
                   children: [Container(), news(id: widget.id)],
                 ),
-                buildFloatingSearchBar(),
               ],
             ),
             // body: TabBarView(
             //   children: [Container(), news(id: widget.id)],
             // ),
             appBar: AppBar(
-                title: Text('Library Management'),
-                // automaticallyImplyLeading: false,
-                actions: [
-                  PopUpProfileButton(),
-                ],
-                bottom: TabBar(
-                  tabs: [Icon(Icons.home), Icon(Icons.add)],
-                )),
+              title: const Text('Library Management'),
+              // automaticallyImplyLeading: false,
+              actions: [
+                PopUpProfileButton(),
+              ],
+              bottom: const TabBar(
+                tabs: [Icon(Icons.home), Icon(Icons.add)],
+              ),
+            ),
+            floatingActionButton: Center(child: SizedBox(width:500,child: SearchBar(widget.id))),
+            floatingActionButtonLocation:
+                FloatingActionButtonLocation.miniCenterDocked,
           )),
     );
   }
@@ -62,8 +65,6 @@ class _HomeState extends State<Home> {
 //                       mode: Mode.MENU,
 //                     ),
 //                   )
-
-
 
 // SizedBox(
 // width: MediaQuery.of(context).size.width / 2,
