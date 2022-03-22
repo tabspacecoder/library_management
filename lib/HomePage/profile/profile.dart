@@ -29,7 +29,7 @@ class _PopUpProfileButtonState extends State<PopUpProfileButton> {
         print('logout');
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => Home(id: "temp", username: "Test")),
+          MaterialPageRoute(builder: (context) => Home(id: "temp", username: "Test",status: 1,)),
         );
         // Navigator.pop(context);
         break;

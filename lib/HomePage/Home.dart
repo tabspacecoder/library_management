@@ -5,15 +5,30 @@ import 'package:library_management/Navbar/navbar.dart';
 import 'package:material_floating_search_bar/material_floating_search_bar.dart';
 import 'profile/profile.dart';
 import 'searchbar.dart';
-
+import 'package:library_management/Constants.dart';
 class Home extends StatefulWidget {
   String id, username;
-  Home({required this.id, required this.username});
+  int status;
+  Home({required this.id, required this.username,required this.status});
   @override
   _HomeState createState() => _HomeState();
 }
 
 class _HomeState extends State<Home> {
+  late userStatus curStatus;
+  @override
+  void initState() {
+    super.initState();
+    if(widget.status & Privileges.SuperAdmin ==true){
+      curStatus = userStatus.superadmin;
+    }
+    else if(widget.status & Privileges.Admin ==true){
+      curStatus = userStatus.admin;
+    }
+    else{
+      curStatus=userStatus.user;
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -22,7 +37,7 @@ class _HomeState extends State<Home> {
           length: 2,
           initialIndex: 0,
           child: Scaffold(
-            drawer: NavBar(),
+            drawer: NavBar(curStatus: curStatus,),
             body: Stack(
               fit: StackFit.expand,
               children: [

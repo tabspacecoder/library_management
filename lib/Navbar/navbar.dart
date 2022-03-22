@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:library_management/Constants.dart';
+import 'package:library_management/opac/opac_main.dart';
 
 class NavBar extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Drawer(
-      child: ListView(
+  userStatus curStatus;
+  NavBar({required this.curStatus})
+
+  ListView getListView(BuildContext context){
+    print(curStatus);
+    if(curStatus == userStatus.user){
+      return ListView(
         // Remove padding
         padding: EdgeInsets.zero,
         children: [
@@ -30,9 +35,9 @@ class NavBar extends StatelessWidget {
             ),
           ),
           ListTile(
-            leading: Icon(Icons.favorite),
-            title: Text('Favorites'),
-            onTap: () => null,
+            leading: Icon(Icons.category),
+            title: Text('OPAC'),
+            onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => opacHome())),
           ),
           ListTile(
             leading: Icon(Icons.person),
@@ -83,7 +88,16 @@ class NavBar extends StatelessWidget {
             onTap: () => null,
           ),
         ],
-      ),
+      );
+    }
+    else{
+      return ListView();
+    }
+  }
+  @override
+  Widget build(BuildContext context) {
+    return Drawer(
+      child: getListView(context),
     );
   }
 }

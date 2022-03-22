@@ -3,6 +3,7 @@ import 'package:library_management/Login/Login.dart';
 
 void main() {
   runApp(const MaterialApp(
+    debugShowCheckedModeBanner: false,
     home: Login(),
   ));
 }
