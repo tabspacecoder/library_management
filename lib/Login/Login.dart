@@ -82,7 +82,7 @@ class _LoginState extends State<Login> {
                                           MaterialPageRoute(
                                               builder: (context) => Home(
                                                     id: out["Data"],
-                                                    status: out['Misc'],
+                                                    status: int.parse(out['Misc']),
                                                     username: username.text
                                                         .toString(),
                                                   )));
