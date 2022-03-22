@@ -96,18 +96,84 @@ class NavBar extends StatelessWidget {
               context, MaterialPageRoute(builder: (context) => opacHome())),
         ),
         ListTile(
-          leading: Icon(Icons.person),
-          title: Text('Friends'),
+          leading: Icon(Icons.all_out),
+          title: Text('Book Circulation'),
           onTap: () => null,
         ),
         ListTile(
-          leading: Icon(Icons.share),
-          title: Text('Share'),
+          leading: Icon(Icons.add),
+          title: Text('Add new book'),
+          onTap: (){
+            showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  var bookNameController = TextEditingController();
+                  var authorController = TextEditingController();
+                  var isbnController = TextEditingController();
+                  var categoryController = TextEditingController();
+                  return AlertDialog(
+                    scrollable: true,
+                    title: Text('Add Book'),
+                    content: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Form(
+                        child: Column(
+                          children: <Widget>[
+                            TextFormField(
+                              controller :bookNameController,
+                              decoration: InputDecoration(
+                                labelText: 'Name',
+                                icon: Icon(Icons.drive_file_rename_outline),
+                              ),
+                            ),
+                            TextFormField(
+                              controller :isbnController,
+                              decoration: InputDecoration(
+                                labelText: 'ISBN',
+                                icon: Icon(Icons.add),
+                              ),
+                            ),
+                            TextFormField(
+                              controller :authorController,
+                              decoration: InputDecoration(
+                                labelText: 'Author',
+                                icon: Icon(Icons.account_box ),
+                              ),
+                            ),
+                            TextFormField(
+                              controller :categoryController,
+                              decoration: InputDecoration(
+                                labelText: 'Category',
+                                icon: Icon(Icons.category),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    actions: [
+                      TextButton(
+                        onPressed: () => Navigator.pop(context),
+                        child: Text('Cancel'),
+                      ),
+                      TextButton(
+                          child: Text("Submit"),
+                          onPressed: () {
+                            Navigator.pop(context);
+                          })
+                    ],
+                  );
+                });
+          },
+        ),
+        ListTile(
+          leading: Icon(Icons.remove_red_eye_outlined),
+          title: Text('Search Book'),
           onTap: () => null,
         ),
         ListTile(
           leading: Icon(Icons.notifications),
-          title: Text('Request'),
+          title: Text('Pending Requests'),
           onTap: () => null,
           trailing: ClipOval(
             child: Container(

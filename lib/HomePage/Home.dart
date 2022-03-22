@@ -19,15 +19,16 @@ class _HomeState extends State<Home> {
   @override
   void initState() {
     super.initState();
-    if(widget.status & Privileges.SuperAdmin ==true){
+    if(widget.status & Privileges.SuperAdmin == Privileges.SuperAdmin){
       curStatus = userStatus.superadmin;
     }
-    else if(widget.status & Privileges.Admin ==true){
+    else if(widget.status & Privileges.Admin == Privileges.Admin){
       curStatus = userStatus.admin;
     }
     else{
       curStatus=userStatus.user;
     }
+    print(curStatus);
   }
   @override
   Widget build(BuildContext context) {
