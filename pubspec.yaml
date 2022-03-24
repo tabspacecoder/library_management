@@ -36,8 +36,11 @@ dependencies:
   cupertino_icons: ^1.0.2
   crypto: ^3.0.1
   web_socket_channel: ^2.1.0
+  neumorphic:
+  flutter_typeahead: ^3.2.4
   flutter_staggered_grid_view:
   dropdown_search: ^2.0.1
+  file_picker: ^4.5.1
   material_floating_search_bar: ^0.3.6
   autocomplete_textfield: ^1.7.3
   fluent_ui:

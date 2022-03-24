@@ -1,9 +1,25 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:library_management/HomePage/Home.dart';
+// import 'package:library_management/HomePage/Home.dart';
 import 'placeholderTemp.dart';
 
+class placeHolder extends StatelessWidget {
+  String username;
+  placeHolder({required this.username});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(username),
+      ),
+      body: Container(
+        child: Text(username),
+      ),
+    );
+  }
+}
 
 class PopUpProfileButton extends StatefulWidget {
 
@@ -27,10 +43,7 @@ class _PopUpProfileButtonState extends State<PopUpProfileButton> {
         break;
       case 2:
         print('logout');
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => Home(id: "temp", username: "Test",status: 1,)),
-        );
+        Navigator.of(context).push(MaterialPageRoute(builder: (context) => placeHolder(username:"temp" )));
         // Navigator.pop(context);
         break;
     }

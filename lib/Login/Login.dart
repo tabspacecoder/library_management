@@ -32,12 +32,50 @@ class _LoginState extends State<Login> {
           child: Padding(
             padding: const EdgeInsets.all(10.0),
             child: Center(
-              child: Card(
-                shadowColor: const Color.fromARGB(255, 174, 230, 252),
-                color: const Color.fromARGB(255, 220, 220, 220),
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(25)),
-                elevation: 5,
+              child: Container(
+                width: 400,
+                height: 250,
+                alignment:Alignment.center,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(16),
+                    color: Colors.grey.shade300,
+                    boxShadow: [
+                      BoxShadow(
+                          offset: Offset(10, 10),
+                          color: Colors.black,
+                          blurRadius: 20)
+                    ]),
+                // decoration:BoxDecoration(
+                //   borderRadius: BorderRadius.circular(6.0),
+                //   color: Colors.grey.shade50,
+                //   shape: BoxShape.rectangle,
+                //   boxShadow: [
+                //     BoxShadow(
+                //         color: Colors.grey.shade300,
+                //         spreadRadius: 0.0,
+                //         blurRadius:10,
+                //         offset: Offset(3.0, 3.0)),
+                //     BoxShadow(
+                //         color: Colors.grey.shade400,
+                //         spreadRadius: 0.0,
+                //         blurRadius: 10 / 2.0,
+                //         offset: Offset(3.0, 3.0)),
+                //     BoxShadow(
+                //         color: Colors.white,
+                //         spreadRadius: 2.0,
+                //         blurRadius: 10,
+                //         offset: Offset(-3.0, -3.0)),
+                //     BoxShadow(
+                //         color: Colors.white,
+                //         spreadRadius: 2.0,
+                //         blurRadius: 10 / 2,
+                //         offset: Offset(-3.0, -3.0)),
+                //   ],
+                // ),
+                // shadowColor: const Color.fromARGB(255, 174, 230, 252),
+                // color: const Color.fromARGB(255, 220, 220, 220),
+                // shape: RoundedRectangleBorder(
+                //     borderRadius: BorderRadius.circular(25)),
                 child: SizedBox(
                   width: 400,
                   child: Padding(

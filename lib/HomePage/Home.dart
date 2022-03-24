@@ -3,14 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:library_management/HomePage/CommonSearch.dart';
 import 'package:library_management/HomePage/News/news.dart';
 import 'package:library_management/Navbar/navbar.dart';
+import 'package:library_management/temp/temp.dart';
 import 'package:material_floating_search_bar/material_floating_search_bar.dart';
 import 'profile/profile.dart';
 import 'searchbar.dart';
 import 'package:library_management/Constants.dart';
+
 class Home extends StatefulWidget {
   String id, username;
   int status;
-  Home({required this.id, required this.username,required this.status});
+  Home({required this.id, required this.username, required this.status});
   @override
   _HomeState createState() => _HomeState();
 }
@@ -20,18 +22,16 @@ class _HomeState extends State<Home> {
   @override
   void initState() {
     super.initState();
-    if(widget.status & Privileges.SuperAdmin == Privileges.SuperAdmin){
+    if (widget.status & Privileges.SuperAdmin == Privileges.SuperAdmin) {
       curStatus = userStatus.superadmin;
-    }
-    else if(widget.status & Privileges.Admin == Privileges.Admin){
+    } else if (widget.status & Privileges.Admin == Privileges.Admin) {
       curStatus = userStatus.admin;
-    }
-    else{
-      curStatus=userStatus.user;
+    } else {
+      curStatus = userStatus.user;
     }
     print(curStatus);
   }
-  final autoSuggestBox = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -40,7 +40,10 @@ class _HomeState extends State<Home> {
           length: 2,
           initialIndex: 0,
           child: Scaffold(
-            drawer: NavBar(curStatus: curStatus, username: widget.username,),
+            drawer: NavBar(
+              curStatus: curStatus,
+              username: widget.username,
+            ),
             body: Stack(
               fit: StackFit.expand,
               children: [
@@ -53,16 +56,29 @@ class _HomeState extends State<Home> {
             //   children: [Container(), news(id: widget.id)],
             // ),
             appBar: AppBar(
-              title: const Text('Library Management'),
+              title: Row(
+                children: [
+                  Text('Library Management'),
+                  // exampleTextField(),3
+                ],
+              ),
               // automaticallyImplyLeading: false,
               actions: [
                 PopUpProfileButton(),
               ],
               bottom: const TabBar(
-                tabs: [Icon(Icons.home), Icon(Icons.add)],
+                tabs: [
+                  Tab(icon: Icon(Icons.home_filled), text: "Home"),
+                  Tab(
+                      icon: Icon(
+                        Icons.feed_outlined,
+                      ),
+                      text: "News")
+                ],
               ),
             ),
-            floatingActionButton: Center(child: SizedBox(width:500,child: SearchBar(widget.id))),
+            floatingActionButton: Center(
+                child: SizedBox(width: 500, child: SearchBar(widget.id))),
             floatingActionButtonLocation:
                 FloatingActionButtonLocation.miniCenterDocked,
           )),
@@ -101,7 +117,6 @@ class _HomeState extends State<Home> {
 // border: InputBorder.none),
 // ),
 // ))
-
 
 // AutoSuggestBox<String>(
 // controller: autoSuggestBox,
