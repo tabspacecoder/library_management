@@ -41,6 +41,7 @@ class _HomeState extends State<Home> {
           initialIndex: 0,
           child: Scaffold(
             drawer: NavBar(
+              id: widget.id,
               curStatus: curStatus,
               username: widget.username,
             ),

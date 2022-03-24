@@ -10,8 +10,9 @@ import 'package:file_picker/file_picker.dart';
 class NavBar extends StatefulWidget {
   userStatus curStatus;
   String username;
+  String id;
 
-  NavBar({required this.curStatus, required this.username});
+  NavBar({required this.curStatus, required this.username,required this.id});
 
   @override
   State<NavBar> createState() => _NavBarState();
@@ -288,7 +289,7 @@ class _NavBarState extends State<NavBar> {
         ListTile(
           leading: Icon(Icons.notifications),
           title: Text('Pending Requests'),
-          onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context)=>adminPendingRequestsPage())),
+          onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context)=>adminPendingRequestsPage(id: widget.id,))),
           trailing: ClipOval(
             child: Container(
               color: Colors.red,
