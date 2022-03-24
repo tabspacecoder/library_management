@@ -39,6 +39,9 @@ dependencies:
   flutter_staggered_grid_view:
   dropdown_search: ^2.0.1
   material_floating_search_bar: ^0.3.6
+  autocomplete_textfield: ^1.7.3
+  fluent_ui:
+    git: https://github.com/bdlukaa/fluent_ui.git
 dev_dependencies:
   flutter_test:
     sdk: flutter

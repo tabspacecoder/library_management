@@ -1,3 +1,4 @@
+import 'package:fluent_ui/fluent_ui.dart' as fluent;
 import 'package:flutter/material.dart';
 import 'package:library_management/HomePage/CommonSearch.dart';
 import 'package:library_management/HomePage/News/news.dart';
@@ -30,6 +31,7 @@ class _HomeState extends State<Home> {
     }
     print(curStatus);
   }
+  final autoSuggestBox = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -99,3 +101,49 @@ class _HomeState extends State<Home> {
 // border: InputBorder.none),
 // ),
 // ))
+
+
+// AutoSuggestBox<String>(
+// controller: autoSuggestBox,
+// items: [
+// 'Blue',
+// 'Green',
+// 'Red',
+// 'Yellow',
+// 'Grey',
+// ],
+// onSelected: (text) {
+// print(text);
+// },
+// textBoxBuilder: (context, controller, focusNode, key) {
+// const BorderSide _kDefaultRoundedBorderSide = BorderSide(
+// style: BorderStyle.solid,
+// width: 0.8,
+// );
+// return fluent.TextBox(
+// key: key,
+// controller: controller,
+// focusNode: focusNode,
+// suffixMode: fluent.OverlayVisibilityMode.editing,
+// suffix: IconButton(
+// icon: Icon(fluent.FluentIcons.close_pane),
+// onPressed: () {
+// controller.clear();
+// focusNode.unfocus();
+// },
+// ),
+// placeholder: 'Type a color',
+// decoration: BoxDecoration(
+// border: Border(
+// top: _kDefaultRoundedBorderSide,
+// bottom: _kDefaultRoundedBorderSide,
+// left: _kDefaultRoundedBorderSide,
+// right: _kDefaultRoundedBorderSide,
+// ),
+// borderRadius: focusNode.hasFocus
+// ? BorderRadius.vertical(top: Radius.circular(3.0))
+//     : BorderRadius.all(Radius.circular(3.0)),
+// ),
+// );
+// },
+// )

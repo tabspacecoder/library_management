@@ -8,6 +8,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.8.2"
+  autocomplete_textfield:
+    dependency: "direct main"
+    description:
+      name: autocomplete_textfield
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.7.3"
   boolean_selector:
     dependency: transitive
     description:
@@ -71,6 +78,15 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.2.0"
+  fluent_ui:
+    dependency: "direct main"
+    description:
+      path: "."
+      ref: HEAD
+      resolved-ref: d08d1d024fc63146c7691b8d115e59c364a18825
+      url: "https://github.com/bdlukaa/fluent_ui.git"
+    source: git
+    version: "3.9.2"
   flutter:
     dependency: "direct main"
     description: flutter
@@ -83,6 +99,11 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.4"
+  flutter_localizations:
+    dependency: transitive
+    description: flutter
+    source: sdk
+    version: "0.0.0"
   flutter_staggered_grid_view:
     dependency: "direct main"
     description:
@@ -95,6 +116,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  intl:
+    dependency: transitive
+    description:
+      name: intl
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.17.0"
   lints:
     dependency: transitive
     description:
@@ -137,6 +165,20 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.8.0"
+  recase:
+    dependency: transitive
+    description:
+      name: recase
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "4.0.0"
+  scroll_pos:
+    dependency: transitive
+    description:
+      name: scroll_pos
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.3.0"
   sky_engine:
     dependency: transitive
     description: flutter
@@ -206,5 +248,5 @@ packages:
     source: hosted
     version: "2.1.0"
 sdks:
-  dart: ">=2.14.0 <3.0.0"
-  flutter: ">=2.0.0"
+  dart: ">=2.15.0 <3.0.0"
+  flutter: ">=2.8.0"

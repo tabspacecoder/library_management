@@ -1,20 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:library_management/Constants.dart';
+import 'package:library_management/Navbar/addbook.dart';
 import 'package:library_management/opac/opac_main.dart';
 
-class NavBar extends StatelessWidget {
+class NavBar extends StatefulWidget {
   userStatus curStatus;
   String username;
+
   NavBar({required this.curStatus, required this.username});
 
+  @override
+  State<NavBar> createState() => _NavBarState();
+}
+
+class _NavBarState extends State<NavBar> {
+
+  bool online_avail=false;
+  bool offline_avail=false;
+  String dropdownvalue = 'Offline';
+  var items = [
+    'Online',
+    'Offline',
+    'Both',
+  ];
   ListView userListView(context) {
     return ListView(
       // Remove padding
       padding: EdgeInsets.zero,
       children: [
         UserAccountsDrawerHeader(
-          accountName: Text('$username'),
-          accountEmail: Text('$curStatus'),
+          accountName: Text('${widget.username}'),
+          accountEmail: Text('${widget.curStatus}'),
           decoration: BoxDecoration(
             color: Colors.blue,
           ),
@@ -26,8 +42,8 @@ class NavBar extends StatelessWidget {
               context, MaterialPageRoute(builder: (context) => opacHome())),
         ),
         ListTile(
-          leading: Icon(Icons.person),
-          title: Text('Friends'),
+          leading: Icon(Icons.new_label),
+          title: Text('Request new book'),
           onTap: () => null,
         ),
         ListTile(
@@ -83,8 +99,8 @@ class NavBar extends StatelessWidget {
       padding: EdgeInsets.zero,
       children: [
         UserAccountsDrawerHeader(
-          accountName: Text('$username'),
-          accountEmail: Text('$curStatus'),
+          accountName: Text('${widget.username}'),
+          accountEmail: Text('${widget.curStatus}'),
           decoration: BoxDecoration(
             color: Colors.blue,
           ),
@@ -104,66 +120,7 @@ class NavBar extends StatelessWidget {
           leading: Icon(Icons.add),
           title: Text('Add new book'),
           onTap: (){
-            showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  var bookNameController = TextEditingController();
-                  var authorController = TextEditingController();
-                  var isbnController = TextEditingController();
-                  var categoryController = TextEditingController();
-                  return AlertDialog(
-                    scrollable: true,
-                    title: Text('Add Book'),
-                    content: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Form(
-                        child: Column(
-                          children: <Widget>[
-                            TextFormField(
-                              controller :bookNameController,
-                              decoration: InputDecoration(
-                                labelText: 'Name',
-                                icon: Icon(Icons.drive_file_rename_outline),
-                              ),
-                            ),
-                            TextFormField(
-                              controller :isbnController,
-                              decoration: InputDecoration(
-                                labelText: 'ISBN',
-                                icon: Icon(Icons.add),
-                              ),
-                            ),
-                            TextFormField(
-                              controller :authorController,
-                              decoration: InputDecoration(
-                                labelText: 'Author',
-                                icon: Icon(Icons.account_box ),
-                              ),
-                            ),
-                            TextFormField(
-                              controller :categoryController,
-                              decoration: InputDecoration(
-                                labelText: 'Category',
-                                icon: Icon(Icons.category),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    actions: [
-                      TextButton(
-                        onPressed: () => Navigator.pop(context),
-                        child: Text('Cancel'),
-                      ),
-                      TextButton(
-                          child: Text("Submit"),
-                          onPressed: () {
-                            Navigator.pop(context);
-                          })
-                    ],
-                  );
-                });
+            Navigator.push(context, MaterialPageRoute(builder: (context)=>addBookPage()));
           },
         ),
         ListTile(
@@ -216,7 +173,7 @@ class NavBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Drawer(
-      child: curStatus == userStatus.user
+      child: widget.curStatus == userStatus.user
           ? userListView(context)
           : adminListView(context),
     );
