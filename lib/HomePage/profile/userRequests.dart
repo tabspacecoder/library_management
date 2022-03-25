@@ -25,9 +25,11 @@ class _userRequestsPageState extends State<userRequestsPage> {
     channel.stream.listen((event) {
       event = event.split(Header.Split)[1];
       for (dynamic i in jsonDecode(event)["Data"]) {
+        print(i);
         i = jsonDecode(i);
-        BookRequestData temp = BookRequestData(i["RequestID"], i["BookName"],
-            i["Author"], i["RequestBy"], i["Status"]);
+        print(i);
+        BookRequestData temp = BookRequestData(i["RequestID"].toString(), i["BookName"],
+            i["Author"], i["RequestBy"], i["Status"].toString());
         data.add(temp);
       }
       channel.sink.close();
