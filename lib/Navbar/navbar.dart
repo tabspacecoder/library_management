@@ -47,20 +47,71 @@ class _NavBarState extends State<NavBar> {
           onTap: () => Navigator.push(
               context, MaterialPageRoute(builder: (context) => opacHome())),
         ),
+        // ListTile(
+        //   leading: Icon(Icons.person),
+        //   title: Text('Friends'),
+        //   onTap: () => null,
+        // ),
+        // ListTile(
+        //   leading: Icon(Icons.share),
+        //   title: Text('Share'),
+        //   onTap: () => null,
+        // ),
         ListTile(
-          leading: Icon(Icons.person),
-          title: Text('Friends'),
-          onTap: () => null,
-        ),
-        ListTile(
-          leading: Icon(Icons.share),
-          title: Text('Share'),
-          onTap: () => null,
-        ),
-        ListTile(
-          leading: Icon(Icons.notifications),
-          title: Text('Request'),
-          onTap: () => null,
+          leading: Icon(Icons.add),
+          title: Text('Create Book Request'),
+          onTap: () {
+            showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  var bookNameController = TextEditingController();
+                  var authorController = TextEditingController();
+                  return StatefulBuilder(
+                    builder: (BuildContext context,
+                        void Function(void Function()) setState) {
+                      return AlertDialog(
+                        scrollable: true,
+                        title: Text('Create new book request'),
+                        content: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Form(
+                            child: Column(
+                              children: <Widget>[
+                                TextFormField(
+                                  controller: bookNameController,
+                                  decoration: InputDecoration(
+                                    labelText: 'Name',
+                                    icon: Icon(Icons.drive_file_rename_outline),
+                                  ),
+                                ),
+                                TextFormField(
+                                  controller: authorController,
+                                  decoration: InputDecoration(
+                                    labelText: 'Author',
+                                    icon: Icon(Icons.account_box),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        actions: [
+                          TextButton(
+                            onPressed: () => Navigator.pop(context),
+                            child: Text('Cancel'),
+                          ),
+                          TextButton(
+                              child: Text("Submit"),
+                              onPressed: () {
+                                print(widget.username);
+                                Navigator.pop(context);
+                              })
+                        ],
+                      );
+                    },
+                  );
+                });
+          },
           trailing: ClipOval(
             child: Container(
               color: Colors.red,
@@ -77,6 +128,11 @@ class _NavBarState extends State<NavBar> {
               ),
             ),
           ),
+        ),
+        ListTile(
+          leading: Icon(Icons.remove_red_eye_outlined),
+          title: Text('Search Book'),
+          onTap: () => null,
         ),
         Divider(),
         ListTile(
@@ -271,7 +327,6 @@ class _NavBarState extends State<NavBar> {
                                         );
                                       });
                                 }
-
                                 Navigator.pop(context);
                               })
                         ],

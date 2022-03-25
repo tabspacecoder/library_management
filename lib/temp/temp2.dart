@@ -1,7 +1,7 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
-import 'commonSearchCopy.dart';
+// import 'commonSearchCopy.dart';
 void main() => runApp(MyMaterialApp());
 class BackendService {
   static Future<List<Map<String, String>>> getSuggestions(String query) async {
