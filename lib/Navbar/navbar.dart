@@ -229,10 +229,10 @@ class _NavBarState extends State<NavBar> {
                                                     pickedFileByteStream=objFile.bytes! ;
                                                     String toRet = pickedFileByteStream.toString();
                                                 });
-
                                         }})
-                                    : ElevatedButton(
-                                    onPressed: () {}, child: Text('Upload Thumbnail')),
+                                    : SizedBox(),
+                                ElevatedButton(
+                                    onPressed: () {}, child: Text('Upload Thumbnail'))
                               ],
                             ),
                           ),
@@ -384,7 +384,6 @@ class _NavBarState extends State<NavBar> {
         actions: [
           TextButton(
             onPressed: () {
-
                 Navigator.pop(context);},
             child: Text('Create new user'),
           ),
