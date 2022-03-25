@@ -1,6 +1,6 @@
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:library_management/HomePage/profile/userRequests.dart';
 // import 'package:library_management/HomePage/Home.dart';
 import '../../Constants.dart';
 import 'placeholderTemp.dart';
@@ -124,6 +124,12 @@ class _userPopUpProfileButtonState extends State<userPopUpProfileButton> {
         Navigator.of(context).push(MaterialPageRoute(builder: (context) => placeHolder(username:"temp" )));
         // Navigator.pop(context);
         break;
+
+      case 3:
+        print('My requests');
+        Navigator.push(context, MaterialPageRoute(builder: (context)=>userRequestsPage(id: widget.id,)));
+        break;
+
     }
   }
 
@@ -157,10 +163,25 @@ class _userPopUpProfileButtonState extends State<userPopUpProfileButton> {
               SizedBox(
                 width: 10,
               ),
-              Text('Manage account'),
+              Text('Change Password'),
             ],
           ),
           value: 1,
+        ),
+        PopupMenuItem(
+          child: Row(
+            children: const [
+              Icon(
+                Icons.manage_accounts,
+                color: Colors.blue,
+              ),
+              SizedBox(
+                width: 10,
+              ),
+              Text('My requests'),
+            ],
+          ),
+          value: 3,
         ),
         const PopupMenuDivider(
           height: 5,
