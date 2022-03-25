@@ -67,7 +67,7 @@ class _popUpFilterButtonState extends State<popUpFilterButton> {
         child: Padding(
           padding: EdgeInsets.only(right: 4),
           child: Icon(
-            Icons.filter_list,
+            Icons.filter_alt,
           ),
         ),
         itemBuilder: (context) =>  [
