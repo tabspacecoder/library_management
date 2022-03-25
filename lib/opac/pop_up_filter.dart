@@ -27,10 +27,20 @@ class popUpFilterButton extends StatefulWidget {
 }
 
 class _popUpFilterButtonState extends State<popUpFilterButton> {
-  bool value = false;
-  bool value1 = false;
-  bool value2 = false;
-  bool value3 = false;
+  bool bookNameCheckbox = false;
+  bool bookAuthorCheckbox = false;
+  bool bookISBNCheckbox = false;
+  bool magAuthorCheckbox = false;
+  bool magNameCheckbox = false;
+  String dropdownvalue = 'Books';
+  String dropdownvaluefilter = 'ASC';
+  var items = [
+    'Books',
+    'Magazines',
+  ];
+  var filteritems=[
+    'ASC','DESC'
+  ];
   void selectedItem(BuildContext context, int item) {
     switch (item) {
       case 0:
@@ -54,138 +64,391 @@ class _popUpFilterButtonState extends State<popUpFilterButton> {
 
   Widget build(BuildContext context)  {
     return PopupMenuButton<int>(
-      child: Padding(
-        padding: EdgeInsets.only(right: 4),
-        child: Icon(
-          Icons.filter_list,
-        ),
-      ),
-      itemBuilder: (context) =>  [
-
-        PopupMenuItem(
-          child: StatefulBuilder(
-            builder: (BuildContext context, void Function(void Function()) setState) { return Row(
-              children:  [
-                Icon(
-                  Icons.person,
-                  color: Colors.blue,
-                ),
-                SizedBox(
-                  width: 10,
-                ),
-                Text('Author'),
-                SizedBox(
-                  width: 75,
-                ),
-                Checkbox(
-                  value: this.value1,
-                  onChanged: (bool? value) {
-                    setState(() {
-                      this.value1 = value!;
-                    });
-                  },
-                ),
-              ],
-            ); },
+        child: Padding(
+          padding: EdgeInsets.only(right: 4),
+          child: Icon(
+            Icons.filter_list,
           ),
-          value: 1,
         ),
-        PopupMenuItem(
-          child: StatefulBuilder(
-            builder: (BuildContext context, void Function(void Function()) setState) { return Row(
-              children: [
-                Icon(
-                  Icons.article_outlined,
-                  color: Colors.blue,
-                ),
-                SizedBox(
-                  width: 10,
-                ),
-                Text('ISBN'),
-                SizedBox(
-                  width: 85,
-                ),
-                Checkbox(
-                  value: this.value2,
-                  onChanged: (bool? value) {
-                    setState(() {
+        itemBuilder: (context) =>  [
+          PopupMenuItem(
+            child: StatefulBuilder(
+              builder: (BuildContext context, void Function(void Function()) setState) { return Column(
+                children: [
+                  Row(
+                    children:  [
+                      Icon(
+                        Icons.library_books,
+                        color: Colors.blue,
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Text('Type'),
+                      SizedBox(
+                        width: 75,
+                      ),
+                      DropdownButton(
+                        // Initial Value
+                        value: dropdownvalue,
+
+                        // Down Arrow Icon
+                        icon: const Icon(Icons.keyboard_arrow_down),
+
+                        // Array list of items
+                        items: items.map((String items) {
+                          return DropdownMenuItem(
+                            value: items,
+                            child: Text(items),
+                          );
+                        }).toList(),
+                        // After selecting the desired option,it will
+                        // change button value to selected value
+                        onChanged: (String? newValue) {
+                          setState(() {
+                            dropdownvalue = newValue!;
+                          });
+                        },
+                      ),
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      Icon(
+                        Icons.article_outlined,
+                        color: Colors.blue,
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Text('Order'),
+                      SizedBox(
+                        width: 85,
+                      ),
+                      DropdownButton(
+                        // Initial Value
+                        value: dropdownvaluefilter,
+
+                        // Down Arrow Icon
+                        icon: const Icon(Icons.keyboard_arrow_down),
+
+                        // Array list of items
+                        items: filteritems.map((String items) {
+                          return DropdownMenuItem(
+                            value: items,
+                            child: Text(items),
+                          );
+                        }).toList(),
+                        // After selecting the desired option,it will
+                        // change button value to selected value
+                        onChanged: (String? newValue) {
+                          setState(() {
+                            dropdownvaluefilter = newValue!;
+                          });
+                        },
+                      )
+                    ],
+                  ),
+                  dropdownvalue == 'Books'?Row(
+                    children:  [
+                      Icon(
+                        Icons.person,
+                        color: Colors.blue,
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Text('Author'),
+                      SizedBox(
+                        width: 75,
+                      ),
+                      Checkbox(
+                        value: this.bookAuthorCheckbox,
+                        onChanged: (bool? value) {
+                          setState(() {
+                            this.bookAuthorCheckbox = value!;
+                          });
+                        },
+                      ),
+                    ],
+                  ):Row(
+                    children:  [
+                      Icon(
+                        Icons.person,
+                        color: Colors.blue,
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Text('Author'),
+                      SizedBox(
+                        width: 75,
+                      ),
+                      Checkbox(
+                        value: this.magAuthorCheckbox,
+                        onChanged: (bool? value) {
+                          setState(() {
+                            this.magAuthorCheckbox = value!;
+                          });
+                        },
+                      ),
+                    ],
+                  ),
+                  dropdownvalue == 'Books'?Row(
+                    children:  [
                       Icon(
                         Icons.assignment_outlined,
                         color: Colors.blue,
-                      );
-                      this.value2 = value!;
-                    });
-                  },
-                ),
-              ],
-            ); },
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Text('Title'),
+                      SizedBox(
+                        width: 89,
+                      ),
+                      Checkbox(
+                        value: this.bookNameCheckbox,
+                        onChanged: (bool? value) {
+                          setState(() {
+                            this.bookNameCheckbox = value!;
+                          });
+                        },
+                      ),
 
+                    ],
+                  ):Row(
+                    children:  [
+                      Icon(
+                        Icons.assignment_outlined,
+                        color: Colors.blue,
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Text('Title'),
+                      SizedBox(
+                        width: 89,
+                      ),
+                      Checkbox(
+                        value: this.magNameCheckbox,
+                        onChanged: (bool? value) {
+                          setState(() {
+                            this.magNameCheckbox = value!;
+                          });
+                        },
+                      ),
+
+                    ],
+                  ),
+                  dropdownvalue == 'Books'?Row(
+                    children: [
+                      Icon(
+                        Icons.article_outlined,
+                        color: Colors.blue,
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Text('ISBN'),
+                      SizedBox(
+                        width: 85,
+                      ),
+                      Checkbox(
+                        value: this.bookISBNCheckbox,
+                        onChanged: (bool? value) {
+                          setState(() {
+                            Icon(
+                              Icons.assignment_outlined,
+                              color: Colors.blue,
+                            );
+                            this.bookISBNCheckbox = value!;
+                          });
+                        },
+                      ),
+                    ],
+                  ):SizedBox(),
+                ],
+              ); },
+            ),
+            value: 1,
           ),
-          value: 2,
-        ),
-        PopupMenuItem(
-          child: StatefulBuilder(
-            builder: (BuildContext context, void Function(void Function()) setState) { return Row(
-              children:  [
-                Icon(
-                  Icons.assignment_outlined,
-                  color: Colors.blue,
-                ),
-                SizedBox(
-                  width: 10,
-                ),
-                Text('Title'),
-                SizedBox(
-                  width: 89,
-                ),
-                Checkbox(
-                  value: this.value3,
-                  onChanged: (bool? value) {
-                    setState(() {
-                      this.value3 = value!;
-                    });
-                  },
-                ),
+          // PopupMenuItem(
+          //   child: Row(
+          //     children: [
+          //       Icon(
+          //         Icons.article_outlined,
+          //         color: Colors.blue,
+          //       ),
+          //       SizedBox(
+          //         width: 10,
+          //       ),
+          //       Text('Order'),
+          //       SizedBox(
+          //         width: 85,
+          //       ),
+          //       DropdownButton(
+          //         // Initial Value
+          //         value: dropdownvaluefilter,
+          //
+          //         // Down Arrow Icon
+          //         icon: const Icon(Icons.keyboard_arrow_down),
+          //
+          //         // Array list of items
+          //         items: filteritems.map((String items) {
+          //           return DropdownMenuItem(
+          //             value: items,
+          //             child: Text(items),
+          //           );
+          //         }).toList(),
+          //         // After selecting the desired option,it will
+          //         // change button value to selected value
+          //         onChanged: (String? newValue) {
+          //           setState(() {
+          //             dropdownvaluefilter = newValue!;
+          //           });
+          //         },
+          //       )
+          //     ],
+          //   ),
+          //   value: 2,
+          // ),
+          // dropdownvalue == 'Books'?PopupMenuItem(
+          //   child: Row(
+          //     children:  [
+          //       Icon(
+          //         Icons.person,
+          //         color: Colors.blue,
+          //       ),
+          //       SizedBox(
+          //         width: 10,
+          //       ),
+          //       Text('Author'),
+          //       SizedBox(
+          //         width: 75,
+          //       ),
+          //       Checkbox(
+          //         value: this.bookAuthorCheckbox,
+          //         onChanged: (bool? value) {
+          //           setState(() {
+          //             this.bookAuthorCheckbox = value!;
+          //           });
+          //         },
+          //       ),
+          //     ],
+          //   ),
+          //   value: 1,
+          // ):PopupMenuItem(
+          //   child: Row(
+          //     children:  [
+          //       Icon(
+          //         Icons.person,
+          //         color: Colors.blue,
+          //       ),
+          //       SizedBox(
+          //         width: 10,
+          //       ),
+          //       Text('Author'),
+          //       SizedBox(
+          //         width: 75,
+          //       ),
+          //       Checkbox(
+          //         value: this.magAuthorCheckbox,
+          //         onChanged: (bool? value) {
+          //           setState(() {
+          //             this.magAuthorCheckbox = value!;
+          //           });
+          //         },
+          //       ),
+          //     ],
+          //   ),
+          //   value: 1,
+          // ),
+          // dropdownvalue == 'Books'?PopupMenuItem(
+          //   child: Row(
+          //     children:  [
+          //       Icon(
+          //         Icons.assignment_outlined,
+          //         color: Colors.blue,
+          //       ),
+          //       SizedBox(
+          //         width: 10,
+          //       ),
+          //       Text('Title'),
+          //       SizedBox(
+          //         width: 89,
+          //       ),
+          //       Checkbox(
+          //         value: this.bookNameCheckbox,
+          //         onChanged: (bool? value) {
+          //           setState(() {
+          //             this.bookNameCheckbox = value!;
+          //           });
+          //         },
+          //       ),
+          //
+          //     ],
+          //   ),
+          //   value: 3,
+          // ):PopupMenuItem(
+          //   child: Row(
+          //     children:  [
+          //       Icon(
+          //         Icons.assignment_outlined,
+          //         color: Colors.blue,
+          //       ),
+          //       SizedBox(
+          //         width: 10,
+          //       ),
+          //       Text('Title'),
+          //       SizedBox(
+          //         width: 89,
+          //       ),
+          //       Checkbox(
+          //         value: this.magNameCheckbox,
+          //         onChanged: (bool? value) {
+          //           setState(() {
+          //             this.magNameCheckbox = value!;
+          //           });
+          //         },
+          //       ),
+          //
+          //     ],
+          //   ),
+          //   value: 3,
+          // ),
+          // dropdownvalue == 'Books'?PopupMenuItem(
+          //   child: Row(
+          //     children: [
+          //       Icon(
+          //         Icons.article_outlined,
+          //         color: Colors.blue,
+          //       ),
+          //       SizedBox(
+          //         width: 10,
+          //       ),
+          //       Text('ISBN'),
+          //       SizedBox(
+          //         width: 85,
+          //       ),
+          //       Checkbox(
+          //         value: this.bookISBNCheckbox,
+          //         onChanged: (bool? value) {
+          //           setState(() {
+          //             Icon(
+          //               Icons.assignment_outlined,
+          //               color: Colors.blue,
+          //             );
+          //             this.bookISBNCheckbox = value!;
+          //           });
+          //         },
+          //       ),
+          //     ],
+          //   ),
+          //   value: 2,
+          // ):PopupMenuItem(child: SizedBox()),
 
-              ],
-            ); },
-
-          ),
-          value: 3,
-        ),
-        PopupMenuItem(
-          child: StatefulBuilder(
-            builder: (BuildContext context, void Function(void Function()) setState) { return Row(
-              children:  [
-                Icon(
-                  Icons.apps_outlined,
-                  color: Colors.blue,
-                ),
-                SizedBox(
-                  width: 10,
-                ),
-                Text('Features'),
-                SizedBox(
-                  width: 60,
-                ),
-                Checkbox(
-                  value: this.value,
-                  onChanged: (bool? value)  {
-                    setState(() {
-                      this.value = value!;
-                    });
-                  },
-                ),
-
-              ],
-            ); },
-          ),
-          value: 4,
-        ),
-
-      ],
-
-      onSelected: null,
+        ]
     );
   }
 }
