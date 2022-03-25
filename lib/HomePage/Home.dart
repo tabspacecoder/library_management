@@ -1,13 +1,10 @@
-import 'package:fluent_ui/fluent_ui.dart' as fluent;
-import 'package:flutter/material.dart';
-import 'package:library_management/HomePage/CommonSearch.dart';
+ import 'package:flutter/material.dart';
 import 'package:library_management/HomePage/News/news.dart';
+import 'package:library_management/HomePage/commonSearch.dart';
 import 'package:library_management/HomePage/profile/superAdminProfile.dart';
 import 'package:library_management/HomePage/profile/userProfile.dart';
 import 'package:library_management/Navbar/navbar.dart';
-import 'package:material_floating_search_bar/material_floating_search_bar.dart';
 import 'profile/adminProfile.dart';
-import 'searchbar.dart';
 import 'package:library_management/Constants.dart';
 
 class Home extends StatefulWidget {
@@ -84,7 +81,7 @@ class _HomeState extends State<Home> {
               ),
             ),
             floatingActionButton: Center(
-                child: SizedBox(width: 500, child: SearchBar(widget.id))),
+                child: SizedBox(width: 500, child: NavigationExample(widget.id))),
             floatingActionButtonLocation:
                 FloatingActionButtonLocation.miniCenterDocked,
           )),
