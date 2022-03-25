@@ -600,6 +600,10 @@ class _NavBarState extends State<NavBar> {
                                       }})
                                     : ElevatedButton(
                                     onPressed: () {}, child: Text('Upload Thumbnail')),
+                                SizedBox(height: 3,),
+                                dropdownvalue == 'Online' ||
+                                    dropdownvalue == 'Both'
+                                    ?ElevatedButton(onPressed: (){}, child: Text('Upload Thumbnail')):SizedBox()
                               ],
                             ),
                           ),
@@ -612,32 +616,7 @@ class _NavBarState extends State<NavBar> {
                           TextButton(
                               child: Text("Submit"),
                               onPressed: () {
-                                if (dropdownvalue == 'Online' ||
-                                    dropdownvalue == 'Both') {
-                                  showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return AlertDialog(
-                                          title: Text('Upload the pdf!'),
-                                          content: ElevatedButton(
-                                              onPressed: () {},
-                                              child: Text('Upload')),
-                                          actions: [
-                                            TextButton(
-                                              onPressed: () =>
-                                                  Navigator.pop(context),
-                                              child: Text('Cancel'),
-                                            ),
-                                            TextButton(
-                                              onPressed: () {
-                                                Navigator.pop(context);
-                                              },
-                                              child: Text('Submit'),
-                                            ),
-                                          ],
-                                        );
-                                      });
-                                }
+                                        fetch();
 
                                 Navigator.pop(context);
                               })
