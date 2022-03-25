@@ -15,8 +15,23 @@ class adminPendingRequestsPage extends StatefulWidget {
 }
 
 class _adminPendingRequestsPageState extends State<adminPendingRequestsPage> {
+  late List<BookRequestData> data;
+  void fetch()async{
+    final channel = WebSocketChannel.connect(webSocket());
+    channel.sink.add(parser(packet(widget.id, Handler.Handler1, Fetch.BookRequest,range: [-1,0])));
+    channel.stream.listen((event) {
+      event = event.split(Header.Split)[1];
+      for(dynamic i in jsonDecode(event)["Data"]){
+        i = jsonDecode(i);
+            BookRequestData temp = BookRequestData(i["RequestID"],i["BookName"], i["Author"], i["RequestBy"], i["Status"]);
+            data.add(temp);
+      }
+      channel.sink.close();
+      setState(() {
 
-
+      });
+    });
+  }
   // ListView pendingBooksList() async {
   //   final channel = WebSocketChannel.connect(webSocket());
   //   List<Widget> ret = [];
