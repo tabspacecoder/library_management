@@ -73,7 +73,9 @@ class _popUpFilterButtonState extends State<popUpFilterButton> {
         itemBuilder: (context) =>  [
           PopupMenuItem(
             child: StatefulBuilder(
-              builder: (BuildContext context, void Function(void Function()) setState) { return Column(
+              builder: (BuildContext context, void Function(void Function()) setState) {
+
+                return Column(
                 children: [
                   Row(
                     children:  [

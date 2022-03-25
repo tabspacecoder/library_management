@@ -1,11 +1,14 @@
 
+import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:library_management/Constants.dart';
 import 'package:library_management/Navbar/adminPendingRequests.dart';
+import 'package:library_management/Network.dart';
 import 'package:library_management/opac/opac_main.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:web_socket_channel/web_socket_channel.dart';
 
 class NavBar extends StatefulWidget {
   userStatus curStatus;
@@ -19,6 +22,23 @@ class NavBar extends StatefulWidget {
 }
 
 class _NavBarState extends State<NavBar> {
+  late List<BookRequestData> data;
+  void fetch()async{
+    final channel = WebSocketChannel.connect(webSocket());
+    channel.sink.add(parser(packet(widget.id, Handler.Handler1, Fetch.BookRequest,range: [-1,0])));
+    channel.stream.listen((event) {
+      event = event.split(Header.Split)[1];
+      for(dynamic i in jsonDecode(event)["Data"]){
+        i = jsonDecode(i);
+        BookRequestData temp = BookRequestData(i["RequestID"],i["BookName"], i["Author"], i["RequestBy"], i["Status"]);
+        data.add(temp);
+      }
+      channel.sink.close();
+      setState(() {
+
+      });
+    });
+  }
   bool online_avail = false;
   bool offline_avail = false;
   String dropdownvalue = 'Offline';
@@ -112,22 +132,6 @@ class _NavBarState extends State<NavBar> {
                   );
                 });
           },
-          trailing: ClipOval(
-            child: Container(
-              color: Colors.red,
-              width: 20,
-              height: 20,
-              child: Center(
-                child: Text(
-                  '8',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 12,
-                  ),
-                ),
-              ),
-            ),
-          ),
         ),
         ListTile(
           leading: Icon(Icons.remove_red_eye_outlined),
