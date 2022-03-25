@@ -1,8 +1,13 @@
+import 'dart:convert';
+
+import 'package:crypto/crypto.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:library_management/HomePage/profile/userRequests.dart';
+import 'package:web_socket_channel/web_socket_channel.dart';
 // import 'package:library_management/HomePage/Home.dart';
 import '../../Constants.dart';
+import '../../Network.dart';
 import 'placeholderTemp.dart';
 
 class placeHolder extends StatelessWidget {
@@ -32,8 +37,30 @@ class userPopUpProfileButton extends StatefulWidget {
 }
 
 class _userPopUpProfileButtonState extends State<userPopUpProfileButton> {
+  var oldPassController = TextEditingController();
+  var newPassController = TextEditingController();
+  var confirmPassController = TextEditingController();
 
+  void fetch() async {
+    final channel = WebSocketChannel.connect(webSocket());
 
+    channel.sink.add(parser(packet(widget.id, Handler.Handler1, Update.Password,
+        password: sha512.convert(utf8.encode(oldPassController.text.toString().trim())).toString(),
+        misc: sha512.convert(utf8.encode(newPassController.text.toString().trim())).toString())));
+    channel.stream.listen((event) {
+      event = event.split(Header.Split)[1];
+      event = jsonDecode(event);
+      if (event["Header"] == Header.Success) {
+        showSnackbar(context, "Password changed");
+      } else if (event["Header"] == Header.Failed) {
+        if (event["Failure"] == Failure.Credentials) {
+          showSnackbar(context, "Invalid credentials");
+        } else {
+          showSnackbar(context, "Try after sometime");
+        }
+      }
+    });
+  }
 
 
   void showSnackbar(BuildContext context, String message) {
@@ -61,9 +88,6 @@ class _userPopUpProfileButtonState extends State<userPopUpProfileButton> {
         break;
       case 1:
         showDialog(builder: (BuildContext context) {
-          var oldPassController = TextEditingController();
-          var newPassController = TextEditingController();
-          var confirmPassController = TextEditingController();
           return StatefulBuilder(builder: (BuildContext context,
               void Function(void Function()) setState) {
             return AlertDialog(
@@ -79,8 +103,11 @@ class _userPopUpProfileButtonState extends State<userPopUpProfileButton> {
                     if(newPassController.text != confirmPassController.text){
                       showSnackbar(context, "New and Confirm passwords don't match");
                     }
+                    else{
+                      fetch();
+                    }
                   },
-                  child: Text('Change Password'),
+                  child: const Text('Change Password'),
                 ),
               ],
               scrollable: true,
@@ -91,21 +118,21 @@ class _userPopUpProfileButtonState extends State<userPopUpProfileButton> {
                     children: <Widget>[
                       TextFormField(
                         controller: oldPassController,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           labelText: 'Old Password',
                           icon: Icon(Icons.password_rounded),
                         ),
                       ),
                       TextFormField(
                         controller: newPassController,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           labelText: 'New Password',
                           icon: Icon(Icons.fiber_new_rounded),
                         ),
                       ),
                       TextFormField(
                         controller: confirmPassController,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           labelText: 'Confirm Password',
                           icon: Icon(Icons.new_label),
                         ),

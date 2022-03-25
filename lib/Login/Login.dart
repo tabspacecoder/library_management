@@ -39,7 +39,7 @@ class _LoginState extends State<Login> {
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(16),
                     color: Colors.grey.shade300,
-                    boxShadow: [
+                    boxShadow: const [
                       BoxShadow(
                           offset: Offset(10, 10),
                           color: Colors.black,

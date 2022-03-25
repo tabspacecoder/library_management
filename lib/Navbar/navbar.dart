@@ -214,21 +214,21 @@ class _NavBarState extends State<NavBar> {
                               children: <Widget>[
                                 TextFormField(
                                   controller: bookNameController,
-                                  decoration: InputDecoration(
+                                  decoration: const InputDecoration(
                                     labelText: 'Name',
                                     icon: Icon(Icons.drive_file_rename_outline),
                                   ),
                                 ),
                                 TextFormField(
                                   controller: isbnController,
-                                  decoration: InputDecoration(
+                                  decoration: const InputDecoration(
                                     labelText: 'ISBN',
                                     icon: Icon(Icons.add),
                                   ),
                                 ),
                                 TextFormField(
                                   controller: authorController,
-                                  decoration: InputDecoration(
+                                  decoration: const InputDecoration(
                                     labelText: 'Author',
                                     icon: Icon(Icons.account_box),
                                   ),
@@ -362,7 +362,7 @@ class _NavBarState extends State<NavBar> {
               color: Colors.red,
               width: 20,
               height: 20,
-              child: Center(
+              child: const Center(
                 child: Text(
                   '8',
                   style: TextStyle(
@@ -425,7 +425,7 @@ class _NavBarState extends State<NavBar> {
     void Function(void Function()) setState) {
       return AlertDialog(
         scrollable: true,
-        title: Text('Add User'),
+        title: const Text('Add User'),
         content: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Form(
@@ -433,14 +433,14 @@ class _NavBarState extends State<NavBar> {
               children: <Widget>[
                 TextFormField(
                   controller: usernameController,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     labelText: 'User Name',
                     icon: Icon(Icons.drive_file_rename_outline),
                   ),
                 ),
                 TextFormField(
                   controller: passwordController,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     labelText: 'Password',
                     icon: Icon(Icons.password),
                   ),
@@ -479,6 +479,21 @@ class _NavBarState extends State<NavBar> {
             showDialog(
                 context: context,
                 builder: (BuildContext context) {
+                  void fetch() async {
+                    final channel = WebSocketChannel.connect(webSocket());
+
+                    channel.sink.add(parser(packet(widget.id, Handler.Handler1, Update.Password,)));
+                    channel.stream.listen((event) {
+                      event = event.split(Header.Split)[1];
+                      event = jsonDecode(event);
+                      if (event["Header"] == Header.Success) {
+
+                      } else if (event["Header"] == Header.Failed) {
+
+                      }
+                    });
+                  }
+
                   var bookNameController = TextEditingController();
                   var authorController = TextEditingController();
                   var isbnController = TextEditingController();
@@ -496,28 +511,28 @@ class _NavBarState extends State<NavBar> {
                               children: <Widget>[
                                 TextFormField(
                                   controller: bookNameController,
-                                  decoration: InputDecoration(
+                                  decoration: const InputDecoration(
                                     labelText: 'Name',
                                     icon: Icon(Icons.drive_file_rename_outline),
                                   ),
                                 ),
                                 TextFormField(
                                   controller: isbnController,
-                                  decoration: InputDecoration(
+                                  decoration: const InputDecoration(
                                     labelText: 'ISBN',
                                     icon: Icon(Icons.add),
                                   ),
                                 ),
                                 TextFormField(
                                   controller: authorController,
-                                  decoration: InputDecoration(
+                                  decoration: const InputDecoration(
                                     labelText: 'Author',
                                     icon: Icon(Icons.account_box),
                                   ),
                                 ),
                                 TextFormField(
                                   controller: availController,
-                                  decoration: InputDecoration(
+                                  decoration: const InputDecoration(
                                     labelText: 'Availablity',
                                     icon: Icon(Icons.category),
                                   ),
