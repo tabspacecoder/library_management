@@ -8,8 +8,8 @@ import 'package:library_management/Constants.dart';
 import 'package:library_management/Network.dart';
 
 class userRequestsPage extends StatefulWidget {
-  String id;
-  userRequestsPage({required this.id});
+  String id,username;
+  userRequestsPage({required this.id,required this.username});
 
   @override
   State<userRequestsPage> createState() =>
@@ -21,7 +21,7 @@ class _userRequestsPageState extends State<userRequestsPage> {
   Future<List<BookRequestData>> fetch() async {
     final channel = WebSocketChannel.connect(webSocket());
     channel.sink.add(parser(
-        packet(widget.id, Handler.Handler1, Fetch.BookRequestStatus, range: [-1, 0])));
+        packet(widget.id, Handler.Handler1, Fetch.BookRequestStatus, range: [-1, 0],username: widget.username)));
     channel.stream.listen((event) {
       event = event.split(Header.Split)[1];
       for (dynamic i in jsonDecode(event)["Data"]) {
