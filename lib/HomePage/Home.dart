@@ -47,7 +47,15 @@ class _HomeState extends State<Home> {
               fit: StackFit.expand,
               children: [
                 TabBarView(
-                  children: [Container(), news(id: widget.id)],
+                  children: [Container(
+                    decoration: BoxDecoration(
+
+                      image:DecorationImage(
+                        image: AssetImage('assets/homepage.png'),
+                        fit: BoxFit.cover
+                      ),
+                    ),
+                    child:Container() ,), news(id: widget.id)],
                 ),
               ],
             ),
