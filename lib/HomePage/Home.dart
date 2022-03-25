@@ -2,10 +2,12 @@ import 'package:fluent_ui/fluent_ui.dart' as fluent;
 import 'package:flutter/material.dart';
 import 'package:library_management/HomePage/CommonSearch.dart';
 import 'package:library_management/HomePage/News/news.dart';
+import 'package:library_management/HomePage/profile/superAdminProfile.dart';
+import 'package:library_management/HomePage/profile/userProfile.dart';
 import 'package:library_management/Navbar/navbar.dart';
 import 'package:library_management/temp/temp.dart';
 import 'package:material_floating_search_bar/material_floating_search_bar.dart';
-import 'profile/profile.dart';
+import 'profile/adminProfile.dart';
 import 'searchbar.dart';
 import 'package:library_management/Constants.dart';
 
@@ -65,7 +67,11 @@ class _HomeState extends State<Home> {
               ),
               // automaticallyImplyLeading: false,
               actions: [
-                PopUpProfileButton(),
+                curStatus == userStatus.superadmin
+                    ? superAdminPopUpProfileButton(username: widget.username, curstatus: curStatus,id: widget.id,)
+                    : curStatus == userStatus.admin
+                        ? adminPopUpProfileButton(username: widget.username, curstatus: curStatus,id: widget.id,)
+                        : userPopUpProfileButton(username: widget.username, curstatus: curStatus,id: widget.id,),
               ],
               bottom: const TabBar(
                 tabs: [

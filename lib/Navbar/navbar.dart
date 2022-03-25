@@ -327,13 +327,296 @@ class _NavBarState extends State<NavBar> {
       ],
     );
   }
+  ListView superAdminListView(context) {
+    return ListView(
+      // Remove padding
+      padding: EdgeInsets.zero,
+      children: [
+        UserAccountsDrawerHeader(
+          accountName: Text('${widget.username}'),
+          accountEmail: Text('${widget.curStatus}'),
+          decoration: BoxDecoration(
+            color: Colors.blue,
+          ),
+        ),
+        ListTile(
+          leading: Icon(Icons.category),
+          title: Text('OPAC'),
+          onTap: () => Navigator.push(
+              context, MaterialPageRoute(builder: (context) => opacHome())),
+        ),
+        ListTile(
+          leading: Icon(Icons.all_out),
+          title: Text('Add User'),
+          onTap: () => {
+            showDialog(context: context, builder: (BuildContext context){
+              var usernameController = TextEditingController();
+              var passwordController = TextEditingController();
+              return StatefulBuilder(
+    builder: (BuildContext context,
+    void Function(void Function()) setState) {
+      return AlertDialog(
+        scrollable: true,
+        title: Text('Add User'),
+        content: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Form(
+            child: Column(
+              children: <Widget>[
+                TextFormField(
+                  controller: usernameController,
+                  decoration: InputDecoration(
+                    labelText: 'User Name',
+                    icon: Icon(Icons.drive_file_rename_outline),
+                  ),
+                ),
+                TextFormField(
+                  controller: passwordController,
+                  decoration: InputDecoration(
+                    labelText: 'Password',
+                    icon: Icon(Icons.password),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () {
+
+                Navigator.pop(context);},
+            child: Text('Create new user'),
+          ),
+          TextButton(
+            onPressed: () =>
+                Navigator.pop(context),
+            child: Text('Cancel'),
+          ),
+        ],
+      );
+    }
+              );
+            })
+          },
+        ),
+        ListTile(
+          leading: Icon(Icons.all_out),
+          title: Text('Book Circulation'),
+          onTap: () => null,
+        ),
+        ListTile(
+          leading: Icon(Icons.add),
+          title: Text('Add new book'),
+          onTap: () {
+            showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  var bookNameController = TextEditingController();
+                  var authorController = TextEditingController();
+                  var isbnController = TextEditingController();
+                  var availController = TextEditingController();
+                  return StatefulBuilder(
+                    builder: (BuildContext context,
+                        void Function(void Function()) setState) {
+                      return AlertDialog(
+                        scrollable: true,
+                        title: Text('Add Book'),
+                        content: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Form(
+                            child: Column(
+                              children: <Widget>[
+                                TextFormField(
+                                  controller: bookNameController,
+                                  decoration: InputDecoration(
+                                    labelText: 'Name',
+                                    icon: Icon(Icons.drive_file_rename_outline),
+                                  ),
+                                ),
+                                TextFormField(
+                                  controller: isbnController,
+                                  decoration: InputDecoration(
+                                    labelText: 'ISBN',
+                                    icon: Icon(Icons.add),
+                                  ),
+                                ),
+                                TextFormField(
+                                  controller: authorController,
+                                  decoration: InputDecoration(
+                                    labelText: 'Author',
+                                    icon: Icon(Icons.account_box),
+                                  ),
+                                ),
+                                TextFormField(
+                                  controller: availController,
+                                  decoration: InputDecoration(
+                                    labelText: 'Availablity',
+                                    icon: Icon(Icons.category),
+                                  ),
+                                ),
+                                // CheckboxListTile(
+                                //   title: Text('Online : '),
+                                //   value: online_avail,
+                                //   onChanged: (value) {
+                                //     setState(() {
+                                //       online_avail = value!;
+                                //     });
+                                //     setState(() {});
+                                //   },
+                                // ),
+                                // CheckboxListTile(
+                                //   title: Text('Offline : '),
+                                //   value: offline_avail,
+                                //   onChanged: (value) {
+                                //     setState(() {
+                                //       print(1);
+                                //       offline_avail = value!;
+                                //     });},
+                                // ),
+                                DropdownButton(
+                                  // Initial Value
+                                  value: dropdownvalue,
+
+                                  // Down Arrow Icon
+                                  icon: const Icon(Icons.keyboard_arrow_down),
+
+                                  // Array list of items
+                                  items: items.map((String items) {
+                                    return DropdownMenuItem(
+                                      value: items,
+                                      child: Text(items),
+                                    );
+                                  }).toList(),
+                                  // After selecting the desired option,it will
+                                  // change button value to selected value
+                                  onChanged: (String? newValue) {
+                                    setState(() {
+                                      dropdownvalue = newValue!;
+                                    });
+                                  },
+                                ),
+                                dropdownvalue == 'Online' ||
+                                    dropdownvalue == 'Both'
+                                    ? ElevatedButton(
+                                    child: Text('Upload Pdf'),
+                                    onPressed: () async {
+                                      var result = await FilePicker.platform.pickFiles(
+                                        // type: FileType.values[':pdf'],
+                                        withReadStream:
+                                        true, // this will return PlatformFile object with read stream
+                                      );
+                                      if (result != null) {
+                                        setState(() {
+                                          objFile = result.files.single;
+                                          pickedFileByteStream=objFile.bytes! ;
+                                          String toRet = pickedFileByteStream.toString();
+                                        });
+
+                                      }})
+                                    : ElevatedButton(
+                                    onPressed: () {}, child: Text('Upload Thumbnail')),
+                              ],
+                            ),
+                          ),
+                        ),
+                        actions: [
+                          TextButton(
+                            onPressed: () => Navigator.pop(context),
+                            child: Text('Cancel'),
+                          ),
+                          TextButton(
+                              child: Text("Submit"),
+                              onPressed: () {
+                                if (dropdownvalue == 'Online' ||
+                                    dropdownvalue == 'Both') {
+                                  showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return AlertDialog(
+                                          title: Text('Upload the pdf!'),
+                                          content: ElevatedButton(
+                                              onPressed: () {},
+                                              child: Text('Upload')),
+                                          actions: [
+                                            TextButton(
+                                              onPressed: () =>
+                                                  Navigator.pop(context),
+                                              child: Text('Cancel'),
+                                            ),
+                                            TextButton(
+                                              onPressed: () {
+                                                Navigator.pop(context);
+                                              },
+                                              child: Text('Submit'),
+                                            ),
+                                          ],
+                                        );
+                                      });
+                                }
+
+                                Navigator.pop(context);
+                              })
+                        ],
+                      );
+                    },
+                  );
+                });
+          },
+        ),
+        ListTile(
+          leading: Icon(Icons.remove_red_eye_outlined),
+          title: Text('Search Book'),
+          onTap: () => null,
+        ),
+        ListTile(
+          leading: Icon(Icons.notifications),
+          title: Text('Pending Requests'),
+          onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context)=>adminPendingRequestsPage(id: widget.id,))),
+          trailing: ClipOval(
+            child: Container(
+              color: Colors.red,
+              width: 20,
+              height: 20,
+              child: Center(
+                child: Text(
+                  '8',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 12,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+        Divider(),
+        ListTile(
+          leading: Icon(Icons.settings),
+          title: Text('Settings'),
+          onTap: () => null,
+        ),
+        ListTile(
+          leading: Icon(Icons.description),
+          title: Text('Policies'),
+          onTap: () => null,
+        ),
+        Divider(),
+        ListTile(
+          title: Text('Exit'),
+          leading: Icon(Icons.exit_to_app),
+          onTap: () => null,
+        ),
+      ],
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return Drawer(
       child: widget.curStatus == userStatus.user
-          ? userListView(context)
-          : adminListView(context),
+          ? userListView(context):widget.curStatus==userStatus.superadmin?
+          superAdminListView(context): adminListView(context),
     );
   }
 }
