@@ -16,7 +16,11 @@ class adminPendingRequestsPage extends StatefulWidget {
 }
 
 class _adminPendingRequestsPageState extends State<adminPendingRequestsPage> {
-  List<BookRequestData> data = [];
+  late List<BookRequestData> data ;
+  // void initState(){
+  //   fetch();
+  //   super.initState();
+  // }
   Future<List<BookRequestData>> fetch() async {
     final channel = WebSocketChannel.connect(webSocket());
     channel.sink.add(parser(
@@ -29,100 +33,106 @@ class _adminPendingRequestsPageState extends State<adminPendingRequestsPage> {
             i["Author"], i["RequestBy"], i["Status"]);
         data.add(temp);
       }
+      // setState(() {
+      // });
       channel.sink.close();
-    });
-    setState(() {
+setState(() {
 
+});
     });
+
+    print(data);
     return data;
   }
 
   @override
   void initState() {
+    data=[];
     fetch();
+    super.initState();
   }
   void update(String id,int Status)async{
     final channel = WebSocketChannel.connect(webSocket());
     channel.sink.add(parser(
         packet(widget.id, Handler.Handler1, Update.BookRequest,misc: id,status: Status.toString())));
   }
-  Future<ListView> pendingBooksList(data) async {
-    return ListView.builder(
-        itemCount: data.length,
-        itemBuilder: ((context, index) {
-          List<String> items = ['Processing', 'Approved', 'Declined'];
-          String dropdownvalue = items[0];
-          if (int.parse(data[index].Status) & RequestStatus.processing ==
-              RequestStatus.processing) {
-            dropdownvalue = items[0];
-          } else if (int.parse(data[index].Status) & RequestStatus.approved ==
-              RequestStatus.approved) {
-            dropdownvalue = items[1];
-          } else if (int.parse(data[index].Status) & RequestStatus.declined ==
-              RequestStatus.declined) {
-            dropdownvalue = items[2];
-          } else {
-            dropdownvalue = items[0];
-          }
-          return ListTile(
-            title: Text(data[index].BookName),
-            leading: Text(data[index].Request),
-            subtitle: Text(data[index].Author),
-            trailing: Text(data[index].RequestedBy),
-            onTap: () {
-              showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return StatefulBuilder(
-                      builder: (BuildContext context,
-                          void Function(void Function()) setState) {
-                        return AlertDialog(
-                          scrollable: true,
-                          title: Text('Request ID : ${data[index].Request}'),
-                          content: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: DropdownButton(
-                              onChanged: (value) {
-                                setState(() {
-                                  dropdownvalue = value.toString();
-                                });
-                              },
-                              items: items.map((String items) {
-                                return DropdownMenuItem(
-                                  value: items,
-                                  child: Text(items),
-                                );
-                              }).toList(),
-                              value: dropdownvalue,
-                            ),
-                          ),
-                          actions: [
-                            TextButton(
-                              onPressed: () => Navigator.pop(context),
-                              child: Text('Cancel'),
-                            ),
-                            TextButton(
-                                child: Text("Update Status"),
-                                onPressed: () {
-                                  int toRet;
-                                  dropdownvalue == items[0]
-                                      ? toRet = RequestStatus.processing
-                                      : dropdownvalue == items[1]
-                                          ? toRet = RequestStatus.approved
-                                          : toRet = RequestStatus.declined;
-                                  update(data[index].Request, toRet);
-
-                                  Navigator.pop(context);
-                                })
-                          ],
-                        );
-                      },
-                    );
-                  });
-            },
-          );
-        }));
-  }
+  // Future<ListView> pendingBooksList(data) async {
+  //   return ListView.builder(
+  //       itemCount: data.length,
+  //       itemBuilder: ((context, index) {
+  //         List<String> items = ['Processing', 'Approved', 'Declined'];
+  //         String dropdownvalue = items[0];
+  //         if (int.parse(data[index].Status) & RequestStatus.processing ==
+  //             RequestStatus.processing) {
+  //           dropdownvalue = items[0];
+  //         } else if (int.parse(data[index].Status) & RequestStatus.approved ==
+  //             RequestStatus.approved) {
+  //           dropdownvalue = items[1];
+  //         } else if (int.parse(data[index].Status) & RequestStatus.declined ==
+  //             RequestStatus.declined) {
+  //           dropdownvalue = items[2];
+  //         } else {
+  //           dropdownvalue = items[0];
+  //         }
+  //         return ListTile(
+  //           title: Text(data[index].BookName),
+  //           leading: Text(data[index].Request),
+  //           subtitle: Text(data[index].Author),
+  //           trailing: Text(data[index].RequestedBy),
+  //           onTap: () {
+  //             showDialog(
+  //                 context: context,
+  //                 builder: (BuildContext context) {
+  //                   return StatefulBuilder(
+  //                     builder: (BuildContext context,
+  //                         void Function(void Function()) setState) {
+  //                       return AlertDialog(
+  //                         scrollable: true,
+  //                         title: Text('Request ID : ${data[index].Request}'),
+  //                         content: Padding(
+  //                           padding: const EdgeInsets.all(8.0),
+  //                           child: DropdownButton(
+  //                             onChanged: (value) {
+  //                               setState(() {
+  //                                 dropdownvalue = value.toString();
+  //                               });
+  //                             },
+  //                             items: items.map((String items) {
+  //                               return DropdownMenuItem(
+  //                                 value: items,
+  //                                 child: Text(items),
+  //                               );
+  //                             }).toList(),
+  //                             value: dropdownvalue,
+  //                           ),
+  //                         ),
+  //                         actions: [
+  //                           TextButton(
+  //                             onPressed: () => Navigator.pop(context),
+  //                             child: Text('Cancel'),
+  //                           ),
+  //                           TextButton(
+  //                               child: Text("Update Status"),
+  //                               onPressed: () {
+  //                                 int toRet;
+  //                                 dropdownvalue == items[0]
+  //                                     ? toRet = RequestStatus.processing
+  //                                     : dropdownvalue == items[1]
+  //                                         ? toRet = RequestStatus.approved
+  //                                         : toRet = RequestStatus.declined;
+  //                                 update(data[index].Request, toRet);
+  //
+  //                                 Navigator.pop(context);
+  //                               })
+  //                         ],
+  //                       );
+  //                     },
+  //                   );
+  //                 });
+  //           },
+  //         );
+  //       }));
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -168,119 +178,226 @@ class _adminPendingRequestsPageState extends State<adminPendingRequestsPage> {
           ),
           body: TabBarView(children: [
             Container(
-                child: FutureBuilder(
-                    future: fetch(),
-                    builder: (context, AsyncSnapshot snapshot) {
-                      if (!snapshot.hasData) {
-                        return Center(child: CircularProgressIndicator());
-                      } else {
-                        return Container(
-                            child: ListView.builder(
-                                itemCount: snapshot.data.length,
-                                itemBuilder: ((context, index) {
-                                  List<String> items = [
-                                    'Processing',
-                                    'Approved',
-                                    'Declined'
-                                  ];
-                                  String dropdownvalue = items[0];
-                                  if (int.parse(snapshot.data[index].Status) &
-                                          RequestStatus.processing ==
-                                      RequestStatus.processing) {
-                                    dropdownvalue = items[0];
-                                  } else if (int.parse(
-                                              snapshot.data[index].Status) &
-                                          RequestStatus.approved ==
-                                      RequestStatus.approved) {
-                                    dropdownvalue = items[1];
-                                  } else if (int.parse(
-                                              snapshot.data[index].Status) &
-                                          RequestStatus.declined ==
-                                      RequestStatus.declined) {
-                                    dropdownvalue = items[2];
-                                  } else {
-                                    dropdownvalue = items[0];
-                                  }
-                                  return ListTile(
-                                    title: Text(snapshot.data[index].BookName),
-                                    leading: Text(snapshot.data[index].Request),
-                                    subtitle: Text(snapshot.data[index].Author),
-                                    trailing:
-                                        Text(snapshot.data[index].RequestedBy),
-                                    onTap: () {
-                                      showDialog(
-                                          context: context,
-                                          builder: (BuildContext context) {
-                                            return StatefulBuilder(
-                                              builder: (BuildContext context,
-                                                  void Function(void Function())
-                                                      setState) {
-                                                return AlertDialog(
-                                                  scrollable: true,
-                                                  title: Text(
-                                                      'Request ID : ${snapshot.data[index].Request}'),
-                                                  content: Padding(
-                                                    padding:
-                                                        const EdgeInsets.all(
-                                                            8.0),
-                                                    child: DropdownButton(
-                                                      onChanged: (value) {
-                                                        setState(() {
-                                                          dropdownvalue =
-                                                              value.toString();
-                                                        });
-                                                      },
-                                                      items: items
-                                                          .map((String items) {
-                                                        return DropdownMenuItem(
-                                                          value: items,
-                                                          child: Text(items),
-                                                        );
-                                                      }).toList(),
-                                                      value: dropdownvalue,
-                                                    ),
-                                                  ),
-                                                  actions: [
-                                                    TextButton(
-                                                      onPressed: () =>
-                                                          Navigator.pop(
-                                                              context),
-                                                      child: Text('Cancel'),
-                                                    ),
-                                                    TextButton(
-                                                        child: Text(
-                                                            "Update Status"),
-                                                        onPressed: () {
-                                                          int toRet;
-                                                          dropdownvalue ==
-                                                                  items[0]
-                                                              ? toRet =
-                                                                  RequestStatus
-                                                                      .processing
-                                                              : dropdownvalue ==
-                                                                      items[1]
-                                                                  ? toRet =
-                                                                      RequestStatus
-                                                                          .approved
-                                                                  : toRet =
-                                                                      RequestStatus
-                                                                          .declined;
+              child: Container(
+                  child: ListView.builder(
+                      itemCount: data.length,
+                      itemBuilder: ((context, index) {
+                        List<String> items = [
+                          'Processing',
+                          'Approved',
+                          'Declined'
+                        ];
+                        String dropdownvalue = items[0];
+                        if (int.parse(data[index].Status) &
+                        RequestStatus.processing ==
+                            RequestStatus.processing) {
+                          dropdownvalue = items[0];
+                        } else if (int.parse(
+                            data[index].Status) &
+                        RequestStatus.approved ==
+                            RequestStatus.approved) {
+                          dropdownvalue = items[1];
+                        } else if (int.parse(
+                            data[index].Status) &
+                        RequestStatus.declined ==
+                            RequestStatus.declined) {
+                          dropdownvalue = items[2];
+                        } else {
+                          dropdownvalue = items[0];
+                        }
+                        return ListTile(
+                          title: Text(data[index].BookName),
+                          leading: Text(data[index].Request),
+                          subtitle: Text(data[index].Author),
+                          trailing:
+                          Text(data[index].RequestedBy),
+                          onTap: () {
+                            showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return StatefulBuilder(
+                                    builder: (BuildContext context,
+                                        void Function(void Function())
+                                        setState) {
+                                      return AlertDialog(
+                                        scrollable: true,
+                                        title: Text(
+                                            'Request ID : ${data[index].Request}'),
+                                        content: Padding(
+                                          padding:
+                                          const EdgeInsets.all(
+                                              8.0),
+                                          child: DropdownButton(
+                                            onChanged: (value) {
+                                              setState(() {
+                                                dropdownvalue =
+                                                    value.toString();
+                                              });
+                                            },
+                                            items: items
+                                                .map((String items) {
+                                              return DropdownMenuItem(
+                                                value: items,
+                                                child: Text(items),
+                                              );
+                                            }).toList(),
+                                            value: dropdownvalue,
+                                          ),
+                                        ),
+                                        actions: [
+                                          TextButton(
+                                            onPressed: () =>
+                                                Navigator.pop(
+                                                    context),
+                                            child: Text('Cancel'),
+                                          ),
+                                          TextButton(
+                                              child: Text(
+                                                  "Update Status"),
+                                              onPressed: () {
+                                                int toRet;
+                                                dropdownvalue ==
+                                                    items[0]
+                                                    ? toRet =
+                                                    RequestStatus
+                                                        .processing
+                                                    : dropdownvalue ==
+                                                    items[1]
+                                                    ? toRet =
+                                                    RequestStatus
+                                                        .approved
+                                                    : toRet =
+                                                    RequestStatus
+                                                        .declined;
 
-                                                          // code here!!
-
-                                                          Navigator.pop(
-                                                              context);
-                                                        })
-                                                  ],
-                                                );
-                                              },
-                                            );
-                                          });
+                                                // code here!!
+                                                update(data[index].Request, toRet);
+                                                Navigator.pop(
+                                                    context);
+                                              })
+                                        ],
+                                      );
                                     },
                                   );
-                                })));
-                      }
-                    })),
+                                });
+                          },
+                        );
+                      }))),
+            ),
+            // Container(
+            //     child: FutureBuilder(
+            //         // future: fetch(),
+            //         builder: (context, AsyncSnapshot snapshot) {
+            //           if (!snapshot.hasData) {
+            //             return Center(child: CircularProgressIndicator());
+            //           } else {
+            //             return Container(
+            //                 child: ListView.builder(
+            //                     itemCount: data.length,
+            //                     itemBuilder: ((context, index) {
+            //                       List<String> items = [
+            //                         'Processing',
+            //                         'Approved',
+            //                         'Declined'
+            //                       ];
+            //                       String dropdownvalue = items[0];
+            //                       if (int.parse(data[index].Status) &
+            //                               RequestStatus.processing ==
+            //                           RequestStatus.processing) {
+            //                         dropdownvalue = items[0];
+            //                       } else if (int.parse(
+            //                                   data[index].Status) &
+            //                               RequestStatus.approved ==
+            //                           RequestStatus.approved) {
+            //                         dropdownvalue = items[1];
+            //                       } else if (int.parse(
+            //                                   data[index].Status) &
+            //                               RequestStatus.declined ==
+            //                           RequestStatus.declined) {
+            //                         dropdownvalue = items[2];
+            //                       } else {
+            //                         dropdownvalue = items[0];
+            //                       }
+            //                       return ListTile(
+            //                         title: Text(data[index].BookName),
+            //                         leading: Text(data[index].Request),
+            //                         subtitle: Text(data[index].Author),
+            //                         trailing:
+            //                             Text(data[index].RequestedBy),
+            //                         onTap: () {
+            //                           showDialog(
+            //                               context: context,
+            //                               builder: (BuildContext context) {
+            //                                 return StatefulBuilder(
+            //                                   builder: (BuildContext context,
+            //                                       void Function(void Function())
+            //                                           setState) {
+            //                                     return AlertDialog(
+            //                                       scrollable: true,
+            //                                       title: Text(
+            //                                           'Request ID : ${data[index].Request}'),
+            //                                       content: Padding(
+            //                                         padding:
+            //                                             const EdgeInsets.all(
+            //                                                 8.0),
+            //                                         child: DropdownButton(
+            //                                           onChanged: (value) {
+            //                                             setState(() {
+            //                                               dropdownvalue =
+            //                                                   value.toString();
+            //                                             });
+            //                                           },
+            //                                           items: items
+            //                                               .map((String items) {
+            //                                             return DropdownMenuItem(
+            //                                               value: items,
+            //                                               child: Text(items),
+            //                                             );
+            //                                           }).toList(),
+            //                                           value: dropdownvalue,
+            //                                         ),
+            //                                       ),
+            //                                       actions: [
+            //                                         TextButton(
+            //                                           onPressed: () =>
+            //                                               Navigator.pop(
+            //                                                   context),
+            //                                           child: Text('Cancel'),
+            //                                         ),
+            //                                         TextButton(
+            //                                             child: Text(
+            //                                                 "Update Status"),
+            //                                             onPressed: () {
+            //                                               int toRet;
+            //                                               dropdownvalue ==
+            //                                                       items[0]
+            //                                                   ? toRet =
+            //                                                       RequestStatus
+            //                                                           .processing
+            //                                                   : dropdownvalue ==
+            //                                                           items[1]
+            //                                                       ? toRet =
+            //                                                           RequestStatus
+            //                                                               .approved
+            //                                                       : toRet =
+            //                                                           RequestStatus
+            //                                                               .declined;
+            //
+            //                                               // code here!!
+            //                                               update(data[index].Request, toRet);
+            //                                               Navigator.pop(
+            //                                                   context);
+            //                                             })
+            //                                       ],
+            //                                     );
+            //                                   },
+            //                                 );
+            //                               });
+            //                         },
+            //                       );
+            //                     })));
+            //           }
+            //         })),
             Container(
               child: Text('Magazines'),
             )
