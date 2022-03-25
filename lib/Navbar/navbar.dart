@@ -72,7 +72,7 @@ class _NavBarState extends State<NavBar> {
           leading: Icon(Icons.category),
           title: Text('OPAC'),
           onTap: () => Navigator.push(
-              context, MaterialPageRoute(builder: (context) => opacHome(id: widget.id,))),
+              context, MaterialPageRoute(builder: (context) => opacHome(id: widget.id, title: 'OPAC',))),
         ),
         // ListTile(
         //   leading: Icon(Icons.person),
@@ -183,7 +183,7 @@ class _NavBarState extends State<NavBar> {
           leading: Icon(Icons.category),
           title: Text('OPAC'),
           onTap: () => Navigator.push(
-              context, MaterialPageRoute(builder: (context) => opacHome(id: widget.id,))),
+              context, MaterialPageRoute(builder: (context) => opacHome(id: widget.id, title: 'OPAC',))),
         ),
         ListTile(
           leading: Icon(Icons.all_out),
@@ -410,7 +410,7 @@ class _NavBarState extends State<NavBar> {
           leading: Icon(Icons.category),
           title: Text('OPAC'),
           onTap: () => Navigator.push(
-              context, MaterialPageRoute(builder: (context) => opacHome(id: widget.id
+              context, MaterialPageRoute(builder: (context) => opacHome(id: widget.id, title: 'OPAC'
             ,))),
         ),
         ListTile(
@@ -479,10 +479,15 @@ class _NavBarState extends State<NavBar> {
             showDialog(
                 context: context,
                 builder: (BuildContext context) {
+                  String toRet="";
+                  var bookNameController = TextEditingController();
+                  var authorController = TextEditingController();
+                  var isbnController = TextEditingController();
+                  var availController = TextEditingController();
                   void fetch() async {
                     final channel = WebSocketChannel.connect(webSocket());
 
-                    channel.sink.add(parser(packet(widget.id, Handler.Handler1, Update.Password,)));
+                    channel.sink.add(parser(packet(widget.id, Handler.Handler1, Add.BookRecord,bookName: bookNameController.text,isbn: isbnController.text,author: [authorController.text],availability: int.parse(availController.text),type:dropdownvalue=='Online'?Avail.Online:dropdownvalue=='Offline'?Avail.Offline:(Avail.Offline+Avail.Online), book: toRet,)));
                     channel.stream.listen((event) {
                       event = event.split(Header.Split)[1];
                       event = jsonDecode(event);
@@ -494,10 +499,7 @@ class _NavBarState extends State<NavBar> {
                     });
                   }
 
-                  var bookNameController = TextEditingController();
-                  var authorController = TextEditingController();
-                  var isbnController = TextEditingController();
-                  var availController = TextEditingController();
+
                   return StatefulBuilder(
                     builder: (BuildContext context,
                         void Function(void Function()) setState) {
@@ -592,7 +594,7 @@ class _NavBarState extends State<NavBar> {
                                         setState(() {
                                           objFile = result.files.single;
                                           pickedFileByteStream=objFile.bytes! ;
-                                          String toRet = pickedFileByteStream.toString();
+                                          toRet = pickedFileByteStream.toString();
                                         });
 
                                       }})
