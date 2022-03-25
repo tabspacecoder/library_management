@@ -72,7 +72,7 @@ class _NavBarState extends State<NavBar> {
           leading: Icon(Icons.category),
           title: Text('OPAC'),
           onTap: () => Navigator.push(
-              context, MaterialPageRoute(builder: (context) => opacHome())),
+              context, MaterialPageRoute(builder: (context) => opacHome(id: widget.id,))),
         ),
         // ListTile(
         //   leading: Icon(Icons.person),
@@ -183,7 +183,7 @@ class _NavBarState extends State<NavBar> {
           leading: Icon(Icons.category),
           title: Text('OPAC'),
           onTap: () => Navigator.push(
-              context, MaterialPageRoute(builder: (context) => opacHome())),
+              context, MaterialPageRoute(builder: (context) => opacHome(id: widget.id,))),
         ),
         ListTile(
           leading: Icon(Icons.all_out),
@@ -410,7 +410,8 @@ class _NavBarState extends State<NavBar> {
           leading: Icon(Icons.category),
           title: Text('OPAC'),
           onTap: () => Navigator.push(
-              context, MaterialPageRoute(builder: (context) => opacHome())),
+              context, MaterialPageRoute(builder: (context) => opacHome(id: widget.id
+            ,))),
         ),
         ListTile(
           leading: Icon(Icons.all_out),
