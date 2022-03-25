@@ -81,7 +81,7 @@ class _HomeState extends State<Home> {
               ),
             ),
             floatingActionButton: Center(
-                child: SizedBox(width: 500, child: NavigationExample(widget.id))),
+                child: SizedBox(width: 500, child: SearchBar(widget.id))),
             floatingActionButtonLocation:
                 FloatingActionButtonLocation.miniCenterDocked,
           )),

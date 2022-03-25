@@ -2,235 +2,327 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
-import 'package:material_floating_search_bar/material_floating_search_bar.dart';
 import 'package:library_management/Constants.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
 import 'package:library_management/Network.dart';
 
-
-// class SearchBar extends StatefulWidget {
-//   String id;
-//
-//   SearchBar(this.id);
-//
-//   @override
-//   _SearchBarState createState() => _SearchBarState();
-// }
-//
-// class _SearchBarState extends State<SearchBar> {
-//   static const historyLength = 5;
-//   final List<BookData> _searchHistory = [];
-//   String prevQuery = "";
-//   List<Widget> filteredSearchHistory = [];
-//   List<BookData> filteredSearchValues = [];
-//   late FloatingSearchBarController controller;
-//
-//   void fetch(String name) async {
-//     final channel = WebSocketChannel.connect(webSocket());
-//     List<Widget> ret = [];
-//     List<BookData> ret1 = [];
-//     channel.sink.add(parser(packet(widget.id, Handler.Handler1, Search.Books,bookName: name,searchFilter: [BookParams.Name],count: 20,sort: "ASC")));
-//     channel.stream.listen((event) {
-//       event = event.split(Header.Split)[1];
-//       for(dynamic i in jsonDecode(event)["Data"])
-//         {
-//           i = jsonDecode(i);
-//           BookData tmp = BookData(i["ISBN"],i["BookName"],i["Author"],i["Availability"],i["Type"],i["Thumbnail"]);
-//           ret1.add(tmp);
-//           ret.add(listItem(
-//               ontap: () {
-//                 if(filteredSearchHistory.isNotEmpty)
-//                 {
-//                   addSearchTerm(filteredSearchValues.first);
-//                   selectedTerm = filteredSearchValues.first.BookName;
-//                   //controller.close();
-//                 }
-//               },
-//               curBook: tmp
-//           ));
-//         }
-//
-//       filteredSearchHistory = ret;
-//       filteredSearchValues = ret1;
-//       prevQuery = name;
-//       channel.sink.close();
-//       setState(() {});
-//     });
-//   }
-//
-//   String selectedTerm = '';
-//
-//   void addSearchTerm(BookData term) {
-//     if (_searchHistory.contains(term)) {
-//       putSearchTermFirst(term);
-//       return;
-//     }
-//
-//     _searchHistory.add(term);
-//     if (_searchHistory.length > historyLength) {
-//       _searchHistory.removeRange(0, _searchHistory.length - historyLength);
-//     }
-//   }
-//
-//   void deleteSearchTerm(BookData term) {
-//     _searchHistory.removeWhere((t) => t == term);
-//   }
-//
-//   BookData getByName(String name) {
-//     return _searchHistory.where((element) => element.Author == name).first;
-//   }
-//
-//   void putSearchTermFirst(BookData term) {
-//     deleteSearchTerm(term);
-//     addSearchTerm(term);
-//   }
-//
-//   List<Widget> HistoryWidgets(List<BookData> details) {
-//     List<Widget> widgets = details
-//         .map((bookDetails) => listItem(
-//         ontap: () {
-//           if(filteredSearchHistory.isNotEmpty)
-//           {
-//             addSearchTerm(filteredSearchValues.first);
-//             selectedTerm = filteredSearchValues.first.BookName;
-//           }
-//         },
-//         curBook: bookDetails))
-//         .toList()
-//         .cast<Widget>();
-//     return widgets;
-//   }
-//
-//   @override
-//   void initState() {
-//     super.initState();
-//     controller = FloatingSearchBarController();
-//   }
-//
-//   @override
-//   void dispose() {
-//     controller.dispose();
-//     super.dispose();
-//   }
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return SizedBox(
-//       child: FloatingSearchBar(
-//         controller: controller,
-//         transition: CircularFloatingSearchBarTransition(),
-//         physics: const BouncingScrollPhysics(),
-//         title: Text(
-//           selectedTerm,
-//           style: Theme.of(context).textTheme.headline6,
-//         ),
-//         hint: 'Search and find out...',
-//         actions: [
-//           FloatingSearchBarAction(
-//             showIfOpened: false,
-//             child: CircularButton(
-//               icon: const Icon(Icons.clear_all),
-//               onPressed: () {},
-//             ),
-//           ),
-//           FloatingSearchBarAction.searchToClear(
-//             showIfClosed: false,
-//           ),
-//         ],
-//         onQueryChanged: (query) {
-//           setState(() {
-//             fetch(controller.query);
-//           });
-//         },
-//         onSubmitted: (query) {
-//           setState(() {
-//             if(filteredSearchHistory.isNotEmpty)
-//               {
-//                 addSearchTerm(filteredSearchValues.first);
-//                 selectedTerm = filteredSearchValues.first.BookName;
-//                 //controller.close();
-//               }
-//
-//           });
-//
-//         },
-//         builder: (context, transition) {
-//           return ClipRRect(
-//             borderRadius: BorderRadius.circular(8),
-//             child: Material(
-//               color: Colors.white,
-//               elevation: 4,
-//               child: Builder(
-//                 builder: (context) {
-//                   if (controller.query.isEmpty) {
-//                     print(HistoryWidgets(_searchHistory).length);
-//                     return Container(
-//                       height: 56,
-//                       width: double.infinity,
-//                       alignment: Alignment.center,
-//                       child: Column(
-//                         children: [
-//                           Text(
-//                             'Start searching',
-//                             maxLines: 1,
-//                             overflow: TextOverflow.ellipsis,
-//                             style: Theme.of(context).textTheme.caption,
-//                           ),
-//                           Column(children: HistoryWidgets(_searchHistory))
-//                         ],
-//                       ),
-//                     );
-//                   } else {
-//                     if (filteredSearchHistory.isNotEmpty) {
-//                       return Column(
-//                         children: filteredSearchHistory,
-//                       );
-//                     } else {
-//                       return const Padding(
-//                         padding: EdgeInsets.all(10.0),
-//                         child: Text("No book found."),
-//                       );
-//                     }
-//                   }
-//                 },
-//               ),
-//             ),
-//           );
-//         },
-//       ),
-//     );
-//   }
-// }
-
-class NavigationExample extends StatefulWidget {
+class SearchBar extends StatefulWidget {
   String id;
 
-  NavigationExample(this.id);
+  SearchBar(this.id);
   @override
-  State<NavigationExample> createState() => _NavigationExampleState();
+  State<SearchBar> createState() => _SearchBarState();
 }
 
-class _NavigationExampleState extends State<NavigationExample> {
-  List<BookData> ret1 = [];
+class _SearchBarState extends State<SearchBar> {
+  List<dynamic> ret1 = [];
+
+  bool bookNameCheckbox = true;
+  bool bookAuthorCheckbox = false;
+  bool bookISBNCheckbox = false;
+  bool magAuthorCheckbox = false;
+  bool magNameCheckbox = false;
+  String dropdownvalue = 'Books';
+  String dropdownvaluefilter = 'ASC';
+  var items = [
+    'Books',
+    'Magazines',
+  ];
+  var filteritems=[
+    'ASC','DESC'
+  ];
+
   Future<List<dynamic>> fetch(String name) async {
     final channel = WebSocketChannel.connect(webSocket());
-    channel.sink.add(parser(packet(widget.id, Handler.Handler1, Search.Books,bookName: name,searchFilter: [BookParams.Name],count: 20,sort: "ASC")));
-    await channel.stream.listen((event) {
-      ret1 = [];
-      event = event.split(Header.Split)[1];
-      for(dynamic i in jsonDecode(event)["Data"])
-      {
-        i = jsonDecode(i);
-        BookData tmp = BookData(i["ISBN"],i["BookName"],i["Author"],i["Availability"],i["Type"],i["Thumbnail"]);
-        ret1.add(tmp);
+    List<String> Params = [];
+    String ISBN = "";
+    String Author = "";
+    print("------");
+    print(bookAuthorCheckbox);
+    print(bookISBNCheckbox);
+    print(bookNameCheckbox);
+    print("------");
+    if(dropdownvalue == "Books"){
+      if(bookAuthorCheckbox){
+        Params.add(BookParams.Author);
+        Author = name;
       }
+      if(bookISBNCheckbox){
+        Params.add(BookParams.ISBN);
+        ISBN = name;
+      }
+      if(bookNameCheckbox){
+        Params.add(BookParams.Name);
+      }
+      channel.sink.add(parser(packet(widget.id, Handler.Handler1, Search.Books,
+          bookName: name,
+          isbn: ISBN,
+          author: [Author],
+          searchFilter: Params,
+          count: 10,
+          sort: dropdownvaluefilter)));
+      channel.stream.listen((event) {
+        ret1 = [];
+        event = event.split(Header.Split)[1];
+        for (dynamic i in jsonDecode(event)["Data"]) {
+          i = jsonDecode(i);
+          BookData tmp = BookData(i["ISBN"], i["BookName"], i["Author"],
+              i["Availability"], i["Type"], i["Thumbnail"]);
+          ret1.add(tmp);
+        }
 
-      channel.sink.close();
-    });
+        channel.sink.close();
+      });
+    }
+    else{
+      if(bookAuthorCheckbox){
+        Params.add(MagazineParams.Author);
+        Author = name;
+      }
+      if(bookNameCheckbox){
+        Params.add(MagazineParams.Name);
+      }
+      channel.sink.add(parser(packet(widget.id, Handler.Handler1, Search.Magazines,
+          bookName: name,
+          searchFilter: Params,
+          author: [Author],
+          count: 10,
+          sort: dropdownvaluefilter)));
+      channel.stream.listen((event) {
+        ret1 = [];
+        event = event.split(Header.Split)[1];
+        for (dynamic i in jsonDecode(event)["Data"]) {
+          i = jsonDecode(i);
+          MagazineData tmp = MagazineData(i["Name"], i["Volume"], i["Issue"],
+              i["ReleaseDate"], i["Location"]);
+          ret1.add(tmp);
+        }
+
+        channel.sink.close();
+      });
+    }
+
+
     return ret1;
   }
 
+  Widget Popup(){
+    return PopupMenuButton<int>(
+        child: const Padding(
+
+          padding: EdgeInsets.only(right: 4),
+          child: Icon(
+            Icons.filter_alt,
+          ),
+        ),
+        itemBuilder: (context) =>  [
+          PopupMenuItem(
+            child: StatefulBuilder(
+              builder: (BuildContext context, void Function(void Function()) setState) { return Column(
+                children: [
+                  Row(
+                    children:  [
+                      const Icon(
+                        Icons.library_books,
+                        color: Colors.blue,
+                      ),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      const Text('Type'),
+
+                      const SizedBox(
+                        width: 75,
+                      ),
+                      DropdownButton(
+                        // Initial Value
+                        value: dropdownvalue,
+
+                        // Down Arrow Icon
+                        icon: const Icon(Icons.keyboard_arrow_down),
+
+                        // Array list of items
+                        items: items.map((String items) {
+                          return DropdownMenuItem(
+                            value: items,
+                            child: Text(items),
+                          );
+                        }).toList(),
+                        // After selecting the desired option,it will
+                        // change button value to selected value
+                        onChanged: (String? newValue) {
+                          setState(() {
+                            dropdownvalue = newValue!;
+                          });
+                        },
+                      ),
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      const Icon(
+                        Icons.article_outlined,
+                        color: Colors.blue,
+                      ),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      Text('Order'),
+                      const SizedBox(
+                        width: 85,
+                      ),
+                      DropdownButton(
+                        // Initial Value
+                        value: dropdownvaluefilter,
+
+                        // Down Arrow Icon
+                        icon: const Icon(Icons.keyboard_arrow_down),
+
+                        // Array list of items
+                        items: filteritems.map((String items) {
+                          return DropdownMenuItem(
+                            value: items,
+                            child: Text(items),
+                          );
+                        }).toList(),
+                        // After selecting the desired option,it will
+                        // change button value to selected value
+                        onChanged: (String? newValue) {
+                          setState(() {
+                            dropdownvaluefilter = newValue!;
+                          });
+                        },
+                      )
+                    ],
+                  ),
+                  dropdownvalue == 'Books'?Row(
+                    children:  [
+                      const Icon(
+                        Icons.person,
+                        color: Colors.blue,
+                      ),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      const Text('Author'),
+                      const SizedBox(
+                        width: 75,
+                      ),
+                      Checkbox(
+                        value: bookAuthorCheckbox,
+                        onChanged: (bool? value) {
+                          setState(() {
+                            bookAuthorCheckbox = value!;
+                          });
+                        },
+                      ),
+                    ],
+                  ):Row(
+                    children:  [
+                      const Icon(
+                        Icons.person,
+                        color: Colors.blue,
+                      ),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      const Text('Author'),
+                      const SizedBox(
+                        width: 75,
+                      ),
+                      Checkbox(
+                        value: magAuthorCheckbox,
+                        onChanged: (bool? value) {
+                          setState(() {
+                            magAuthorCheckbox = value!;
+                          });
+                        },
+                      ),
+                    ],
+                  ),
+                  dropdownvalue == 'Books'?Row(
+                    children:  [
+                      const Icon(
+                        Icons.assignment_outlined,
+                        color: Colors.blue,
+                      ),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      const Text('Title'),
+                      const SizedBox(
+                        width: 89,
+                      ),
+                      Checkbox(
+                        value: bookNameCheckbox,
+                        onChanged: (bool? value) {
+                          setState(() {
+                            bookNameCheckbox = value!;
+                          });
+                        },
+                      ),
+
+                    ],
+                  ):Row(
+                    children:  [
+                      const Icon(
+                        Icons.assignment_outlined,
+                        color: Colors.blue,
+                      ),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      const Text('Title'),
+                      const SizedBox(
+                        width: 89,
+                      ),
+                      Checkbox(
+                        value: magNameCheckbox,
+                        onChanged: (bool? value) {
+                          setState(() {
+                            magNameCheckbox = value!;
+                          });
+                        },
+                      ),
+
+                    ],
+                  ),
+                  dropdownvalue == 'Books'?Row(
+                    children: [
+                      const Icon(
+                        Icons.article_outlined,
+                        color: Colors.blue,
+                      ),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      const Text('ISBN'),
+                      const SizedBox(
+                        width: 85,
+                      ),
+                      Checkbox(
+                        value: bookISBNCheckbox,
+                        onChanged: (bool? value) {
+                          setState(() {
+                            const Icon(
+                              Icons.assignment_outlined,
+                              color: Colors.blue,
+                            );
+                            bookISBNCheckbox = value!;
+                          });
+                        },
+                      ),
+                    ],
+                  ):const SizedBox(),
+                ],
+              ); },
+            ),
+            value: 1,
+          ),
+        ]
+    );
+  }
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -243,16 +335,20 @@ class _NavigationExampleState extends State<NavigationExample> {
           TypeAheadField(
             textFieldConfiguration: TextFieldConfiguration(
               decoration: InputDecoration(
+                  focusColor: Colors.white70,
+                  fillColor: Colors.white70,
+                  filled: true,
                   prefixIcon: const Icon(Icons.search),
-                  suffixIcon: IconButton(icon: const Icon(Icons.filter_alt),onPressed: (){},),
-                  border: const OutlineInputBorder(),
+                  suffixIcon: Popup(),
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(15)),
                   hintText: 'Search.....'),
             ),
             suggestionsCallback: (pattern) async {
               return await fetch(pattern);
             },
             itemBuilder: (context, dynamic suggestion) {
-              return listItem(ontap: (){}, curBook: suggestion);
+              return BookListTile(ontap: () {}, curBook: suggestion);
             },
             onSuggestionSelected: (dynamic suggestion) {
               print(suggestion);
@@ -266,16 +362,16 @@ class _NavigationExampleState extends State<NavigationExample> {
   }
 }
 
-class listItem extends StatefulWidget {
+class BookListTile extends StatefulWidget {
   Function ontap;
   BookData curBook;
-  listItem({required this.ontap, required this.curBook});
+  BookListTile({required this.ontap, required this.curBook});
 
   @override
-  _listItemState createState() => _listItemState();
+  _BookListTileState createState() => _BookListTileState();
 }
 
-class _listItemState extends State<listItem> {
+class _BookListTileState extends State<BookListTile> {
   @override
   Widget build(BuildContext context) {
     if (widget.curBook.Type & Avail.Online != 0 &&
@@ -329,8 +425,6 @@ class _listItemState extends State<listItem> {
             children: [
               Text(widget.curBook.BookName),
               Padding(
-
-
                 padding: const EdgeInsets.only(left: 5.0),
                 child: ClipOval(
                   child: Container(

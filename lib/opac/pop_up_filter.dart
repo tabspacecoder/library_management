@@ -1,8 +1,5 @@
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-// import 'package:library_management/HomePage/Home.dart';
-// import 'placeholderTemp.dart';
 
 class placeHolder extends StatelessWidget {
   String username;
@@ -244,7 +241,7 @@ class _popUpFilterButtonState extends State<popUpFilterButton> {
                   ),
                   dropdownvalue == 'Books'?Row(
                     children: [
-                      Icon(
+                      const Icon(
                         Icons.article_outlined,
                         color: Colors.blue,
                       ),
