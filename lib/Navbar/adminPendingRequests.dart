@@ -32,46 +32,84 @@ class _adminPendingRequestsPageState extends State<adminPendingRequestsPage> {
       });
     });
   }
-  // ListView pendingBooksList() async {
-  //   final channel = WebSocketChannel.connect(webSocket());
-  //   List<Widget> ret = [];
-  //   List<BookRequestData> ret1 = [];
-  //   channel.sink.add(parser(packet(widget.id, Handler.Handler1, Search.Books,BookRequDestData)));
-  //   channel.stream.listen((event) {
-  //     event = event.split(Header.Split)[1];
-  //     for(dynamic i in jsonDecode(event)["Data"])
-  //     {
-  //       i = jsonDecode(i);
-  //       BookData tmp = BookData(i["ISBN"],i["BookName"],i["Author"],i["Availability"],i["Type"],i["Thumbnail"]);
-  //       ret1.add(tmp);
-  //       ret.add(listItem(
-  //           ontap: () {
-  //             if(filteredSearchHistory.isNotEmpty)
-  //             {
-  //               addSearchTerm(filteredSearchValues.first);
-  //               selectedTerm = filteredSearchValues.first.BookName;
-  //               //controller.close();
-  //             }
-  //           },
-  //           curBook: tmp
-  //       ));
-  //     }
-  //     channel.sink.close();
-  //     setState(() {});
-  //   });
-  //   return ListView.builder(
-  //       itemCount: 5,
-  //       itemBuilder: (BuildContext context,int index)
-  //   {
-  //     return ListTile(
-  //         leading: Icon(Icons.list),
-  //         trailing: Text("GFG",
-  //           style: TextStyle(
-  //               color: Colors.green, fontSize: 15),),
-  //         title: Text("List item $index")
-  //     );
-  //   });
-  // }
+
+  Future<ListView> pendingBooksList(List<BookRequestData> data) async{
+    return ListView.builder(itemCount: await data.length ,itemBuilder: ((context,index){
+      List<String> items =['Processing','Approved','Declined'];
+      String dropdownvalue = items[0];
+      if(int.parse(data[index].Status) & RequestStatus.processing == RequestStatus.processing ){
+        dropdownvalue = items[0];
+      }
+      else if (int.parse(data[index].Status) & RequestStatus.approved == RequestStatus.approved){
+        dropdownvalue = items[1];
+      }
+      else if(int.parse(data[index].Status) & RequestStatus.declined == RequestStatus.declined){
+        dropdownvalue = items[2];
+      }
+      else{
+        dropdownvalue = items[0];
+      }
+      return ListTile(
+        title: Text(data[index].BookName),
+        leading: Text(data[index].Request),
+        subtitle: Text(data[index].Author),
+        trailing: Text(data[index].RequestedBy),
+        onTap: (){
+          showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return StatefulBuilder(
+                  builder: (BuildContext context,
+                      void Function(void Function()) setState) {
+                    return AlertDialog(
+                      scrollable: true,
+                      title: Text('Request ID : ${data[index].Request}'),
+                      content: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: DropdownButton(onChanged: (value) { setState(() {
+                          dropdownvalue = value.toString();
+                        }); }, items:items.map((String items) {
+                          return DropdownMenuItem(
+                            value: items,
+                            child: Text(items),
+                          );
+                        }).toList(),
+                          value: dropdownvalue,
+                        ),
+                      ),
+                      actions: [
+                        TextButton(
+                          onPressed: () => Navigator.pop(context),
+                          child: Text('Cancel'),
+                        ),
+                        TextButton(
+                            child: Text("Update Status"),
+                            onPressed: () {
+                              int toRet;
+                              dropdownvalue==items[0]?toRet=RequestStatus.processing:dropdownvalue==items[1]?toRet=RequestStatus.approved:toRet=RequestStatus.declined;
+
+
+                              // code here!!
+
+
+
+
+
+
+
+
+                              Navigator.pop(context);
+                            })
+                      ],
+                    );
+                  },
+                );
+              });
+        },
+      );
+
+    }));
+  }
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
