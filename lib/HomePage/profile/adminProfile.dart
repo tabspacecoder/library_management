@@ -1,8 +1,12 @@
 
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:web_socket_channel/web_socket_channel.dart';
 
 import '../../Constants.dart';
+import '../../Network.dart';
 
 
 class placeHolder extends StatelessWidget {
@@ -34,6 +38,31 @@ class adminPopUpProfileButton extends StatefulWidget {
 
 class _adminPopUpProfileButtonState extends State<adminPopUpProfileButton> {
 
+  var oldPassController = TextEditingController();
+  var newPassController = TextEditingController();
+  var confirmPassController = TextEditingController();
+
+  void fetch() async {
+    final channel = WebSocketChannel.connect(webSocket());
+
+    channel.sink.add(parser(packet(widget.id, Handler.Handler1, Update.Password,
+        password: oldPassController.text.toString().trim(),
+        misc: newPassController.text.toString().trim())));
+    channel.stream.listen((event) {
+      event = event.split(Header.Split)[1];
+      event = jsonDecode(event);
+      if (event["Header"] == Header.Success) {
+        showSnackbar(context, "Password changed");
+      } else if (event["Header"] == Header.Failed) {
+        if (event["Failure"] == Failure.Credentials) {
+          showSnackbar(context, "Invalid credentials");
+        } else {
+          showSnackbar(context, "Try after sometime");
+        }
+      }
+    });
+  }
+
   void showSnackbar(BuildContext context, String message) {
     var snackBar = SnackBar(
       content: Text(message),
@@ -61,9 +90,6 @@ class _adminPopUpProfileButtonState extends State<adminPopUpProfileButton> {
       case 1:
         print('Change Password');
         showDialog(builder: (BuildContext context) {
-          var oldPassController = TextEditingController();
-          var newPassController = TextEditingController();
-          var confirmPassController = TextEditingController();
           return StatefulBuilder(builder: (BuildContext context,
             void Function(void Function()) setState) {
           return AlertDialog(
@@ -78,6 +104,9 @@ class _adminPopUpProfileButtonState extends State<adminPopUpProfileButton> {
                   Navigator.pop(context);
                   if(newPassController.text != confirmPassController.text){
                     showSnackbar(context, "New and Confirm passwords don't match");
+                  }
+                  else{
+                    fetch();
                   }
                 },
                 child: Text('Change Password'),

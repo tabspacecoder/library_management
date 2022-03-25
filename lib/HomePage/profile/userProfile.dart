@@ -1,7 +1,6 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:library_management/Login/Login.dart';
 // import 'package:library_management/HomePage/Home.dart';
 import '../../Constants.dart';
 import 'placeholderTemp.dart';
@@ -57,6 +56,7 @@ class _userPopUpProfileButtonState extends State<userPopUpProfileButton> {
       case 0:
         print('View Profile');
         Navigator.of(context).push(MaterialPageRoute(builder: (context) => placeHolder(username:"temp" )));
+
         setState(() {});
         break;
       case 1:
@@ -121,8 +121,7 @@ class _userPopUpProfileButtonState extends State<userPopUpProfileButton> {
         break;
       case 2:
         print('logout');
-
-        WillPopScope(onWillPop:() async => false, child:Login(),);
+        Navigator.of(context).push(MaterialPageRoute(builder: (context) => placeHolder(username:"temp" )));
         // Navigator.pop(context);
         break;
     }
