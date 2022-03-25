@@ -39,6 +39,13 @@ class _NavBarState extends State<NavBar> {
       });
     });
   }
+
+  void addRequest(String UserName,String Author,String BookName){
+    final channel = WebSocketChannel.connect(webSocket());
+    channel.sink.add(parser(packet(widget.id, Handler.Handler1,Add.BookRequest,bookName: BookName,username: UserName,author: [Author])));
+    channel.sink.close();
+  }
+
   bool online_avail = false;
   bool offline_avail = false;
   String dropdownvalue = 'Offline';
@@ -124,6 +131,7 @@ class _NavBarState extends State<NavBar> {
                               child: Text("Submit"),
                               onPressed: () {
                                 print(widget.username);
+                                addRequest(widget.username, authorController.text, bookNameController.text);
                                 Navigator.pop(context);
                               })
                         ],

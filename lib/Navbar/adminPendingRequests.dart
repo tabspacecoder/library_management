@@ -16,27 +16,37 @@ class adminPendingRequestsPage extends StatefulWidget {
 }
 
 class _adminPendingRequestsPageState extends State<adminPendingRequestsPage> {
-  late List<BookRequestData> data;
+  List<BookRequestData> data = [];
   Future<List<BookRequestData>> fetch() async {
     final channel = WebSocketChannel.connect(webSocket());
     channel.sink.add(parser(
-        packet(widget.id, Handler.Handler1, Add.BookRequest, range: [-1, 0])));
+        packet(widget.id, Handler.Handler1, Fetch.BookRequest, range: [-1, 0])));
     channel.stream.listen((event) {
       event = event.split(Header.Split)[1];
       for (dynamic i in jsonDecode(event)["Data"]) {
         i = jsonDecode(i);
-        BookRequestData temp = BookRequestData(i["RequestID"], i["BookName"],
+        BookRequestData temp = BookRequestData(i["RequestID"].toString(), i["BookName"],
             i["Author"], i["RequestBy"], i["Status"]);
         data.add(temp);
       }
       channel.sink.close();
-      setState(() {});
+    });
+    setState(() {
+
     });
     return data;
   }
 
-  Future<ListView> pendingBooksList(data) async {
+  @override
+  void initState() {
     fetch();
+  }
+  void update(String id,int Status)async{
+    final channel = WebSocketChannel.connect(webSocket());
+    channel.sink.add(parser(
+        packet(widget.id, Handler.Handler1, Update.BookRequest,misc: id,status: Status.toString())));
+  }
+  Future<ListView> pendingBooksList(data) async {
     return ListView.builder(
         itemCount: data.length,
         itemBuilder: ((context, index) {
@@ -100,8 +110,7 @@ class _adminPendingRequestsPageState extends State<adminPendingRequestsPage> {
                                       : dropdownvalue == items[1]
                                           ? toRet = RequestStatus.approved
                                           : toRet = RequestStatus.declined;
-
-                                  // code here!!
+                                  update(data[index].Request, toRet);
 
                                   Navigator.pop(context);
                                 })
