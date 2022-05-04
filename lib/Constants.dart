@@ -158,7 +158,7 @@ class Upload {
   static const String DigitalBook = "UploadDigitalBook";
 }
 
-const String ip = "20.24.159.226";
-// const String ip = "127.0.0.1";
+// const String ip = "20.24.159.226";
+const String ip = "127.0.0.1";
 const int TCPPort = 24680;
 const int WebPort = 13579;

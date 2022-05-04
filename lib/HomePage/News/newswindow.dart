@@ -18,7 +18,6 @@ class newsWindow extends StatefulWidget {
 
 class _newsWindowState extends State<newsWindow> {
   bool done = false;
-  int itemCount = 30;
   var jsonData;
   int fetchCount = 0;
   var i = 0;
@@ -28,9 +27,9 @@ class _newsWindowState extends State<newsWindow> {
     channel.stream.listen((event) {
       event = event.split(Header.Split)[1];
       event = json.decode(event);
-      var data = json.decode(event["Data"]);
-      var News = json.decode(data["News"]);
-      jsonData = News;
+      var data = event["Data"];
+      var News = data["News"];
+      jsonData = jsonDecode(News);
       done = true;
       fetchCount = jsonData["articles"].length;
       setState(() {});

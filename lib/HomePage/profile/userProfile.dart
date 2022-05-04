@@ -1,31 +1,12 @@
 import 'dart:convert';
 
 import 'package:crypto/crypto.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:library_management/HomePage/profile/userRequests.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
-// import 'package:library_management/HomePage/Home.dart';
 import '../../Constants.dart';
 import '../../Network.dart';
-import 'placeholderTemp.dart';
 
-class placeHolder extends StatelessWidget {
-  String username;
-  placeHolder({required this.username});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(username),
-      ),
-      body: Container(
-        child: Text(username),
-      ),
-    );
-  }
-}
 
 class userPopUpProfileButton extends StatefulWidget {
   String username;
@@ -82,8 +63,7 @@ class _userPopUpProfileButtonState extends State<userPopUpProfileButton> {
     switch (item) {
       case 0:
         print('View Profile');
-        Navigator.of(context).push(MaterialPageRoute(builder: (context) => placeHolder(username:"temp" )));
-
+        Navigator.pushNamed(context, "/Profile",arguments: widget.username);
         setState(() {});
         break;
       case 1:
@@ -91,11 +71,11 @@ class _userPopUpProfileButtonState extends State<userPopUpProfileButton> {
           return StatefulBuilder(builder: (BuildContext context,
               void Function(void Function()) setState) {
             return AlertDialog(
-              title: Text('Change Password'),
+              title: const Text('Change Password'),
               actions: [
                 TextButton(
                   onPressed: () => Navigator.pop(context),
-                  child: Text('Cancel'),
+                  child: const Text('Cancel'),
                 ),
                 TextButton(
                   onPressed: () {
@@ -148,8 +128,7 @@ class _userPopUpProfileButtonState extends State<userPopUpProfileButton> {
         break;
       case 2:
         print('logout');
-        Navigator.of(context).push(MaterialPageRoute(builder: (context) => placeHolder(username:"temp" )));
-        // Navigator.pop(context);
+        Navigator.pushNamed(context, "/Profile",arguments: widget.username);
         break;
 
       case 3:

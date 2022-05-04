@@ -1,6 +1,7 @@
- import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:library_management/HomePage/News/news.dart';
 import 'package:library_management/HomePage/GlobalSearchBar.dart';
+import 'package:library_management/HomePage/Parameters.dart';
 import 'package:library_management/HomePage/profile/superAdminProfile.dart';
 import 'package:library_management/HomePage/profile/userProfile.dart';
 import 'package:library_management/Navbar/navbar.dart';
@@ -8,30 +9,38 @@ import 'profile/adminProfile.dart';
 import 'package:library_management/Constants.dart';
 
 class Home extends StatefulWidget {
-  String id, username;
-  int status;
-  Home({required this.id, required this.username, required this.status});
+  const Home({Key? key}) : super(key: key);
   @override
   _HomeState createState() => _HomeState();
 }
 
 class _HomeState extends State<Home> {
   late userStatus curStatus;
+  String username="";
+  String id="";
+  int status = 0;
+  static var data;
   @override
   void initState() {
     super.initState();
-    if (widget.status & Privileges.SuperAdmin == Privileges.SuperAdmin) {
+  }
+
+
+  @override
+  Widget build(BuildContext context) {
+    data ??= ModalRoute.of(context)?.settings.arguments as Params;
+
+    id = data.id;
+    username=data.username;
+    status = data.status;
+
+    if (status & Privileges.SuperAdmin == Privileges.SuperAdmin) {
       curStatus = userStatus.superadmin;
-    } else if (widget.status & Privileges.Admin == Privileges.Admin) {
+    } else if (status & Privileges.Admin == Privileges.Admin) {
       curStatus = userStatus.admin;
     } else {
       curStatus = userStatus.user;
     }
-    print(curStatus);
-  }
-
-  @override
-  Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async => false,
       child: DefaultTabController(
@@ -39,32 +48,32 @@ class _HomeState extends State<Home> {
           initialIndex: 0,
           child: Scaffold(
             drawer: NavBar(
-              id: widget.id,
+              id: id,
               curStatus: curStatus,
-              username: widget.username,
+              username: username,
             ),
             body: Stack(
               fit: StackFit.expand,
               children: [
                 TabBarView(
                   children: [Container(
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
 
                       image:DecorationImage(
                         image: AssetImage('assets/homepage.png'),
                         fit: BoxFit.cover
                       ),
                     ),
-                    child:Container() ,), news(id: widget.id)],
+                    child:Container() ,), news(id: id)],
                 ),
               ],
             ),
             // body: TabBarView(
-            //   children: [Container(), news(id: widget.id)],
+            //   children: [Container(), news(id: id)],
             // ),
             appBar: AppBar(
               title: Row(
-                children: [
+                children: const [
                   Text('Library Management'),
                   // exampleTextField(),3
                 ],
@@ -72,10 +81,10 @@ class _HomeState extends State<Home> {
               // automaticallyImplyLeading: false,
               actions: [
                 curStatus == userStatus.superadmin
-                    ? superAdminPopUpProfileButton(username: widget.username, curstatus: curStatus,id: widget.id,)
+                    ? superAdminPopUpProfileButton(username: username, curstatus: curStatus,id: id,)
                     : curStatus == userStatus.admin
-                        ? adminPopUpProfileButton(username: widget.username, curstatus: curStatus,id: widget.id,)
-                        : userPopUpProfileButton(username: widget.username, curstatus: curStatus,id: widget.id,),
+                        ? adminPopUpProfileButton(username: username, curstatus: curStatus,id: id,)
+                        : userPopUpProfileButton(username: username, curstatus: curStatus,id: id,),
               ],
               bottom: const TabBar(
                 tabs: [
@@ -89,87 +98,11 @@ class _HomeState extends State<Home> {
               ),
             ),
             floatingActionButton: Center(
-                child: SizedBox(width: 500, child: SearchBar(widget.id))),
+                child: SizedBox(width: 500, child: SearchBar(id))),
             floatingActionButtonLocation:
                 FloatingActionButtonLocation.miniCenterDocked,
           )),
     );
   }
 }
-//    SizedBox(
-//                     width: 200,
-//                     height: 50,
-//                     child: DropdownSearch(
-//                       dialogMaxWidth: 100.0,
-//                       dropdownSearchDecoration: const InputDecoration(
-//                         hintText: "Select a country",
-//                         labelText: "Menu mode *",
-//                         contentPadding: EdgeInsets.fromLTRB(12, 12, 0, 0),
-//                         border: OutlineInputBorder(),
-//                       ),
-//                       mode: Mode.MENU,
-//                     ),
-//                   )
 
-// SizedBox(
-// width: MediaQuery.of(context).size.width / 2,
-// child: Container(
-// child: TextField(
-// decoration: InputDecoration(
-// prefixIcon: Icon(Icons.search),
-// suffixIcon: IconButton(
-// icon: Icon(Icons.clear),
-// disabledColor: Colors.white,
-// onPressed: () {
-// /* Clear the search field */
-// },
-// ),
-// hintText: 'Search...',
-// border: InputBorder.none),
-// ),
-// ))
-
-// AutoSuggestBox<String>(
-// controller: autoSuggestBox,
-// items: [
-// 'Blue',
-// 'Green',
-// 'Red',
-// 'Yellow',
-// 'Grey',
-// ],
-// onSelected: (text) {
-// print(text);
-// },
-// textBoxBuilder: (context, controller, focusNode, key) {
-// const BorderSide _kDefaultRoundedBorderSide = BorderSide(
-// style: BorderStyle.solid,
-// width: 0.8,
-// );
-// return fluent.TextBox(
-// key: key,
-// controller: controller,
-// focusNode: focusNode,
-// suffixMode: fluent.OverlayVisibilityMode.editing,
-// suffix: IconButton(
-// icon: Icon(fluent.FluentIcons.close_pane),
-// onPressed: () {
-// controller.clear();
-// focusNode.unfocus();
-// },
-// ),
-// placeholder: 'Type a color',
-// decoration: BoxDecoration(
-// border: Border(
-// top: _kDefaultRoundedBorderSide,
-// bottom: _kDefaultRoundedBorderSide,
-// left: _kDefaultRoundedBorderSide,
-// right: _kDefaultRoundedBorderSide,
-// ),
-// borderRadius: focusNode.hasFocus
-// ? BorderRadius.vertical(top: Radius.circular(3.0))
-//     : BorderRadius.all(Radius.circular(3.0)),
-// ),
-// );
-// },
-// )

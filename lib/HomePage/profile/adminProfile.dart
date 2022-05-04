@@ -1,30 +1,10 @@
-
 import 'dart:convert';
-
-import 'package:flutter/cupertino.dart';
+import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
 import '../../Constants.dart';
 import '../../Network.dart';
-
-
-class placeHolder extends StatelessWidget {
-  String username;
-  placeHolder({required this.username});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(username),
-      ),
-      body: Container(
-        child: Text(username),
-      ),
-    );
-  }
-}
 
 class adminPopUpProfileButton extends StatefulWidget {
   String username;
@@ -46,8 +26,8 @@ class _adminPopUpProfileButtonState extends State<adminPopUpProfileButton> {
     final channel = WebSocketChannel.connect(webSocket());
 
     channel.sink.add(parser(packet(widget.id, Handler.Handler1, Update.Password,
-        password: oldPassController.text.toString().trim(),
-        misc: newPassController.text.toString().trim())));
+        password: sha512.convert(utf8.encode(oldPassController.text.toString().trim())).toString(),
+        misc: sha512.convert(utf8.encode(newPassController.text.toString().trim())).toString())));
     channel.stream.listen((event) {
       event = event.split(Header.Split)[1];
       event = jsonDecode(event);
@@ -61,6 +41,9 @@ class _adminPopUpProfileButtonState extends State<adminPopUpProfileButton> {
         }
       }
     });
+    oldPassController.text = "";
+    newPassController.text = "";
+    confirmPassController.text = "";
   }
 
   void showSnackbar(BuildContext context, String message) {
@@ -83,8 +66,7 @@ class _adminPopUpProfileButtonState extends State<adminPopUpProfileButton> {
     switch (item) {
       case 0:
         print('View Profile');
-        Navigator.of(context).push(MaterialPageRoute(builder: (context) => placeHolder(username:"temp" )));
-
+        Navigator.pushNamed(context, "/Profile",arguments: widget.username);
         setState(() {});
         break;
       case 1:
@@ -93,11 +75,11 @@ class _adminPopUpProfileButtonState extends State<adminPopUpProfileButton> {
           return StatefulBuilder(builder: (BuildContext context,
             void Function(void Function()) setState) {
           return AlertDialog(
-            title: Text('Change Password'),
+            title: const Text('Change Password'),
             actions: [
               TextButton(
                 onPressed: () => Navigator.pop(context),
-                child: Text('Cancel'),
+                child: const Text('Cancel'),
               ),
               TextButton(
                 onPressed: () {
@@ -109,7 +91,7 @@ class _adminPopUpProfileButtonState extends State<adminPopUpProfileButton> {
                     fetch();
                   }
                 },
-                child: Text('Change Password'),
+                child: const Text('Change Password'),
               ),
             ],
             scrollable: true,
@@ -120,21 +102,21 @@ class _adminPopUpProfileButtonState extends State<adminPopUpProfileButton> {
                   children: <Widget>[
                     TextFormField(
                       controller: oldPassController,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         labelText: 'Old Password',
                         icon: Icon(Icons.password_rounded),
                       ),
                     ),
                     TextFormField(
                       controller: newPassController,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         labelText: 'New Password',
                         icon: Icon(Icons.fiber_new_rounded),
                       ),
                     ),
                     TextFormField(
                       controller: confirmPassController,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         labelText: 'Confirm Password',
                         icon: Icon(Icons.new_label),
                       ),
@@ -150,7 +132,7 @@ class _adminPopUpProfileButtonState extends State<adminPopUpProfileButton> {
         break;
       case 2:
         print('logout');
-        Navigator.of(context).push(MaterialPageRoute(builder: (context) => placeHolder(username:"temp" )));
+        Navigator.pushNamed(context, "/Profile",arguments: widget.username);
         // Navigator.pop(context);
         break;
     }
@@ -158,7 +140,7 @@ class _adminPopUpProfileButtonState extends State<adminPopUpProfileButton> {
 
   Widget build(BuildContext context) {
     return PopupMenuButton<int>(
-      child: Padding(
+      child: const Padding(
         padding: EdgeInsets.only(right: 4),
         child: Icon(
           Icons.account_circle_outlined,

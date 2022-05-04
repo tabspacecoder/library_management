@@ -61,3 +61,13 @@ Uri webSocket() {
   return Uri.parse("ws:" + ip + ":" + WebPort.toString());
 }
 
+void communicate(String packet,Function process){
+  final channel = WebSocketChannel.connect(webSocket());
+  channel.sink.add(parser(packet));
+  channel.stream.listen((event) async{
+    event = event.split(Header.Split)[1];
+    var out = jsonDecode(event);
+    await process(out);
+    channel.sink.close();
+  });
+}
