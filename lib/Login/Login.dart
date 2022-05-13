@@ -6,6 +6,7 @@ import 'package:crypto/crypto.dart';
 import 'package:library_management/Constants.dart';
 import 'package:library_management/HomePage/Parameters.dart';
 import 'package:library_management/Network.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
@@ -19,9 +20,13 @@ var password = TextEditingController();
 
 class _LoginState extends State<Login> {
   void fin(out) async {
-    if (out["Header"] == Header.Success) {
-      Navigator.pushNamed(context, "/Home",arguments: Params(username.text.toString(), out["Data"],out['Misc']));
 
+    final prefs = await SharedPreferences.getInstance();
+    if (out["Header"] == Header.Success) {
+      Navigator.pushNamed(context, "/Home");
+      await prefs.setString("Name", username.text.toString());
+      await prefs.setString("Id", out["Data"]);
+      await prefs.setInt("Status", out['Misc']);
     } else if (out["Header"] == Header.Failed) {
       _asyncConfirmDialog(context);
     }

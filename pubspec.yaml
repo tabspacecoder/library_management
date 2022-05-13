@@ -37,6 +37,7 @@ dependencies:
   responsive_framework: ^0.1.7
   crypto: ^3.0.1
   web_socket_channel: ^2.1.0
+  shared_preferences: ^2.0.15
   neumorphic:
   flutter_typeahead: ^3.2.4
   flutter_staggered_grid_view:

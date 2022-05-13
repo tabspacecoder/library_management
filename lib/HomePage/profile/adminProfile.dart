@@ -148,14 +148,18 @@ class _adminPopUpProfileButtonState extends State<adminPopUpProfileButton> {
       ),
       itemBuilder: (context) => [
         PopupMenuItem(
-          child: ListTile(
-            title: Text(widget.username),
-            subtitle: Text(widget.curstatus.name),
-            leading: CircleAvatar(
-              backgroundColor: Colors.white,
-              backgroundImage: AssetImage('assets/${widget.username[0].toLowerCase()}.png'),
-              radius: 30,
-            ),
+          child: Row(
+            children: [
+              ListTile(
+                title: Text(widget.username),
+                subtitle: Text(widget.curstatus.name),
+                leading: CircleAvatar(
+                  backgroundColor: Colors.white,
+                  backgroundImage: AssetImage('assets/${widget.username[0].toLowerCase()}.png'),
+                  radius: 30,
+                ),
+              ),
+            ],
           ),
           value: 0,
         ),
