@@ -8,6 +8,7 @@ import 'package:library_management/Navbar/adminPendingRequests.dart';
 import 'package:library_management/Network.dart';
 import 'package:library_management/opac/opac_main.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
 class NavBar extends StatefulWidget {
@@ -54,7 +55,7 @@ class _NavBarState extends State<NavBar> {
     });
   }
 
-  void changePasswordAPI() async {
+  void changePasswordAPI(dynamic oldPassController , dynamic newPassController) async {
     final channel = WebSocketChannel.connect(webSocket());
 
     channel.sink.add(parser(packet(widget.id, Handler.Handler1, Update.Password,
@@ -81,9 +82,6 @@ class _NavBarState extends State<NavBar> {
         bookName: BookName, username: UserName, author: [Author])));
     channel.sink.close();
   }
-  var oldPassController = TextEditingController();
-  var newPassController = TextEditingController();
-  var confirmPassController = TextEditingController();
 
   bool online_avail = false;
   bool offline_avail = false;
@@ -104,7 +102,7 @@ class _NavBarState extends State<NavBar> {
         UserAccountsDrawerHeader(
           accountName: Text(widget.username),
           accountEmail: Text(widget.curStatus),
-          currentAccountPicture:CircleAvatar(
+          currentAccountPicture:const CircleAvatar(
             // backgroundImage:
             // AssetImage('assets/${widget.username[0].toLowerCase()}.png'),
             backgroundImage:
@@ -253,6 +251,9 @@ class _NavBarState extends State<NavBar> {
             showDialog(builder: (BuildContext context) {
               return StatefulBuilder(builder: (BuildContext context,
                   void Function(void Function()) setState) {
+                var oldPassController = TextEditingController();
+                var newPassController = TextEditingController();
+                var confirmPassController = TextEditingController();
                 return AlertDialog(
                   title: const Text('Change Password'),
                   actions: [
@@ -262,12 +263,13 @@ class _NavBarState extends State<NavBar> {
                     ),
                     TextButton(
                       onPressed: () {
+
                         Navigator.pop(context);
                         if(newPassController.text != confirmPassController.text){
                           showSnackbar(context, "New and Confirm passwords don't match");
                         }
                         else{
-                          changePasswordAPI();
+                          changePasswordAPI(oldPassController , newPassController);
                         }
                       },
                       child: const Text('Change Password'),
@@ -316,7 +318,12 @@ class _NavBarState extends State<NavBar> {
         ListTile(
             leading: const Icon(Icons.logout),
             title: const Text("Logout"),
-            onTap: () {}),
+            onTap: () async {
+              final prefs = await SharedPreferences.getInstance();
+              await prefs.remove("Name");
+              await prefs.remove("Id");
+              await prefs.remove("Status");
+            }),
       ],
     );
   }
