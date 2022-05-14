@@ -58,9 +58,8 @@ class _HomeState extends State<Home> {
               TabBarView(
                 children: [Container(
                   decoration: const BoxDecoration(
-
                     image:DecorationImage(
-                      image: AssetImage('assets/homepage.png'),
+                      image: AssetImage('assets/background.png'),
                       fit: BoxFit.cover
                     ),
                   ),
@@ -74,7 +73,7 @@ class _HomeState extends State<Home> {
           appBar: AppBar(
             title: Row(
               children: const [
-                Text('Library Management'),
+                Text('Libria '),
                 // exampleTextField(),3
               ],
             ),
