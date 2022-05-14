@@ -2,26 +2,43 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
 import 'package:library_management/Constants.dart';
 import 'package:library_management/Network.dart';
 
 class userRequestsPage extends StatefulWidget {
-  String id,username;
-  userRequestsPage({required this.id,required this.username});
-
   @override
   State<userRequestsPage> createState() =>
       _userRequestsPageState();
 }
 
 class _userRequestsPageState extends State<userRequestsPage> {
+  late String id,username;
+  bool loaded=false;
+  void GetState() async {
+    final prefs = await SharedPreferences.getInstance();
+    id = prefs.getString("Id")!;
+    username=prefs.getString("Name")!;
+    if(id!=null){
+      loaded=true;
+      print(loaded);
+      setState(() {});
+    }
+  }
+  @override
+  void initState() {
+    GetState();
+    data=[];
+    fetch();
+    super.initState();
+  }
    List<BookRequestData> data = [];
   Future<List<BookRequestData>> fetch() async {
     final channel = WebSocketChannel.connect(webSocket());
     channel.sink.add(parser(
-        packet(widget.id, Handler.Handler1, Fetch.BookRequestStatus, range: [-1, 0],username: widget.username)));
+        packet(id, Handler.Handler1, Fetch.BookRequestStatus, range: [-1, 0],username: username)));
     channel.stream.listen((event) {
       event = event.split(Header.Split)[1];
       for (dynamic i in jsonDecode(event)["Data"]) {
@@ -37,16 +54,11 @@ class _userRequestsPageState extends State<userRequestsPage> {
     });
     return data;
   }
-  @override
-  void initState() {
-    data=[];
-    fetch();
-    super.initState();
-  }
+
 
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
+    return !loaded ? Scaffold(body: Center(child: CircularProgressIndicator())) :DefaultTabController(
         length: 2,
         child: Scaffold(
           appBar: AppBar(

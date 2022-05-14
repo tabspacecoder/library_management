@@ -127,12 +127,12 @@ class _userPopUpProfileButtonState extends State<userPopUpProfileButton> {
         break;
       case 2:
         print('logout');
-        Navigator.pushNamed(context, "/Profile",arguments: widget.username);
+        Navigator.pushNamed(context, "/Login",arguments: widget.username);
         break;
 
       case 3:
         print('My requests');
-        Navigator.push(context, MaterialPageRoute(builder: (context)=>userRequestsPage(id: widget.id,username: widget.username,)));
+        Navigator.push(context, MaterialPageRoute(builder: (context)=>userRequestsPage()));
         break;
 
     }

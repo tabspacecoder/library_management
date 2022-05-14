@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:library_management/Circulation/CirculationHomePage.dart';
 import 'package:library_management/HomePage/Home.dart';
 import 'package:library_management/HomePage/Magazines/MagazineRequestStatus.dart';
 import 'package:library_management/HomePage/Magazines/MagazineRequests.dart';
+import 'package:library_management/HomePage/profile/userRequests.dart';
 import 'package:library_management/Login/Login.dart';
 import 'HomePage/Books/BookRequestStatus.dart';
 import 'HomePage/Books/BookRequests.dart';
@@ -19,6 +21,8 @@ void main() {
       '/MagazineRequestStatus':(context)=>const MagazineRequestStatus(),
       '/BookRequest':(context)=>const BookRequests(),
       '/BookRequestStatus':(context)=>const BookRequestStatus(),
+      '/Circulation':(context)=> circulationHomePage(),
+      '/UserRequests':(context)=> userRequestsPage(),
     },
     initialRoute: "/Login",
   ));

@@ -237,7 +237,9 @@ class _NavBarState extends State<NavBar> {
         ListTile(
           leading: const Icon(Icons.book),
           title: const Text("Book Request status"),
-          onTap: () {},
+          onTap: () {
+            Navigator.pushNamed(context, '/UserRequests');
+          },
         ),
         ListTile(
             leading: const Icon(Icons.book),
@@ -321,7 +323,6 @@ class _NavBarState extends State<NavBar> {
 
   ListView adminListView(context) {
     return ListView(
-      // Remove padding
       padding: EdgeInsets.zero,
       children: [
         UserAccountsDrawerHeader(
@@ -345,7 +346,7 @@ class _NavBarState extends State<NavBar> {
         ListTile(
           leading: Icon(Icons.all_out),
           title: Text('Book Circulation'),
-          onTap: () => null,
+          onTap: () => Navigator.pushNamed(context, '/Circulation'),
         ),
         ListTile(
           leading: Icon(Icons.add),
