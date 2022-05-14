@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:library_management/HomePage/News/news.dart';
 import 'package:library_management/HomePage/GlobalSearchBar.dart';
-import 'package:library_management/HomePage/profile/superAdminProfile.dart';
-import 'package:library_management/HomePage/profile/userProfile.dart';
 import 'package:library_management/Navbar/navbar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'profile/adminProfile.dart';
 import 'package:library_management/Constants.dart';
 
 
@@ -33,23 +30,20 @@ class _HomeState extends State<Home> {
     id = prefs.getString("Id")!;
     username=prefs.getString("Name")!;
     status = prefs.getInt("Status")!;
-    if(id!=null){
-      loaded=true;
-      print(loaded);
-      setState(() {});
-      if (status & Privileges.SuperAdmin == Privileges.SuperAdmin) {
-        curStatus = UserStat.SuperAdmin;
-      } else if (status & Privileges.Admin == Privileges.Admin) {
-        curStatus = UserStat.Admin;
-      } else {
-        curStatus = UserStat.User;
-      }
+    loaded=true;
+    setState(() {});
+    if (status & Privileges.SuperAdmin == Privileges.SuperAdmin) {
+      curStatus = UserStat.SuperAdmin;
+    } else if (status & Privileges.Admin == Privileges.Admin) {
+      curStatus = UserStat.Admin;
+    } else {
+      curStatus = UserStat.User;
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return !loaded ? Scaffold(body: Center(child: CircularProgressIndicator())) : DefaultTabController(
+    return !loaded ? const Scaffold(body: Center(child: CircularProgressIndicator())) : DefaultTabController(
       length: 2,
       initialIndex: 0,
       child: Scaffold(

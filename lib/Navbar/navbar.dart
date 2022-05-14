@@ -55,12 +55,17 @@ class _NavBarState extends State<NavBar> {
     });
   }
 
-  void changePasswordAPI(dynamic oldPassController , dynamic newPassController) async {
+  void changePasswordAPI(
+      dynamic oldPassController, dynamic newPassController) async {
     final channel = WebSocketChannel.connect(webSocket());
 
     channel.sink.add(parser(packet(widget.id, Handler.Handler1, Update.Password,
-        password: sha512.convert(utf8.encode(oldPassController.text.toString().trim())).toString(),
-        misc: sha512.convert(utf8.encode(newPassController.text.toString().trim())).toString())));
+        password: sha512
+            .convert(utf8.encode(oldPassController.text.toString().trim()))
+            .toString(),
+        misc: sha512
+            .convert(utf8.encode(newPassController.text.toString().trim()))
+            .toString())));
     channel.stream.listen((event) {
       event = event.split(Header.Split)[1];
       event = jsonDecode(event);
@@ -76,10 +81,19 @@ class _NavBarState extends State<NavBar> {
     });
   }
 
-  void addRequest(String UserName, String Author, String BookName) {
+  void addBookRequest(String UserName, String Author, String BookName) {
     final channel = WebSocketChannel.connect(webSocket());
     channel.sink.add(parser(packet(widget.id, Handler.Handler1, Add.BookRequest,
         bookName: BookName, username: UserName, author: [Author])));
+    channel.stream.listen((event) { });
+    channel.sink.close();
+  }
+
+  void addMagazineRequest(String UserName, String Author, String BookName) {
+    final channel = WebSocketChannel.connect(webSocket());
+    channel.sink.add(parser(packet(widget.id, Handler.Handler1, Add.MagazineSubscriptionRequest,
+        bookName: BookName, username: UserName, author: [Author])));
+    channel.stream.listen((event) { });
     channel.sink.close();
   }
 
@@ -102,13 +116,12 @@ class _NavBarState extends State<NavBar> {
         UserAccountsDrawerHeader(
           accountName: Text(widget.username),
           accountEmail: Text(widget.curStatus),
-          currentAccountPicture:const CircleAvatar(
+          currentAccountPicture: const CircleAvatar(
             // backgroundImage:
             // AssetImage('assets/${widget.username[0].toLowerCase()}.png'),
-            backgroundImage:
-            AssetImage('assets/a.png'),
+            backgroundImage: AssetImage('assets/a.png'),
             radius: 30,
-          ) ,
+          ),
           decoration: const BoxDecoration(
             color: Colors.blue,
           ),
@@ -116,7 +129,9 @@ class _NavBarState extends State<NavBar> {
         ListTile(
             leading: const Icon(Icons.book),
             title: const Text("My magazines"),
-            onTap: () {}),
+            onTap: () {
+              Navigator.pushNamed(context, '/MyMagazine');
+            }),
         const Divider(),
         ListTile(
           leading: const Icon(Icons.add),
@@ -159,13 +174,12 @@ class _NavBarState extends State<NavBar> {
                         actions: [
                           TextButton(
                             onPressed: () => Navigator.pop(context),
-                            child: Text('Cancel'),
+                            child: const Text('Cancel'),
                           ),
                           TextButton(
-                              child: Text("Submit"),
+                              child: const Text("Submit"),
                               onPressed: () {
-                                print(widget.username);
-                                addRequest(
+                                addBookRequest(
                                     widget.username,
                                     authorController.text,
                                     bookNameController.text);
@@ -217,8 +231,7 @@ class _NavBarState extends State<NavBar> {
                           TextButton(
                               child: const Text("Submit"),
                               onPressed: () {
-                                print(widget.username);
-                                addRequest(
+                                addMagazineRequest(
                                     widget.username,
                                     authorController.text,
                                     bookNameController.text);
@@ -236,82 +249,87 @@ class _NavBarState extends State<NavBar> {
           leading: const Icon(Icons.book),
           title: const Text("Book Request status"),
           onTap: () {
-            Navigator.pushNamed(context, '/UserRequests');
+            Navigator.pushNamed(context, '/BookRequestStatus');
           },
         ),
         ListTile(
             leading: const Icon(Icons.book),
             title: const Text("Magazine Request status"),
-            onTap: () {}),
+            onTap: () {
+              Navigator.pushNamed(context, "/MagazineRequestStatus");
+            }),
         const Divider(),
         ListTile(
           leading: const Icon(Icons.password),
           title: const Text("Change Password"),
           onTap: () {
-            showDialog(builder: (BuildContext context) {
-              return StatefulBuilder(builder: (BuildContext context,
-                  void Function(void Function()) setState) {
-                var oldPassController = TextEditingController();
-                var newPassController = TextEditingController();
-                var confirmPassController = TextEditingController();
-                return AlertDialog(
-                  title: const Text('Change Password'),
-                  actions: [
-                    TextButton(
-                      onPressed: () => Navigator.pop(context),
-                      child: const Text('Cancel'),
-                    ),
-                    TextButton(
-                      onPressed: () {
-
-                        Navigator.pop(context);
-                        if(newPassController.text != confirmPassController.text){
-                          showSnackbar(context, "New and Confirm passwords don't match");
-                        }
-                        else{
-                          changePasswordAPI(oldPassController , newPassController);
-                        }
-                      },
-                      child: const Text('Change Password'),
-                    ),
-                  ],
-                  scrollable: true,
-                  content: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Form(
-                      child: Column(
-                        children: <Widget>[
-                          TextFormField(
-                            controller: oldPassController,
-                            obscureText: true,
-                            decoration: const InputDecoration(
-                              labelText: 'Old Password',
-                              icon: Icon(Icons.password_rounded),
-                            ),
+            showDialog(
+                builder: (BuildContext context) {
+                  return StatefulBuilder(builder: (BuildContext context,
+                      void Function(void Function()) setState) {
+                    var oldPassController = TextEditingController();
+                    var newPassController = TextEditingController();
+                    var confirmPassController = TextEditingController();
+                    return AlertDialog(
+                      title: const Text('Change Password'),
+                      actions: [
+                        TextButton(
+                          onPressed: () => Navigator.pop(context),
+                          child: const Text('Cancel'),
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                            if (newPassController.text !=
+                                confirmPassController.text) {
+                              showSnackbar(context,
+                                  "New and Confirm passwords don't match");
+                            } else {
+                              changePasswordAPI(
+                                  oldPassController, newPassController);
+                            }
+                          },
+                          child: const Text('Change Password'),
+                        ),
+                      ],
+                      scrollable: true,
+                      content: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Form(
+                          child: Column(
+                            children: <Widget>[
+                              TextFormField(
+                                controller: oldPassController,
+                                obscureText: true,
+                                decoration: const InputDecoration(
+                                  labelText: 'Old Password',
+                                  icon: Icon(Icons.password_rounded),
+                                ),
+                              ),
+                              TextFormField(
+                                controller: newPassController,
+                                obscureText: true,
+                                decoration: const InputDecoration(
+                                  labelText: 'New Password',
+                                  icon: Icon(Icons.fiber_new_rounded),
+                                ),
+                              ),
+                              TextFormField(
+                                controller: confirmPassController,
+                                obscureText: true,
+                                decoration: const InputDecoration(
+                                  labelText: 'Confirm Password',
+                                  icon: Icon(Icons.new_label),
+                                ),
+                              ),
+                            ],
                           ),
-                          TextFormField(
-                            controller: newPassController,
-                            obscureText: true,
-                            decoration: const InputDecoration(
-                              labelText: 'New Password',
-                              icon: Icon(Icons.fiber_new_rounded),
-                            ),
-                          ),
-                          TextFormField(
-                            controller: confirmPassController,
-                            obscureText: true,
-                            decoration: const InputDecoration(
-                              labelText: 'Confirm Password',
-                              icon: Icon(Icons.new_label),
-                            ),
-                          ),
-                        ],
+                        ),
                       ),
-                    ),
-                  ),
-
-                );
-              }) ; }, context: context);
+                    );
+                  });
+                },
+                context: context);
             setState(() {});
           },
         ),
@@ -323,6 +341,7 @@ class _NavBarState extends State<NavBar> {
               await prefs.remove("Name");
               await prefs.remove("Id");
               await prefs.remove("Status");
+              Navigator.pushNamedAndRemoveUntil(context, "/", (route) => false);
             }),
       ],
     );

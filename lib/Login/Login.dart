@@ -14,10 +14,10 @@ class Login extends StatefulWidget {
   _LoginState createState() => _LoginState();
 }
 
-var username = TextEditingController();
-var password = TextEditingController();
-
 class _LoginState extends State<Login> {
+  var username = TextEditingController();
+  var password = TextEditingController();
+
   void fin(out) async {
     final prefs = await SharedPreferences.getInstance();
     if (out["Header"] == Header.Success) {
@@ -28,6 +28,8 @@ class _LoginState extends State<Login> {
     } else if (out["Header"] == Header.Failed) {
       _asyncConfirmDialog(context);
     }
+    username.text="";
+    password.text="";
   }
 
   @override
