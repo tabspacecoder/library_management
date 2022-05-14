@@ -17,7 +17,9 @@ class _circulationHomePageState extends State<circulationHomePage> {
       ),
       body: Container(
         child: Column(
-
+              children: [
+            CustomCard(title: 'New Borrowal',button: TextButton(child:Text('Enter'),onPressed: (){},),)
+],
         ),
       ),
     );
@@ -26,7 +28,8 @@ class _circulationHomePageState extends State<circulationHomePage> {
 
 class CustomCard extends StatefulWidget {
   String title;
-  CustomCard({required this.title,});
+  Widget button;
+  CustomCard({required this.title,required this.button});
 
 
   @override
@@ -36,9 +39,27 @@ class CustomCard extends StatefulWidget {
 class _CustomCardState extends State<CustomCard> {
   @override
   Widget build(BuildContext context) {
-    return Card(
-      child: Column(
-        children: [Title(color: Colors.black, child: Text(widget.title))],
+    return Container(
+      height: 200,
+      width: 200,
+      child: Card(
+        elevation: 10,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20)
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Title(color: Colors.black, child: Text(widget.title),),
+          ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: widget.button,
+            )
+          ],
+        ),
       ),
     );
   }
