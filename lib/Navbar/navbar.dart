@@ -105,8 +105,10 @@ class _NavBarState extends State<NavBar> {
           accountName: Text(widget.username),
           accountEmail: Text(widget.curStatus),
           currentAccountPicture:CircleAvatar(
+            // backgroundImage:
+            // AssetImage('assets/${widget.username[0].toLowerCase()}.png'),
             backgroundImage:
-            AssetImage('assets/${widget.username[0].toLowerCase()}.png'),
+            AssetImage('assets/a.png'),
             radius: 30,
           ) ,
           decoration: const BoxDecoration(
