@@ -15,7 +15,7 @@ class userRequestsPage extends StatefulWidget {
 }
 
 class _userRequestsPageState extends State<userRequestsPage> {
-  late String id,username;
+   String id='',username='';
   bool loaded=false;
   void GetState() async {
     final prefs = await SharedPreferences.getInstance();
@@ -23,7 +23,7 @@ class _userRequestsPageState extends State<userRequestsPage> {
     username=prefs.getString("Name")!;
     if(id!=null){
       loaded=true;
-      print(loaded);
+      print('$id - $username');
       setState(() {});
     }
   }
