@@ -68,7 +68,7 @@ class _LoginState extends State<Login> {
                           padding: const EdgeInsets.all(10.0),
                           child: TextField(
                             decoration:
-                                const InputDecoration(labelText: "Username"),
+                            const InputDecoration(labelText: "Username"),
                             controller: username,
                           ),
                         ),
@@ -78,7 +78,7 @@ class _LoginState extends State<Login> {
                             controller: password,
                             obscureText: true,
                             decoration:
-                                const InputDecoration(labelText: "Password"),
+                            const InputDecoration(labelText: "Password"),
                             onSubmitted: (str) async {
                               var data = packet(
                                   "", Handler.Handler1, Header.Login,
@@ -117,6 +117,97 @@ class _LoginState extends State<Login> {
       ),
     );
   }
+  // Widget build(BuildContext context) {
+  //   return WillPopScope(
+  //     onWillPop: () async {
+  //       return false;
+  //     },
+  //     child: Scaffold(
+  //       body: Container(
+  //         decoration: const BoxDecoration(
+  //             image: DecorationImage(
+  //                 image: AssetImage("lib/Login/bg.jpg"), fit: BoxFit.fitHeight)),
+  //         height: double.infinity,
+  //         child: Center(
+  //           child: Padding(
+  //             padding: const EdgeInsets.all(10.0),
+  //             child: Center(
+  //               child: Container(
+  //                 width: 400,
+  //                 height: 250,
+  //                 alignment: Alignment.center,
+  //                 decoration: BoxDecoration(
+  //                     borderRadius: BorderRadius.circular(16),
+  //                     color: Colors.grey.shade300,
+  //                     boxShadow: const [
+  //                       BoxShadow(
+  //                           offset: Offset(10, 10),
+  //                           color: Colors.black,
+  //                           blurRadius: 20)
+  //                     ]),
+  //                 child: SizedBox(
+  //                   width: 400,
+  //                   child: Padding(
+  //                     padding: const EdgeInsets.all(20.0),
+  //                     child: Column(
+  //                       mainAxisSize: MainAxisSize.min,
+  //                       mainAxisAlignment: MainAxisAlignment.center,
+  //                       crossAxisAlignment: CrossAxisAlignment.center,
+  //                       children: [
+  //                         Padding(
+  //                           padding: const EdgeInsets.all(10.0),
+  //                           child: TextField(
+  //                             decoration:
+  //                                 const InputDecoration(labelText: "Username"),
+  //                             controller: username,
+  //                           ),
+  //                         ),
+  //                         Padding(
+  //                           padding: const EdgeInsets.all(10.0),
+  //                           child: TextField(
+  //                             controller: password,
+  //                             obscureText: true,
+  //                             decoration:
+  //                                 const InputDecoration(labelText: "Password"),
+  //                             onSubmitted: (str) async {
+  //                               var data = packet(
+  //                                   "", Handler.Handler1, Header.Login,
+  //                                   username: username.text.toString(),
+  //                                   password: sha512
+  //                                       .convert(utf8.encode(password.text))
+  //                                       .toString());
+  //                               communicate(data, fin);
+  //                             },
+  //                           ),
+  //                         ),
+  //                         Center(
+  //                           child: Padding(
+  //                               padding: const EdgeInsets.all(10.0),
+  //                               child: ElevatedButton(
+  //                                 onPressed: () async {
+  //                                   var data = packet(
+  //                                       "", Handler.Handler1, Header.Login,
+  //                                       username: username.text.toString(),
+  //                                       password: sha512
+  //                                           .convert(utf8.encode(password.text))
+  //                                           .toString());
+  //                                   communicate(data, fin);
+  //                                 },
+  //                                 child: const Text("Login"),
+  //                               )),
+  //                         ),
+  //                       ],
+  //                     ),
+  //                   ),
+  //                 ),
+  //               ),
+  //             ),
+  //           ),
+  //         ),
+  //       ),
+  //     ),
+  //   );
+  // }
 }
 
 Future<void> _asyncConfirmDialog(BuildContext context) async {
