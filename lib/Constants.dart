@@ -149,10 +149,10 @@ class Add {
   static const String MagazineRecord = "AddMagazineRecord";
   static const String MagazineSubscriptionRequest = "AddSubscriptionRequest";
 }
-enum userStatus {
-  user,
-  admin,
-  superadmin,
+class UserStat{
+  static const String User = "User";
+  static const String Admin = "Librarian";
+  static const String SuperAdmin = "HOD";
 }
 class Upload {
   static const String DigitalBook = "UploadDigitalBook";

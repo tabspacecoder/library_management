@@ -11,7 +11,7 @@ import '../../Network.dart';
 class userPopUpProfileButton extends StatefulWidget {
   String username;
   String id;
-  userStatus curstatus;
+  String curstatus;
   userPopUpProfileButton({required this.username,required this.curstatus,required this.id});
   @override
   _userPopUpProfileButtonState createState() => _userPopUpProfileButtonState();
@@ -56,7 +56,6 @@ class _userPopUpProfileButtonState extends State<userPopUpProfileButton> {
     );
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
-
 
 
   void selectedItem(BuildContext context, int item) {
@@ -141,7 +140,7 @@ class _userPopUpProfileButtonState extends State<userPopUpProfileButton> {
 
   Widget build(BuildContext context) {
     return PopupMenuButton<int>(
-      child: Padding(
+      child: const Padding(
         padding: EdgeInsets.only(right: 4),
         child: Icon(
           Icons.account_circle_outlined,
@@ -151,7 +150,7 @@ class _userPopUpProfileButtonState extends State<userPopUpProfileButton> {
         PopupMenuItem(
           child: ListTile(
             title: Text(widget.username),
-            subtitle: Text(widget.curstatus.name),
+            subtitle: Text(widget.curstatus),
             leading: CircleAvatar(
               backgroundImage: AssetImage('assets/${widget.username[0].toLowerCase()}.png'),
               radius: 30,

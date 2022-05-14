@@ -4,7 +4,6 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:crypto/crypto.dart';
 import 'package:library_management/Constants.dart';
-import 'package:library_management/HomePage/Parameters.dart';
 import 'package:library_management/Network.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -20,7 +19,6 @@ var password = TextEditingController();
 
 class _LoginState extends State<Login> {
   void fin(out) async {
-
     final prefs = await SharedPreferences.getInstance();
     if (out["Header"] == Header.Success) {
       Navigator.pushNamed(context, "/Home");

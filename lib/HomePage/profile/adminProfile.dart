@@ -9,7 +9,7 @@ import '../../Network.dart';
 class adminPopUpProfileButton extends StatefulWidget {
   String username;
   String id;
-  userStatus curstatus;
+  String curstatus;
   adminPopUpProfileButton({required this.username,required this.curstatus,required this.id});
 
   @override
@@ -152,7 +152,7 @@ class _adminPopUpProfileButtonState extends State<adminPopUpProfileButton> {
             children: [
               ListTile(
                 title: Text(widget.username),
-                subtitle: Text(widget.curstatus.name),
+                subtitle: Text(widget.curstatus),
                 leading: CircleAvatar(
                   backgroundColor: Colors.white,
                   backgroundImage: AssetImage('assets/${widget.username[0].toLowerCase()}.png'),

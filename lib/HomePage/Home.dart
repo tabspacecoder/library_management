@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:library_management/HomePage/News/news.dart';
 import 'package:library_management/HomePage/GlobalSearchBar.dart';
-import 'package:library_management/HomePage/Parameters.dart';
 import 'package:library_management/HomePage/profile/superAdminProfile.dart';
 import 'package:library_management/HomePage/profile/userProfile.dart';
 import 'package:library_management/Navbar/navbar.dart';
@@ -16,32 +15,33 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  late userStatus curStatus;
+  late String curStatus;
   String username="";
   String id="";
   int status = 0;
-  static var data;
+
   @override
   void initState() {
     super.initState();
+    GetState();
   }
 
+  void GetState() async {
+    final prefs = await SharedPreferences.getInstance();
+    id = prefs.getString("Id")!;
+    username=prefs.getString("Name")!;
+    status = prefs.getInt("Status")!;
+  }
 
   @override
   Widget build(BuildContext context) {
-    void GetState() async {
-      final prefs = await SharedPreferences.getInstance();
-      id = prefs.getString("Name")!;
-      username=prefs.getString("Id")!;
-      status = prefs.getInt("Status")!;
-    }
-    GetState();
+
     if (status & Privileges.SuperAdmin == Privileges.SuperAdmin) {
-      curStatus = userStatus.superadmin;
+      curStatus = UserStat.SuperAdmin;
     } else if (status & Privileges.Admin == Privileges.Admin) {
-      curStatus = userStatus.admin;
+      curStatus = UserStat.Admin;
     } else {
-      curStatus = userStatus.user;
+      curStatus = UserStat.User;
     }
     return DefaultTabController(
         length: 2,
@@ -80,9 +80,9 @@ class _HomeState extends State<Home> {
             ),
             // automaticallyImplyLeading: false,
             actions: [
-              curStatus == userStatus.superadmin
+              curStatus == UserStat.SuperAdmin
                   ? superAdminPopUpProfileButton(username: username, curstatus: curStatus,id: id,)
-                  : curStatus == userStatus.admin
+                  : curStatus == UserStat.Admin
                       ? adminPopUpProfileButton(username: username, curstatus: curStatus,id: id,)
                       : userPopUpProfileButton(username: username, curstatus: curStatus,id: id,),
             ],

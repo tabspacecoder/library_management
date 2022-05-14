@@ -1,7 +1,5 @@
 import 'dart:convert';
-
 import 'package:crypto/crypto.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 import '../../Constants.dart';
@@ -11,7 +9,7 @@ import '../../Network.dart';
 class superAdminPopUpProfileButton extends StatefulWidget {
   String username;
   String id;
-  userStatus curstatus;
+  String curstatus;
   superAdminPopUpProfileButton(
       {required this.username, required this.curstatus, required this.id});
   @override
@@ -131,7 +129,7 @@ class _superAdminPopUpProfileButtonState
         break;
       case 2:
         print('logout');
-        Navigator.pushNamed(context, "/Profile",arguments: widget.username);
+        Navigator.pushNamed(context, "/Profile");
         // Navigator.pop(context);
         break;
     }
@@ -149,7 +147,7 @@ class _superAdminPopUpProfileButtonState
         PopupMenuItem(
           child: ListTile(
             title: Text(widget.username),
-            subtitle: Text(widget.curstatus.name),
+            subtitle: Text(widget.curstatus),
             leading: CircleAvatar(
               backgroundImage:
                   AssetImage('assets/${widget.username[0].toLowerCase()}.png'),
