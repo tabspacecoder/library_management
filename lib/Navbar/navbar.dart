@@ -75,8 +75,7 @@ class _NavBarState extends State<NavBar> {
     final channel = WebSocketChannel.connect(webSocket());
     channel.sink.add(parser(packet(widget.id, Handler.Handler1, Add.BookRequest,
         bookName: BookName, username: UserName, author: [Author])));
-    channel.stream.listen((event) {});
-    channel.sink.close();
+    channel.stream.listen((event) {channel.sink.close();});
   }
 
   void addMagazineRequest(String UserName, String Author, String BookName) {
@@ -84,8 +83,7 @@ class _NavBarState extends State<NavBar> {
     channel.sink.add(parser(packet(
         widget.id, Handler.Handler1, Add.MagazineSubscriptionRequest,
         bookName: BookName, username: UserName, author: [Author])));
-    channel.stream.listen((event) {});
-    channel.sink.close();
+    channel.stream.listen((event) {channel.sink.close();});
   }
 
   bool online_avail = false;
@@ -1135,7 +1133,7 @@ class _NavBarState extends State<NavBar> {
                                     ? Padding(
                                   padding: const EdgeInsets.all(8.0),
                                   child: ElevatedButton(
-                                      child: Text('Upload Pdf'),
+                                      child: const Text('Upload Pdf'),
                                       onPressed: () async {
                                         var result = await FilePicker.platform.pickFiles(
 
@@ -1155,7 +1153,7 @@ class _NavBarState extends State<NavBar> {
 
                                       }),
                                 )
-                                    : SizedBox(),
+                                    : const SizedBox(),
                                 Padding(
                                   padding: const EdgeInsets.all(8.0),
                                   child: ElevatedButton(
@@ -1173,7 +1171,7 @@ class _NavBarState extends State<NavBar> {
                                           setState(() {});
                                         }
                                       },
-                                      child: Text('Upload Thumbnail')),
+                                      child: const Text('Upload Thumbnail')),
                                 )
                               ],
                             ),
@@ -1182,10 +1180,10 @@ class _NavBarState extends State<NavBar> {
                         actions: [
                           TextButton(
                             onPressed: () => Navigator.pop(context),
-                            child: Text('Cancel'),
+                            child: const Text('Cancel'),
                           ),
                           TextButton(
-                              child: Text("Submit"),
+                              child: const Text("Submit"),
                               onPressed: () {
                                 // if (dropdownvalue == 'Online' || dropdownvalue == 'Both') {
                                 //   showDialog(

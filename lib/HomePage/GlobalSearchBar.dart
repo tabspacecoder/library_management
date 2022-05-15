@@ -149,28 +149,29 @@ class _SearchBarState extends State<SearchBar> {
                               Icons.article_outlined,
                               color: Colors.blue,
                             ),
-                            title: const Text('Order'),trailing: DropdownButton(
-                          // Initial Value
-                          value: dropdownvaluefilter,
+                            title: const Text('Order'),
+                            trailing: DropdownButton(
+                              // Initial Value
+                              value: dropdownvaluefilter,
 
-                          // Down Arrow Icon
-                          icon: const Icon(Icons.keyboard_arrow_down),
+                              // Down Arrow Icon
+                              icon: const Icon(Icons.keyboard_arrow_down),
 
-                          // Array list of items
-                          items: filteritems.map((String items) {
-                            return DropdownMenuItem(
-                              value: items,
-                              child: Text(items),
-                            );
-                          }).toList(),
-                          // After selecting the desired option,it will
-                          // change button value to selected value
-                          onChanged: (String? newValue) {
-                            setState(() {
-                              dropdownvaluefilter = newValue!;
-                            });
-                          },
-                        )),
+                              // Array list of items
+                              items: filteritems.map((String items) {
+                                return DropdownMenuItem(
+                                  value: items,
+                                  child: Text(items),
+                                );
+                              }).toList(),
+                              // After selecting the desired option,it will
+                              // change button value to selected value
+                              onChanged: (String? newValue) {
+                                setState(() {
+                                  dropdownvaluefilter = newValue!;
+                                });
+                              },
+                            )),
                         dropdownvalue == 'Books'
                             ? Row(
                                 children: [
@@ -329,7 +330,19 @@ class _SearchBarState extends State<SearchBar> {
               return data;
             },
             itemBuilder: (context, dynamic suggestion) {
-              return BookListTile(ontap: () {}, curBook: suggestion);
+              return BookListTile(
+                  ontap: () async {
+                    final channel = WebSocketChannel.connect(webSocket());
+                    channel.sink.add(parser(packet(
+                        widget.id, Handler.Handler1, Fetch.DigitalBooks,
+                        isbn: "Here asshole")));
+                    channel.stream.listen((event) {
+                      event = event.split(Header.Split)[1];
+                      var link = jsonDecode(event)["Data"];
+                      channel.sink.close();
+                    });
+                  },
+                  curBook: suggestion);
             },
             onSuggestionSelected: (dynamic suggestion) {
               print(suggestion);
@@ -351,7 +364,6 @@ class BookListTile extends StatefulWidget {
 }
 
 class _BookListTileState extends State<BookListTile> {
-
   @override
   Widget build(BuildContext context) {
     if (widget.curBook.Type & Avail.Online != 0 &&
