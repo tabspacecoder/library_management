@@ -38,6 +38,7 @@ dependencies:
   crypto: ^3.0.1
   web_socket_channel: ^2.1.0
   shared_preferences: ^2.0.15
+  flutter_cache_manager: ^3.3.0
   neumorphic:
   flutter_typeahead: ^3.2.4
   flutter_staggered_grid_view:

@@ -1,7 +1,9 @@
 import 'dart:convert';
+import 'dart:html';
 import 'dart:js' as js;
 import 'dart:html' as html;
 import 'package:flutter/material.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:library_management/Constants.dart';
 import 'package:library_management/HomePage/pdfViewer.dart';
@@ -338,13 +340,16 @@ class _SearchBarState extends State<SearchBar> {
                     channel.sink.add(parser(packet(
                         widget.id, Handler.Handler1, Fetch.DigitalBooks,
                         isbn: suggestion.ISBN)));
-                    channel.stream.listen((event) {
+                    channel.stream.listen((event) async {
                       event = event.split(Header.Split)[1];
                       var link = jsonDecode(event)["Data"];
                       print(link);
-                      Navigator.of(context).push(MaterialPageRoute(builder: (context)=>PdfViewer(name: suggestion.BookName, link: link)));
                       // js.context.callMethod('open', ['$link']);
-                      // html.window.open(link, link);
+                      var file = await DefaultCacheManager().downloadFile(link);
+                      print(file.file.uri);
+                      final blob = html.Blob([file.file.path], 'application/pdf');
+                      Navigator.of(context).push(MaterialPageRoute(builder: (context)=>PdfViewer(name: suggestion.BookName, link: file.file)));
+                      // html.window.open(url, '_blank');
                       channel.sink.close();
                     });
                   },
