@@ -127,12 +127,11 @@ class _NavBarState extends State<NavBar> {
                     ),
                     TextButton(
                       onPressed: () {
-                        DueDate =
-                            "${selectedDate.day}/${selectedDate.month}/${selectedDate.year}";
+                        // DueDate = "${selectedDate.day}/${selectedDate.month}/${selectedDate.year}";
                         print('Book Name - ${BookNameController.text}');
                         print('Username - ${UsernameController.text}');
                         print('Issue Date - $IssueDate');
-                        print('Due date - $DueDate');
+                        // print('Due date - $DueDate');
                         setState(() {});
                         Navigator.of(context).pop();
                       },
@@ -159,17 +158,17 @@ class _NavBarState extends State<NavBar> {
                               icon: Icon(Icons.account_circle),
                             ),
                           ),
-                          ListTile(
-                            title: Text('Due Date'),
-                            subtitle: Text(
-                                '${selectedDate.day}/${selectedDate.month}/${selectedDate.year}'),
-                            leading: IconButton(
-                              icon: Icon(Icons.calendar_today),
-                              onPressed: () {
-                                _selectDate(context);
-                              },
-                            ),
-                          ),
+                          // ListTile(
+                          //   title: Text('Due Date'),
+                          //   subtitle: Text(
+                          //       '${selectedDate.day}/${selectedDate.month}/${selectedDate.year}'),
+                          //   leading: IconButton(
+                          //     icon: Icon(Icons.calendar_today),
+                          //     onPressed: () {
+                          //       _selectDate(context);
+                          //     },
+                          //   ),
+                          // ),
                           // TextFormField(
                           //   controller: DueDateController,
                           //   decoration: InputDecoration(
@@ -201,8 +200,7 @@ class _NavBarState extends State<NavBar> {
   var UsernameController = TextEditingController();
   var BookNameController = TextEditingController();
   var DueDateController = TextEditingController();
-  String IssueDate =
-      "${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}";
+  String IssueDate = "${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}";
   DateTime selectedDate = DateTime.now();
   _selectDate(BuildContext context) async {
     final DateTime? selected = await showDatePicker(
@@ -228,10 +226,9 @@ class _NavBarState extends State<NavBar> {
         UserAccountsDrawerHeader(
           accountName: Text(widget.username),
           accountEmail: Text(widget.curStatus),
-          currentAccountPicture: const CircleAvatar(
-            // backgroundImage:
-            // AssetImage('assets/${widget.username[0].toLowerCase()}.png'),
-            backgroundImage: AssetImage('assets/a.png'),
+          currentAccountPicture:  CircleAvatar(
+            backgroundImage: AssetImage('assets/${widget.username[0].toLowerCase()}.png'),
+            // backgroundImage: AssetImage('assets/a.png'),
             radius: 30,
           ),
           decoration: const BoxDecoration(
