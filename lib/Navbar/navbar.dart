@@ -839,6 +839,10 @@ class _NavBarState extends State<NavBar> {
   }
 
   ListView superAdminListView(context) {
+    late Uint8List pickedFileByteStream;
+    late Uint8List pickedFileByteStreamTn;
+    late PlatformFile objFile;
+    late PlatformFile objFileTn;
     return ListView(
       padding: EdgeInsets.zero,
       children: [
@@ -926,25 +930,6 @@ class _NavBarState extends State<NavBar> {
                                     icon: Icon(Icons.category),
                                   ),
                                 ),
-                                // CheckboxListTile(
-                                //   title: Text('Online : '),
-                                //   value: online_avail,
-                                //   onChanged: (value) {
-                                //     setState(() {
-                                //       online_avail = value!;
-                                //     });
-                                //     setState(() {});
-                                //   },
-                                // ),
-                                // CheckboxListTile(
-                                //   title: Text('Offline : '),
-                                //   value: offline_avail,
-                                //   onChanged: (value) {
-                                //     setState(() {
-                                //       print(1);
-                                //       offline_avail = value!;
-                                //     });},
-                                // ),
                                 DropdownButton(
                                   // Initial Value
                                   value: dropdownvalue,
@@ -969,30 +954,52 @@ class _NavBarState extends State<NavBar> {
                                 ),
                                 dropdownvalue == 'Online' ||
                                     dropdownvalue == 'Both'
-                                    ? ElevatedButton(
-                                    child: Text('Upload Pdf'),
-                                    onPressed: () async {
-                                      var result = await FilePicker.platform
-                                          .pickFiles(
-                                        // type: FileType.values[':pdf'],
-                                        withReadStream:
-                                        true, // this will return PlatformFile object with read stream
-                                      );
-                                      if (result != null) {
-                                        setState(() {
-                                          objFile = result.files.single;
-                                          pickedFileByteStream =
-                                          objFile.bytes!;
-                                          String toRet =
-                                          pickedFileByteStream
-                                              .toString();
-                                        });
-                                      }
-                                    })
+                                    ? Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: ElevatedButton(
+                                      child: Text('Upload Pdf'),
+                                      onPressed: () async {
+                                        var result = await FilePicker.platform
+                                            .pickFiles(
+                                          // type: FileType.values[':pdf'],
+                                          withReadStream:
+                                          true, // this will return PlatformFile object with read stream
+                                        );
+                                        if (result != null) {
+                                          setState(() {
+                                            objFile = result.files.single;
+                                            pickedFileByteStream =
+                                            objFile.bytes!;
+                                            String toRet =
+                                            pickedFileByteStream
+                                                .toString();
+                                          });
+                                        }
+                                      }),
+                                )
                                     : SizedBox(),
-                                ElevatedButton(
-                                    onPressed: () {},
-                                    child: Text('Upload Thumbnail'))
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: ElevatedButton(
+                                      onPressed: () async {
+                                        var result = await FilePicker.platform
+                                            .pickFiles(
+                                          // type: FileType.values[':pdf'],
+                                          withReadStream:
+                                          true, // this will return PlatformFile object with read stream
+                                        );
+                                        if (result != null) {
+                                          setState(() {
+                                            objFileTn = result.files.single;
+                                            pickedFileByteStreamTn =
+                                            objFileTn.bytes!;
+                                            String toRet =
+                                            pickedFileByteStreamTn.toString();
+                                          });
+                                        }
+                                      },
+                                      child: Text('Upload Thumbnail')),
+                                )
                               ],
                             ),
                           ),
@@ -1031,6 +1038,8 @@ class _NavBarState extends State<NavBar> {
                                         );
                                       });
                                 }
+                                // pickedFileByteStream.toString() ------- filestream for pdf
+                                // pickedFileByteStreamTn.toString()  ----- filestream for thumbnail
                                 Navigator.pop(context);
                               })
                         ],
