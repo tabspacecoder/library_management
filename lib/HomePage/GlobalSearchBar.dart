@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:js' as js;
+import 'dart:html' as html;
 import 'package:flutter/material.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:library_management/Constants.dart';
@@ -339,6 +340,9 @@ class _SearchBarState extends State<SearchBar> {
                     channel.stream.listen((event) {
                       event = event.split(Header.Split)[1];
                       var link = jsonDecode(event)["Data"];
+                      print(link);
+                      js.context.callMethod('open', ['$link']);
+                      // html.window.open(link, link);
                       channel.sink.close();
                     });
                   },

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:html';
 import 'dart:io';
 import 'dart:typed_data';
 import 'dart:js' as js;
@@ -117,9 +118,9 @@ class _NavBarState extends State<NavBar> {
                     ),
                     TextButton(
                       onPressed: () {
-                        // DueDate = "${selectedDate.day}/${selectedDate.month}/${selectedDate.year}";
-                        // print('Book Name - ${BookNameController.text}');
-                        // print('Username - ${UsernameController.text}');
+                        DueDate = "${selectedDate.day}/${selectedDate.month}/${selectedDate.year}";
+                        print('Book Name - ${BookNameController.text}');
+                        print('Username - ${UsernameController.text}');
                         print('Issue Date - $IssueDate');
                         // print('Due date - $DueDate');
                         setState(() {});
@@ -689,6 +690,7 @@ class _NavBarState extends State<NavBar> {
                   var volumeController = TextEditingController();
                   var releaseDateController = TextEditingController();
                   var issueController = TextEditingController();
+                  Uint8List pickedFileMagByteStream = Uint8List.fromList([]);
                   return StatefulBuilder(
                     builder: (BuildContext context,
                         void Function(void Function()) setState) {
@@ -724,7 +726,7 @@ class _NavBarState extends State<NavBar> {
                                 TextFormField(
                                   controller: DueDateController,
                                   decoration: InputDecoration(
-                                    labelText: 'Due Date',
+                                    labelText: 'Published Date',
                                     icon: IconButton(
                                         icon: Icon(Icons.calendar_today),
                                         onPressed: () {
@@ -740,6 +742,21 @@ class _NavBarState extends State<NavBar> {
                                     icon: Icon(Icons.book_outlined),
                                   ),
                                 ),
+                                ElevatedButton(onPressed: () async {
+                                  var result = await FilePicker.platform
+                                      .pickFiles(type: FileType.image);
+                                  if (result != null) {
+                                    Uint8List? fileBytes =
+                                        await result.files.first.bytes;
+                                    // objFileTn = result.files.single;
+                                    pickedFileMagByteStream = fileBytes!;
+                                    String toRet =
+                                    pickedFileMagByteStream.toString();
+                                  }
+                                  if (pickedFileMagByteStream != null) {
+                                    setState(() {});
+                                  }
+                                }, child: Text('Upload Magazine!'))
                               ],
                             ),
                           ),
@@ -752,6 +769,11 @@ class _NavBarState extends State<NavBar> {
                           TextButton(
                               child: Text("Submit"),
                               onPressed: () {
+
+
+                                // connect here da thevdiya
+
+
                                 Navigator.pop(context);
                               })
                         ],
