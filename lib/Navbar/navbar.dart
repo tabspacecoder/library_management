@@ -206,7 +206,9 @@ class _NavBarState extends State<NavBar> {
   }
 
   late Uint8List pickedFileByteStream;
+  late Uint8List pickedFileByteStreamTn;
   late PlatformFile objFile;
+  late PlatformFile objFileTn;
   ListView userListView(context) {
     return ListView(
       // Remove padding
@@ -479,6 +481,11 @@ class _NavBarState extends State<NavBar> {
           onTap: () => Navigator.pushNamed(context, '/PendingBookRequests'),
         ),
         ListTile(
+          leading: Icon(Icons.library_books),
+          title: Text('Pending Magazine Requests'),
+          onTap: () => Navigator.pushNamed(context, '/PendingMagazineRequests'),
+        ),
+        ListTile(
           leading: Icon(Icons.add),
           title: Text('Add new book'),
           onTap: () {
@@ -571,30 +578,53 @@ class _NavBarState extends State<NavBar> {
                                 ),
                                 dropdownvalue == 'Online' ||
                                         dropdownvalue == 'Both'
-                                    ? ElevatedButton(
-                                        child: Text('Upload Pdf'),
-                                        onPressed: () async {
-                                          var result = await FilePicker.platform
-                                              .pickFiles(
-                                            // type: FileType.values[':pdf'],
-                                            withReadStream:
-                                                true, // this will return PlatformFile object with read stream
-                                          );
-                                          if (result != null) {
-                                            setState(() {
-                                              objFile = result.files.single;
-                                              pickedFileByteStream =
-                                                  objFile.bytes!;
-                                              String toRet =
-                                                  pickedFileByteStream
-                                                      .toString();
-                                            });
-                                          }
-                                        })
+                                    ? Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: ElevatedButton(
+                                          child: Text('Upload Pdf'),
+                                          onPressed: () async {
+                                            var result = await FilePicker.platform
+                                                .pickFiles(
+                                              // type: FileType.values[':pdf'],
+                                              withReadStream:
+                                                  true, // this will return PlatformFile object with read stream
+                                            );
+                                            if (result != null) {
+                                              setState(() {
+                                                objFile = result.files.single;
+                                                pickedFileByteStream =
+                                                    objFile.bytes!;
+                                                String toRet =
+                                                    pickedFileByteStream
+                                                        .toString();
+                                              });
+                                            }
+                                          }),
+                                    )
                                     : SizedBox(),
-                                ElevatedButton(
-                                    onPressed: () {},
-                                    child: Text('Upload Thumbnail'))
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: ElevatedButton(
+                                      onPressed: () async {
+                                        var result = await FilePicker.platform
+                                            .pickFiles(
+                                          // type: FileType.values[':pdf'],
+                                          withReadStream:
+                                          true, // this will return PlatformFile object with read stream
+                                        );
+                                        if (result != null) {
+                                          setState(() {
+                                            objFileTn = result.files.single;
+                                            pickedFileByteStreamTn =
+                                            objFileTn.bytes!;
+                                            String toRet =
+                                            pickedFileByteStreamTn
+                                                .toString();
+                                          });
+                                        }
+                                      },
+                                      child: Text('Upload Thumbnail')),
+                                )
                               ],
                             ),
                           ),
@@ -643,32 +673,32 @@ class _NavBarState extends State<NavBar> {
           },
         ),
 
-        ListTile(
-          leading: Icon(Icons.notifications),
-          title: Text('Pending Requests'),
-          onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => adminPendingRequestsPage(
-                        id: widget.id,
-                      ))),
-          trailing: ClipOval(
-            child: Container(
-              color: Colors.red,
-              width: 20,
-              height: 20,
-              child: const Center(
-                child: Text(
-                  '8',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 12,
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ),
+        // ListTile(
+        //   leading: Icon(Icons.notifications),
+        //   title: Text('Pending Requests'),
+        //   onTap: () => Navigator.push(
+        //       context,
+        //       MaterialPageRoute(
+        //           builder: (context) => adminPendingRequestsPage(
+        //                 id: widget.id,
+        //               ))),
+        //   trailing: ClipOval(
+        //     child: Container(
+        //       color: Colors.red,
+        //       width: 20,
+        //       height: 20,
+        //       child: const Center(
+        //         child: Text(
+        //           '8',
+        //           style: TextStyle(
+        //             color: Colors.white,
+        //             fontSize: 12,
+        //           ),
+        //         ),
+        //       ),
+        //     ),
+        //   ),
+        // ),
         PopupMenuButton<int>(
           child: ListTile(
             leading: Icon(Icons.all_out),
@@ -842,6 +872,11 @@ class _NavBarState extends State<NavBar> {
           onTap: () => Navigator.pushNamed(context, '/PendingBookRequests'),
         ),
         ListTile(
+          leading: Icon(Icons.library_books),
+          title: Text('Pending Magazine Requests'),
+          onTap: () => Navigator.pushNamed(context, '/PendingMagazineRequests'),
+        ),
+        ListTile(
           leading: Icon(Icons.add),
           title: Text('Add new book'),
           onTap: () {
@@ -1006,7 +1041,7 @@ class _NavBarState extends State<NavBar> {
           },
         ),
         ListTile(
-          leading: Icon(Icons.all_out),
+          leading: Icon(Icons.account_circle),
           title: Text('Add User'),
           onTap: () => {
             showDialog(
@@ -1095,32 +1130,32 @@ class _NavBarState extends State<NavBar> {
                 })
           },
         ),
-        ListTile(
-          leading: Icon(Icons.notifications),
-          title: Text('Pending Requests'),
-          onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => adminPendingRequestsPage(
-                    id: widget.id,
-                  ))),
-          trailing: ClipOval(
-            child: Container(
-              color: Colors.red,
-              width: 20,
-              height: 20,
-              child: const Center(
-                child: Text(
-                  '8',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 12,
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ),
+        // ListTile(
+        //   leading: Icon(Icons.notifications),
+        //   title: Text('Pending Requests'),
+        //   onTap: () => Navigator.push(
+        //       context,
+        //       MaterialPageRoute(
+        //           builder: (context) => adminPendingRequestsPage(
+        //             id: widget.id,
+        //           ))),
+        //   trailing: ClipOval(
+        //     child: Container(
+        //       color: Colors.red,
+        //       width: 20,
+        //       height: 20,
+        //       child: const Center(
+        //         child: Text(
+        //           '8',
+        //           style: TextStyle(
+        //             color: Colors.white,
+        //             fontSize: 12,
+        //           ),
+        //         ),
+        //       ),
+        //     ),
+        //   ),
+        // ),
         PopupMenuButton<int>(
           child: ListTile(
             leading: Icon(Icons.all_out),

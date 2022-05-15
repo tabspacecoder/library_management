@@ -6,6 +6,7 @@ import 'package:library_management/HomePage/Magazines/MagazineRequests.dart';
 import 'package:library_management/HomePage/profile/userRequests.dart';
 import 'package:library_management/Login/Login.dart';
 import 'package:library_management/Navbar/adminPendingRequestsBooks.dart';
+import 'package:library_management/Navbar/adminPendingRequestsMagazines.dart';
 import 'HomePage/Books/BookRequestStatus.dart';
 import 'HomePage/Books/BookRequests.dart';
 import 'HomePage/Magazines/MyMagazine.dart';
@@ -26,6 +27,7 @@ void main() {
       '/Circulation': (context) => const circulationHomePage(),
       '/UserRequests': (context) => userRequestsPage(),
       '/PendingBookRequests':(context)=>adminPendingRequestsPageBooks(),
+      '/PendingMagazineRequests' : (context) =>adminPendingRequestsPageMagazines(),
     },
     initialRoute: "/",
   ));
