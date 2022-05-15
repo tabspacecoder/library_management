@@ -570,7 +570,8 @@ class _NavBarState extends State<NavBar> {
                                             onPressed: () async {
                                               var result = await FilePicker
                                                   .platform
-                                                  .pickFiles();
+                                                  .pickFiles(type: FileType.custom,
+                                                allowedExtensions: ['pdf'],);
                                               if (result != null) {
                                                 Uint8List? fileBytes =
                                                     result.files.first.bytes;
@@ -594,7 +595,8 @@ class _NavBarState extends State<NavBar> {
                                   child: ElevatedButton(
                                       onPressed: () async {
                                         var result = await FilePicker.platform
-                                            .pickFiles(type: FileType.image);
+                                            .pickFiles(type: FileType.custom,
+                                          allowedExtensions: ['jpg'],);
                                         if (result != null) {
                                           Uint8List? fileBytes =
                                               await result.files.first.bytes;
@@ -742,21 +744,25 @@ class _NavBarState extends State<NavBar> {
                                     icon: Icon(Icons.book_outlined),
                                   ),
                                 ),
-                                ElevatedButton(onPressed: () async {
-                                  var result = await FilePicker.platform
-                                      .pickFiles(type: FileType.image);
-                                  if (result != null) {
-                                    Uint8List? fileBytes =
-                                        await result.files.first.bytes;
-                                    // objFileTn = result.files.single;
-                                    pickedFileMagByteStream = fileBytes!;
-                                    String toRet =
-                                    pickedFileMagByteStream.toString();
-                                  }
-                                  if (pickedFileMagByteStream != null) {
-                                    setState(() {});
-                                  }
-                                }, child: Text('Upload Magazine!'))
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: ElevatedButton(onPressed: () async {
+                                    var result = await FilePicker.platform
+                                        .pickFiles(type: FileType.custom,
+                                      allowedExtensions: ['pdf'],);
+                                    if (result != null) {
+                                      Uint8List? fileBytes =
+                                          await result.files.first.bytes;
+                                      // objFileTn = result.files.single;
+                                      pickedFileMagByteStream = fileBytes!;
+                                      String toRet =
+                                      pickedFileMagByteStream.toString();
+                                    }
+                                    if (pickedFileMagByteStream != null) {
+                                      setState(() {});
+                                    }
+                                  }, child: Text('Upload Magazine!')),
+                                )
                               ],
                             ),
                           ),
