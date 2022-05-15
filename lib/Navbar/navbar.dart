@@ -197,7 +197,7 @@ class _NavBarState extends State<NavBar> {
       firstDate: DateTime(2010),
       lastDate: DateTime(2025),
     );
-    if (selected != null && selected != selectedDate)
+    if (selected != null )
       setState(() {
         selectedDate = selected;
       });
