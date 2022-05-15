@@ -18,6 +18,16 @@ class RequestStatus {
 }
 // Template for complex data
 
+class OutstandingListData{
+  late String BorrowID;
+  late String ISBN;
+  late String DueDate;
+  late String UserName;
+  late String ReturnDate;
+  OutstandingListData({required this.BorrowID , required this.ISBN,required this.UserName,required this.DueDate,required this.ReturnDate})
+}
+
+
 class BookData{
   late String ISBN;
   late String BookName;
