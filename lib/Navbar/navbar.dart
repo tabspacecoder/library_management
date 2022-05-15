@@ -661,6 +661,93 @@ class _NavBarState extends State<NavBar> {
                 });
           },
         ),
+        ListTile(
+          leading: Icon(Icons.add),
+          title: Text('Add new magazine'),
+          onTap: () {
+            DueDate = "${selectedDate.day}/${selectedDate.month}/${selectedDate.year}";
+            showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  var journalController = TextEditingController();
+                  var authorController = TextEditingController();
+                  var volumeController = TextEditingController();
+                  var releaseDateController = TextEditingController();
+                  var issueController = TextEditingController();
+                  return StatefulBuilder(
+                    builder: (BuildContext context,
+                        void Function(void Function()) setState) {
+                      return AlertDialog(
+                        scrollable: true,
+                        title: Text('Add Magazine'),
+                        content: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Form(
+                            child: Column(
+                              children: <Widget>[
+                                TextFormField(
+                                  controller: journalController,
+                                  decoration: const InputDecoration(
+                                    labelText: 'Journal Name',
+                                    icon: Icon(Icons.drive_file_rename_outline),
+                                  ),
+                                ),
+                                TextFormField(
+                                  controller: volumeController,
+                                  decoration: const InputDecoration(
+                                    labelText: 'Volume',
+                                    icon: Icon(Icons.add),
+                                  ),
+                                ),
+                                TextFormField(
+                                  controller: authorController,
+                                  decoration: const InputDecoration(
+                                    labelText: 'Author',
+                                    icon: Icon(Icons.account_box),
+                                  ),
+                                ),
+                                TextFormField(
+                                  controller: DueDateController,
+                                  decoration: InputDecoration(
+                                    labelText: 'Due Date',
+                                    icon: IconButton(icon:Icon(Icons.calendar_today), onPressed: () {_selectDate(context);
+                                    DueDateController.text = DueDate;}
+                                    ),
+                                  ),
+                                ),
+
+                                  TextFormField(
+                                    controller: issueController,
+                                    decoration: InputDecoration(
+                                      labelText: 'Issue',
+                                      icon: Icon(Icons.book_outlined),
+                                    ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        actions: [
+                          TextButton(
+                            onPressed: () => Navigator.pop(context),
+                            child: Text('Cancel'),
+                          ),
+                          TextButton(
+                              child: Text("Submit"),
+                              onPressed: () {
+
+
+
+
+                                Navigator.pop(context);
+                              })
+                        ],
+                      );
+                    },
+                  );
+                });
+          },
+        ),
         // ListTile(
         //   leading: Icon(Icons.add),
         //   title: Text('Add new book'),
