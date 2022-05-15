@@ -536,25 +536,6 @@ class _NavBarState extends State<NavBar> {
                                     icon: Icon(Icons.category),
                                   ),
                                 ),
-                                // CheckboxListTile(
-                                //   title: Text('Online : '),
-                                //   value: online_avail,
-                                //   onChanged: (value) {
-                                //     setState(() {
-                                //       online_avail = value!;
-                                //     });
-                                //     setState(() {});
-                                //   },
-                                // ),
-                                // CheckboxListTile(
-                                //   title: Text('Offline : '),
-                                //   value: offline_avail,
-                                //   onChanged: (value) {
-                                //     setState(() {
-                                //       print(1);
-                                //       offline_avail = value!;
-                                //     });},
-                                // ),
                                 DropdownButton(
                                   // Initial Value
                                   value: dropdownvalue,
@@ -578,50 +559,46 @@ class _NavBarState extends State<NavBar> {
                                   },
                                 ),
                                 dropdownvalue == 'Online' ||
-                                        dropdownvalue == 'Both'
+                                    dropdownvalue == 'Both'
                                     ? Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: ElevatedButton(
-                                          child: Text('Upload Pdf'),
-                                          onPressed: () async {
-                                            var result = await FilePicker.platform
-                                                .pickFiles(
-                                              // type: FileType.values[':pdf'],
-                                              withReadStream:
-                                                  true, // this will return PlatformFile object with read stream
-                                            );
-                                            if (result != null) {
-                                              setState(() {
-                                                objFile = result.files.single;
-                                                pickedFileByteStream =
-                                                    objFile.bytes!;
-                                                String toRet =
-                                                    pickedFileByteStream
-                                                        .toString();
-                                              });
-                                            }
-                                          }),
-                                    )
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: ElevatedButton(
+                                      child: Text('Upload Pdf'),
+                                      onPressed: () async {
+                                        var result = await FilePicker.platform.pickFiles(
+
+                                        );
+                                        if (result != null) {
+                                          Uint8List? fileBytes =  result.files.first.bytes;
+                                          pickedFileByteStream =  (fileBytes)!;
+                                          // var paths = result.files.first.path!;
+                                          // var file = File(paths);
+                                          // objFile =  result.files.single;
+                                          // String toRet =  pickedFileByteStream.toString();
+                                          // print('toRet $fileBytes');
+                                        }
+                                        if(pickedFileByteStream != null){
+                                          setState(() {});
+                                        }
+
+                                      }),
+                                )
                                     : SizedBox(),
                                 Padding(
                                   padding: const EdgeInsets.all(8.0),
                                   child: ElevatedButton(
                                       onPressed: () async {
-                                        var result = await FilePicker.platform
-                                            .pickFiles(
-                                          // type: FileType.values[':pdf'],
-                                          withReadStream:
-                                          true, // this will return PlatformFile object with read stream
+                                        var result = await FilePicker.platform.pickFiles(
+                                            type: FileType.image
                                         );
                                         if (result != null) {
-                                          setState(() {
-                                            objFileTn = result.files.single;
-                                            pickedFileByteStreamTn =
-                                            objFileTn.bytes!;
-                                            String toRet =
-                                            pickedFileByteStreamTn
-                                                .toString();
-                                          });
+                                          Uint8List? fileBytes = await result.files.first.bytes;
+                                          // objFileTn = result.files.single;
+                                          pickedFileByteStreamTn = fileBytes!;
+                                          String toRet = pickedFileByteStreamTn.toString();
+                                        }
+                                        if(pickedFileByteStreamTn != null){
+                                          setState(() {});
                                         }
                                       },
                                       child: Text('Upload Thumbnail')),
@@ -638,32 +615,45 @@ class _NavBarState extends State<NavBar> {
                           TextButton(
                               child: Text("Submit"),
                               onPressed: () {
-                                if (dropdownvalue == 'Online' ||
-                                    dropdownvalue == 'Both') {
-                                  showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return AlertDialog(
-                                          title: Text('Upload the pdf!'),
-                                          content: ElevatedButton(
-                                              onPressed: () {},
-                                              child: Text('Upload')),
-                                          actions: [
-                                            TextButton(
-                                              onPressed: () =>
-                                                  Navigator.pop(context),
-                                              child: Text('Cancel'),
-                                            ),
-                                            TextButton(
-                                              onPressed: () {
-                                                Navigator.pop(context);
-                                              },
-                                              child: Text('Submit'),
-                                            ),
-                                          ],
-                                        );
-                                      });
-                                }
+                                // if (dropdownvalue == 'Online' || dropdownvalue == 'Both') {
+                                //   showDialog(
+                                //       context: context,
+                                //       builder: (BuildContext context) {
+                                //         return AlertDialog(
+                                //           title: Text('Upload the pdf!'),
+                                //           content: ElevatedButton(
+                                //               onPressed: () {},
+                                //               child: Text('Upload')),
+                                //           actions: [
+                                //             TextButton(
+                                //               onPressed: () =>
+                                //                   Navigator.pop(context),
+                                //               child: Text('Cancel'),
+                                //             ),
+                                //             TextButton(
+                                //               onPressed: () {
+                                //                 Navigator.pop(context);
+                                //               },
+                                //               child: Text('Submit'),
+                                //             ),
+                                //           ],
+                                //         );
+                                //       });
+                                // }
+                                final channel =
+                                WebSocketChannel.connect(webSocket());
+                                channel.sink.add(parser(packet(
+                                    widget.id, Handler.Handler1, Add.BookRecord,
+                                    bookName: BookNameController.text,
+                                    isbn: isbnController.text,
+                                    author: [authorController.text],
+                                    availability: int.parse(availController.text),
+                                    type: dropdownvalue=='Online'?Avail.Online:dropdownvalue=='Offline'?Avail.Offline:3,
+                                    book: pickedFileByteStream.toString(),
+                                    thumbnail: pickedFileByteStreamTn.toString())));
+
+                                // pickedFileByteStream.toString() -------- filestream for pdf
+                                // pickedFileByteStreamTn.toString()  ----- filestream for thumbnail
                                 Navigator.pop(context);
                               })
                         ],
@@ -673,6 +663,193 @@ class _NavBarState extends State<NavBar> {
                 });
           },
         ),
+        // ListTile(
+        //   leading: Icon(Icons.add),
+        //   title: Text('Add new book'),
+        //   onTap: () {
+        //     showDialog(
+        //         context: context,
+        //         builder: (BuildContext context) {
+        //           var bookNameController = TextEditingController();
+        //           var authorController = TextEditingController();
+        //           var isbnController = TextEditingController();
+        //           var availController = TextEditingController();
+        //           return StatefulBuilder(
+        //             builder: (BuildContext context,
+        //                 void Function(void Function()) setState) {
+        //               return AlertDialog(
+        //                 scrollable: true,
+        //                 title: Text('Add Book'),
+        //                 content: Padding(
+        //                   padding: const EdgeInsets.all(8.0),
+        //                   child: Form(
+        //                     child: Column(
+        //                       children: <Widget>[
+        //                         TextFormField(
+        //                           controller: bookNameController,
+        //                           decoration: const InputDecoration(
+        //                             labelText: 'Name',
+        //                             icon: Icon(Icons.drive_file_rename_outline),
+        //                           ),
+        //                         ),
+        //                         TextFormField(
+        //                           controller: isbnController,
+        //                           decoration: const InputDecoration(
+        //                             labelText: 'ISBN',
+        //                             icon: Icon(Icons.add),
+        //                           ),
+        //                         ),
+        //                         TextFormField(
+        //                           controller: authorController,
+        //                           decoration: const InputDecoration(
+        //                             labelText: 'Author',
+        //                             icon: Icon(Icons.account_box),
+        //                           ),
+        //                         ),
+        //                         TextFormField(
+        //                           controller: availController,
+        //                           decoration: InputDecoration(
+        //                             labelText: 'Availablity',
+        //                             icon: Icon(Icons.category),
+        //                           ),
+        //                         ),
+        //                         // CheckboxListTile(
+        //                         //   title: Text('Online : '),
+        //                         //   value: online_avail,
+        //                         //   onChanged: (value) {
+        //                         //     setState(() {
+        //                         //       online_avail = value!;
+        //                         //     });
+        //                         //     setState(() {});
+        //                         //   },
+        //                         // ),
+        //                         // CheckboxListTile(
+        //                         //   title: Text('Offline : '),
+        //                         //   value: offline_avail,
+        //                         //   onChanged: (value) {
+        //                         //     setState(() {
+        //                         //       print(1);
+        //                         //       offline_avail = value!;
+        //                         //     });},
+        //                         // ),
+        //                         DropdownButton(
+        //                           // Initial Value
+        //                           value: dropdownvalue,
+        //
+        //                           // Down Arrow Icon
+        //                           icon: const Icon(Icons.keyboard_arrow_down),
+        //
+        //                           // Array list of items
+        //                           items: items.map((String items) {
+        //                             return DropdownMenuItem(
+        //                               value: items,
+        //                               child: Text(items),
+        //                             );
+        //                           }).toList(),
+        //                           // After selecting the desired option,it will
+        //                           // change button value to selected value
+        //                           onChanged: (String? newValue) {
+        //                             setState(() {
+        //                               dropdownvalue = newValue!;
+        //                             });
+        //                           },
+        //                         ),
+        //                         dropdownvalue == 'Online' ||
+        //                                 dropdownvalue == 'Both'
+        //                             ? Padding(
+        //                               padding: const EdgeInsets.all(8.0),
+        //                               child: ElevatedButton(
+        //                                   child: Text('Upload Pdf'),
+        //                                   onPressed: () async {
+        //                                     var result = await FilePicker.platform
+        //                                         .pickFiles(
+        //                                       // type: FileType.values[':pdf'],
+        //                                       withReadStream:
+        //                                           true, // this will return PlatformFile object with read stream
+        //                                     );
+        //                                     if (result != null) {
+        //                                       setState(() {
+        //                                         objFile = result.files.single;
+        //                                         pickedFileByteStream =
+        //                                             objFile.bytes!;
+        //                                         String toRet =
+        //                                             pickedFileByteStream
+        //                                                 .toString();
+        //                                       });
+        //                                     }
+        //                                   }),
+        //                             )
+        //                             : SizedBox(),
+        //                         Padding(
+        //                           padding: const EdgeInsets.all(8.0),
+        //                           child: ElevatedButton(
+        //                               onPressed: () async {
+        //                                 var result = await FilePicker.platform
+        //                                     .pickFiles(
+        //                                   // type: FileType.values[':pdf'],
+        //                                   withReadStream:
+        //                                   true, // this will return PlatformFile object with read stream
+        //                                 );
+        //                                 if (result != null) {
+        //                                   setState(() {
+        //                                     objFileTn = result.files.single;
+        //                                     pickedFileByteStreamTn =
+        //                                     objFileTn.bytes!;
+        //                                     String toRet =
+        //                                     pickedFileByteStreamTn
+        //                                         .toString();
+        //                                   });
+        //                                 }
+        //                               },
+        //                               child: Text('Upload Thumbnail')),
+        //                         )
+        //                       ],
+        //                     ),
+        //                   ),
+        //                 ),
+        //                 actions: [
+        //                   TextButton(
+        //                     onPressed: () => Navigator.pop(context),
+        //                     child: Text('Cancel'),
+        //                   ),
+        //                   TextButton(
+        //                       child: Text("Submit"),
+        //                       onPressed: () {
+        //                         if (dropdownvalue == 'Online' ||
+        //                             dropdownvalue == 'Both') {
+        //                           showDialog(
+        //                               context: context,
+        //                               builder: (BuildContext context) {
+        //                                 return AlertDialog(
+        //                                   title: Text('Upload the pdf!'),
+        //                                   content: ElevatedButton(
+        //                                       onPressed: () {},
+        //                                       child: Text('Upload')),
+        //                                   actions: [
+        //                                     TextButton(
+        //                                       onPressed: () =>
+        //                                           Navigator.pop(context),
+        //                                       child: Text('Cancel'),
+        //                                     ),
+        //                                     TextButton(
+        //                                       onPressed: () {
+        //                                         Navigator.pop(context);
+        //                                       },
+        //                                       child: Text('Submit'),
+        //                                     ),
+        //                                   ],
+        //                                 );
+        //                               });
+        //                         }
+        //                         Navigator.pop(context);
+        //                       })
+        //                 ],
+        //               );
+        //             },
+        //           );
+        //         });
+        //   },
+        // ),
 
         // ListTile(
         //   leading: Icon(Icons.notifications),
@@ -960,18 +1137,22 @@ class _NavBarState extends State<NavBar> {
                                   child: ElevatedButton(
                                       child: Text('Upload Pdf'),
                                       onPressed: () async {
-                                        var result = await FilePicker.platform.pickFiles();
+                                        var result = await FilePicker.platform.pickFiles(
+
+                                        );
                                         if (result != null) {
-                                          setState(() {
-                                            Uint8List? fileBytes = result.files.first.bytes;
+                                          Uint8List? fileBytes =  result.files.first.bytes;
+                                          pickedFileByteStream =  (fileBytes)!;
                                             // var paths = result.files.first.path!;
                                             // var file = File(paths);
                                             // objFile =  result.files.single;
-                                            pickedFileByteStream =  fileBytes!;
-                                            String toRet =  pickedFileByteStream.toString();
+                                            // String toRet =  pickedFileByteStream.toString();
                                             // print('toRet $fileBytes');
-                                          });
                                         }
+                                        if(pickedFileByteStream != null){
+                                          setState(() {});
+                                        }
+
                                       }),
                                 )
                                     : SizedBox(),
@@ -979,14 +1160,17 @@ class _NavBarState extends State<NavBar> {
                                   padding: const EdgeInsets.all(8.0),
                                   child: ElevatedButton(
                                       onPressed: () async {
-                                        var result = await FilePicker.platform.pickFiles();
+                                        var result = await FilePicker.platform.pickFiles(
+                                            type: FileType.image
+                                        );
                                         if (result != null) {
-                                          setState(() async{
-                                            Uint8List? fileBytes = result.files.first.bytes;
+                                            Uint8List? fileBytes = await result.files.first.bytes;
                                             // objFileTn = result.files.single;
                                             pickedFileByteStreamTn = fileBytes!;
                                             String toRet = pickedFileByteStreamTn.toString();
-                                          });
+                                        }
+                                        if(pickedFileByteStreamTn != null){
+                                          setState(() {});
                                         }
                                       },
                                       child: Text('Upload Thumbnail')),
@@ -1003,31 +1187,31 @@ class _NavBarState extends State<NavBar> {
                           TextButton(
                               child: Text("Submit"),
                               onPressed: () {
-                                if (dropdownvalue == 'Online' || dropdownvalue == 'Both') {
-                                  showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return AlertDialog(
-                                          title: Text('Upload the pdf!'),
-                                          content: ElevatedButton(
-                                              onPressed: () {},
-                                              child: Text('Upload')),
-                                          actions: [
-                                            TextButton(
-                                              onPressed: () =>
-                                                  Navigator.pop(context),
-                                              child: Text('Cancel'),
-                                            ),
-                                            TextButton(
-                                              onPressed: () {
-                                                Navigator.pop(context);
-                                              },
-                                              child: Text('Submit'),
-                                            ),
-                                          ],
-                                        );
-                                      });
-                                }
+                                // if (dropdownvalue == 'Online' || dropdownvalue == 'Both') {
+                                //   showDialog(
+                                //       context: context,
+                                //       builder: (BuildContext context) {
+                                //         return AlertDialog(
+                                //           title: Text('Upload the pdf!'),
+                                //           content: ElevatedButton(
+                                //               onPressed: () {},
+                                //               child: Text('Upload')),
+                                //           actions: [
+                                //             TextButton(
+                                //               onPressed: () =>
+                                //                   Navigator.pop(context),
+                                //               child: Text('Cancel'),
+                                //             ),
+                                //             TextButton(
+                                //               onPressed: () {
+                                //                 Navigator.pop(context);
+                                //               },
+                                //               child: Text('Submit'),
+                                //             ),
+                                //           ],
+                                //         );
+                                //       });
+                                // }
                                 final channel =
                                 WebSocketChannel.connect(webSocket());
                                 channel.sink.add(parser(packet(
