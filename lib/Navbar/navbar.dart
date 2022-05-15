@@ -1046,7 +1046,7 @@ class _NavBarState extends State<NavBar> {
                                     author: [authorController.text],
                                     availability:
                                     int.parse(availController.text),
-                                    type: 1,
+                                    type: dropdownvalue=='Online'?Avail.Online:dropdownvalue=='Offline'?Avail.Offline:3,
                                     book: pickedFileByteStream.toString(),
                                     thumbnail:
                                     pickedFileByteStreamTn.toString())));
