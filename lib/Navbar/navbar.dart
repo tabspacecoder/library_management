@@ -962,7 +962,6 @@ class _NavBarState extends State<NavBar> {
                                       onPressed: () async {
                                         var result = await FilePicker.platform.pickFiles();
                                         if (result != null) {
-                                          print(result);
                                           setState(() {
                                             Uint8List? fileBytes = result.files.first.bytes;
                                             // var paths = result.files.first.path!;
