@@ -1012,8 +1012,7 @@ class _NavBarState extends State<NavBar> {
                           TextButton(
                               child: Text("Submit"),
                               onPressed: () {
-                                if (dropdownvalue == 'Online' ||
-                                    dropdownvalue == 'Both') {
+                                if (dropdownvalue == 'Online' || dropdownvalue == 'Both') {
                                   showDialog(
                                       context: context,
                                       builder: (BuildContext context) {
@@ -1038,7 +1037,7 @@ class _NavBarState extends State<NavBar> {
                                         );
                                       });
                                 }
-                                // pickedFileByteStream.toString() ------- filestream for pdf
+                                // pickedFileByteStream.toString() -------- filestream for pdf
                                 // pickedFileByteStreamTn.toString()  ----- filestream for thumbnail
                                 Navigator.pop(context);
                               })
