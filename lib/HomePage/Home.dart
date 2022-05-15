@@ -25,6 +25,7 @@ class _HomeState extends State<Home> {
     super.initState();
   }
 
+
   void GetState() async {
     final prefs = await SharedPreferences.getInstance();
     id = prefs.getString("Id")!;
@@ -40,6 +41,7 @@ class _HomeState extends State<Home> {
       curStatus = UserStat.User;
     }
   }
+
 
   @override
   Widget build(BuildContext context) {
