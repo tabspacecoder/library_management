@@ -206,7 +206,7 @@ class _NavBarState extends State<NavBar> {
     setState(() {});
   }
 
-  late Uint8List pickedFileByteStream;
+  Uint8List pickedFileByteStream=Uint8List.fromList([]);
   late Uint8List pickedFileByteStreamTn;
   late PlatformFile objFile;
   late PlatformFile objFileTn;
