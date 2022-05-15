@@ -26,7 +26,6 @@ class NavBar extends StatefulWidget {
 class _NavBarState extends State<NavBar> {
   late List<BookRequestData> data;
 
-
   void fetch() async {
     final channel = WebSocketChannel.connect(webSocket());
     channel.sink.add(parser(packet(
@@ -75,7 +74,9 @@ class _NavBarState extends State<NavBar> {
     final channel = WebSocketChannel.connect(webSocket());
     channel.sink.add(parser(packet(widget.id, Handler.Handler1, Add.BookRequest,
         bookName: BookName, username: UserName, author: [Author])));
-    channel.stream.listen((event) {channel.sink.close();});
+    channel.stream.listen((event) {
+      channel.sink.close();
+    });
   }
 
   void addMagazineRequest(String UserName, String Author, String BookName) {
@@ -83,7 +84,9 @@ class _NavBarState extends State<NavBar> {
     channel.sink.add(parser(packet(
         widget.id, Handler.Handler1, Add.MagazineSubscriptionRequest,
         bookName: BookName, username: UserName, author: [Author])));
-    channel.stream.listen((event) {channel.sink.close();});
+    channel.stream.listen((event) {
+      channel.sink.close();
+    });
   }
 
   bool online_avail = false;
@@ -188,7 +191,8 @@ class _NavBarState extends State<NavBar> {
   var UsernameController = TextEditingController();
   var BookNameController = TextEditingController();
   var DueDateController = TextEditingController();
-  String IssueDate = "${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}";
+  String IssueDate =
+      "${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}";
   DateTime selectedDate = DateTime.now();
   _selectDate(BuildContext context) async {
     final DateTime? selected = await showDatePicker(
@@ -204,7 +208,7 @@ class _NavBarState extends State<NavBar> {
     setState(() {});
   }
 
-  Uint8List pickedFileByteStream=Uint8List.fromList([]);
+  Uint8List pickedFileByteStream = Uint8List.fromList([]);
   late Uint8List pickedFileByteStreamTn;
   late PlatformFile objFile;
   late PlatformFile objFileTn;
@@ -216,8 +220,9 @@ class _NavBarState extends State<NavBar> {
         UserAccountsDrawerHeader(
           accountName: Text(widget.username),
           accountEmail: Text(widget.curStatus),
-          currentAccountPicture:  CircleAvatar(
-            backgroundImage: AssetImage('assets/${widget.username[0].toLowerCase()}.png'),
+          currentAccountPicture: CircleAvatar(
+            backgroundImage:
+                AssetImage('assets/${widget.username[0].toLowerCase()}.png'),
             // backgroundImage: AssetImage('assets/a.png'),
             radius: 30,
           ),
@@ -557,45 +562,48 @@ class _NavBarState extends State<NavBar> {
                                   },
                                 ),
                                 dropdownvalue == 'Online' ||
-                                    dropdownvalue == 'Both'
+                                        dropdownvalue == 'Both'
                                     ? Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: ElevatedButton(
-                                      child: Text('Upload Pdf'),
-                                      onPressed: () async {
-                                        var result = await FilePicker.platform.pickFiles(
-
-                                        );
-                                        if (result != null) {
-                                          Uint8List? fileBytes =  result.files.first.bytes;
-                                          pickedFileByteStream =  (fileBytes)!;
-                                          // var paths = result.files.first.path!;
-                                          // var file = File(paths);
-                                          // objFile =  result.files.single;
-                                          // String toRet =  pickedFileByteStream.toString();
-                                          // print('toRet $fileBytes');
-                                        }
-                                        if(pickedFileByteStream != null){
-                                          setState(() {});
-                                        }
-
-                                      }),
-                                )
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: ElevatedButton(
+                                            child: Text('Upload Pdf'),
+                                            onPressed: () async {
+                                              var result = await FilePicker
+                                                  .platform
+                                                  .pickFiles();
+                                              if (result != null) {
+                                                Uint8List? fileBytes =
+                                                    result.files.first.bytes;
+                                                pickedFileByteStream =
+                                                    (fileBytes)!;
+                                                // var paths = result.files.first.path!;
+                                                // var file = File(paths);
+                                                // objFile =  result.files.single;
+                                                // String toRet =  pickedFileByteStream.toString();
+                                                // print('toRet $fileBytes');
+                                              }
+                                              if (pickedFileByteStream !=
+                                                  null) {
+                                                setState(() {});
+                                              }
+                                            }),
+                                      )
                                     : SizedBox(),
                                 Padding(
                                   padding: const EdgeInsets.all(8.0),
                                   child: ElevatedButton(
                                       onPressed: () async {
-                                        var result = await FilePicker.platform.pickFiles(
-                                            type: FileType.image
-                                        );
+                                        var result = await FilePicker.platform
+                                            .pickFiles(type: FileType.image);
                                         if (result != null) {
-                                          Uint8List? fileBytes = await result.files.first.bytes;
+                                          Uint8List? fileBytes =
+                                              await result.files.first.bytes;
                                           // objFileTn = result.files.single;
                                           pickedFileByteStreamTn = fileBytes!;
-                                          String toRet = pickedFileByteStreamTn.toString();
+                                          String toRet =
+                                              pickedFileByteStreamTn.toString();
                                         }
-                                        if(pickedFileByteStreamTn != null){
+                                        if (pickedFileByteStreamTn != null) {
                                           setState(() {});
                                         }
                                       },
@@ -639,16 +647,22 @@ class _NavBarState extends State<NavBar> {
                                 //       });
                                 // }
                                 final channel =
-                                WebSocketChannel.connect(webSocket());
+                                    WebSocketChannel.connect(webSocket());
                                 channel.sink.add(parser(packet(
                                     widget.id, Handler.Handler1, Add.BookRecord,
                                     bookName: BookNameController.text,
                                     isbn: isbnController.text,
                                     author: [authorController.text],
-                                    availability: int.parse(availController.text),
-                                    type: dropdownvalue=='Online'?Avail.Online:dropdownvalue=='Offline'?Avail.Offline:3,
+                                    availability:
+                                        int.parse(availController.text),
+                                    type: dropdownvalue == 'Online'
+                                        ? Avail.Online
+                                        : dropdownvalue == 'Offline'
+                                            ? Avail.Offline
+                                            : 3,
                                     book: pickedFileByteStream.toString(),
-                                    thumbnail: pickedFileByteStreamTn.toString())));
+                                    thumbnail:
+                                        pickedFileByteStreamTn.toString())));
 
                                 // pickedFileByteStream.toString() -------- filestream for pdf
                                 // pickedFileByteStreamTn.toString()  ----- filestream for thumbnail
@@ -665,7 +679,8 @@ class _NavBarState extends State<NavBar> {
           leading: Icon(Icons.add),
           title: Text('Add new magazine'),
           onTap: () {
-            DueDate = "${selectedDate.day}/${selectedDate.month}/${selectedDate.year}";
+            DueDate =
+                "${selectedDate.day}/${selectedDate.month}/${selectedDate.year}";
             showDialog(
                 context: context,
                 builder: (BuildContext context) {
@@ -710,18 +725,20 @@ class _NavBarState extends State<NavBar> {
                                   controller: DueDateController,
                                   decoration: InputDecoration(
                                     labelText: 'Due Date',
-                                    icon: IconButton(icon:Icon(Icons.calendar_today), onPressed: () {_selectDate(context);
-                                    DueDateController.text = DueDate;}
-                                    ),
+                                    icon: IconButton(
+                                        icon: Icon(Icons.calendar_today),
+                                        onPressed: () {
+                                          _selectDate(context);
+                                          DueDateController.text = DueDate;
+                                        }),
                                   ),
                                 ),
-
-                                  TextFormField(
-                                    controller: issueController,
-                                    decoration: InputDecoration(
-                                      labelText: 'Issue',
-                                      icon: Icon(Icons.book_outlined),
-                                    ),
+                                TextFormField(
+                                  controller: issueController,
+                                  decoration: InputDecoration(
+                                    labelText: 'Issue',
+                                    icon: Icon(Icons.book_outlined),
+                                  ),
                                 ),
                               ],
                             ),
@@ -735,10 +752,6 @@ class _NavBarState extends State<NavBar> {
                           TextButton(
                               child: Text("Submit"),
                               onPressed: () {
-
-
-
-
                                 Navigator.pop(context);
                               })
                         ],
@@ -1106,6 +1119,7 @@ class _NavBarState extends State<NavBar> {
     late Uint8List pickedFileByteStreamTn;
     late PlatformFile objFile;
     late PlatformFile objFileTn;
+
     return ListView(
       padding: EdgeInsets.zero,
       children: [
@@ -1114,7 +1128,7 @@ class _NavBarState extends State<NavBar> {
           accountEmail: Text(widget.curStatus),
           currentAccountPicture: CircleAvatar(
             backgroundImage:
-            AssetImage('assets/${widget.username[0].toLowerCase()}.png'),
+                AssetImage('assets/${widget.username[0].toLowerCase()}.png'),
             // backgroundImage: AssetImage('assets/a.png'),
             radius: 30,
           ),
@@ -1129,9 +1143,9 @@ class _NavBarState extends State<NavBar> {
               context,
               MaterialPageRoute(
                   builder: (context) => opacHome(
-                    id: widget.id,
-                    title: 'Search Book',
-                  ))),
+                        id: widget.id,
+                        title: 'Search Book',
+                      ))),
         ),
         ListTile(
           leading: Icon(Icons.book),
@@ -1216,45 +1230,48 @@ class _NavBarState extends State<NavBar> {
                                   },
                                 ),
                                 dropdownvalue == 'Online' ||
-                                    dropdownvalue == 'Both'
+                                        dropdownvalue == 'Both'
                                     ? Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: ElevatedButton(
-                                      child: const Text('Upload Pdf'),
-                                      onPressed: () async {
-                                        var result = await FilePicker.platform.pickFiles(
-
-                                        );
-                                        if (result != null) {
-                                          Uint8List? fileBytes =  result.files.first.bytes;
-                                          pickedFileByteStream =  (fileBytes)!;
-                                            // var paths = result.files.first.path!;
-                                            // var file = File(paths);
-                                            // objFile =  result.files.single;
-                                            // String toRet =  pickedFileByteStream.toString();
-                                            // print('toRet $fileBytes');
-                                        }
-                                        if(pickedFileByteStream != null){
-                                          setState(() {});
-                                        }
-
-                                      }),
-                                )
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: ElevatedButton(
+                                            child: const Text('Upload Pdf'),
+                                            onPressed: () async {
+                                              var result = await FilePicker
+                                                  .platform
+                                                  .pickFiles();
+                                              if (result != null) {
+                                                Uint8List? fileBytes =
+                                                    result.files.first.bytes;
+                                                pickedFileByteStream =
+                                                    (fileBytes)!;
+                                                // var paths = result.files.first.path!;
+                                                // var file = File(paths);
+                                                // objFile =  result.files.single;
+                                                // String toRet =  pickedFileByteStream.toString();
+                                                // print('toRet $fileBytes');
+                                              }
+                                              if (pickedFileByteStream !=
+                                                  null) {
+                                                setState(() {});
+                                              }
+                                            }),
+                                      )
                                     : const SizedBox(),
                                 Padding(
                                   padding: const EdgeInsets.all(8.0),
                                   child: ElevatedButton(
                                       onPressed: () async {
-                                        var result = await FilePicker.platform.pickFiles(
-                                            type: FileType.image
-                                        );
+                                        var result = await FilePicker.platform
+                                            .pickFiles(type: FileType.image);
                                         if (result != null) {
-                                            Uint8List? fileBytes = await result.files.first.bytes;
-                                            // objFileTn = result.files.single;
-                                            pickedFileByteStreamTn = fileBytes!;
-                                            String toRet = pickedFileByteStreamTn.toString();
+                                          Uint8List? fileBytes =
+                                              await result.files.first.bytes;
+                                          // objFileTn = result.files.single;
+                                          pickedFileByteStreamTn = fileBytes!;
+                                          String toRet =
+                                              pickedFileByteStreamTn.toString();
                                         }
-                                        if(pickedFileByteStreamTn != null){
+                                        if (pickedFileByteStreamTn != null) {
                                           setState(() {});
                                         }
                                       },
@@ -1298,16 +1315,22 @@ class _NavBarState extends State<NavBar> {
                                 //       });
                                 // }
                                 final channel =
-                                WebSocketChannel.connect(webSocket());
+                                    WebSocketChannel.connect(webSocket());
                                 channel.sink.add(parser(packet(
                                     widget.id, Handler.Handler1, Add.BookRecord,
                                     bookName: BookNameController.text,
                                     isbn: isbnController.text,
                                     author: [authorController.text],
-                                    availability: int.parse(availController.text),
-                                    type: dropdownvalue=='Online'?Avail.Online:dropdownvalue=='Offline'?Avail.Offline:3,
+                                    availability:
+                                        int.parse(availController.text),
+                                    type: dropdownvalue == 'Online'
+                                        ? Avail.Online
+                                        : dropdownvalue == 'Offline'
+                                            ? Avail.Offline
+                                            : 3,
                                     book: pickedFileByteStream.toString(),
-                                    thumbnail: pickedFileByteStreamTn.toString())));
+                                    thumbnail:
+                                        pickedFileByteStreamTn.toString())));
 
                                 // pickedFileByteStream.toString() -------- filestream for pdf
                                 // pickedFileByteStreamTn.toString()  ----- filestream for thumbnail
@@ -1389,14 +1412,52 @@ class _NavBarState extends State<NavBar> {
                       ),
                       actions: [
                         TextButton(
-                          onPressed: () {
+                          onPressed: () async {
+
+                            if (userPrevilege == 'Admin') {
+                              final channel =
+                              WebSocketChannel.connect(webSocket());
+                              channel.sink.add(parser(packet(
+                                  widget.id, Handler.Handler1, Create.Admin,
+                                  username: usernameController.text.toString(),
+                                  password: sha512
+                                      .convert(utf8.encode(passwordController.text.toString()))
+                                      .toString())));
+                              channel.stream.listen((event) {
+                                event = event.split(Header.Split)[1];
+                                var out = jsonDecode(event);
+                                if(out["Header"] == Header.Success)
+                                  {
+                                    showSnackbar(context, "User Created");
+                                  }
+                                else{
+                                  showSnackbar(context, "Unable to create user");
+                                }
+                                channel.sink.close();
+                              });
+                            } else {
+                              final channel =
+                              WebSocketChannel.connect(webSocket());
+                              channel.sink.add(parser(packet(
+                                  widget.id, Handler.Handler1, Create.User,
+                                  username: usernameController.text.toString(),
+                                  password: sha512
+                                      .convert(utf8.encode(passwordController.text.toString()))
+                                      .toString())));
+                              channel.stream.listen((event) {
+                                event = event.split(Header.Split)[1];
+                                var out = jsonDecode(event);
+                                if(out["Header"] == Header.Success)
+                                {
+                                  showSnackbar(context, "User Created");
+                                }
+                                else{
+                                  showSnackbar(context, "Unable to create user");
+                                }
+                                channel.sink.close();
+                              });
+                            }
                             Navigator.pop(context);
-                            if(userPrevilege == 'Admin'){
-                              print(Privileges.Admin);
-                            }
-                            else{
-                              print(Privileges.User);
-                            }
                           },
                           child: Text('Create new user'),
                         ),
