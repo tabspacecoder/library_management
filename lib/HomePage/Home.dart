@@ -79,14 +79,6 @@ class _HomeState extends State<Home> {
               // exampleTextField(),3
             ],
           ),
-          // automaticallyImplyLeading: false,
-          // actions: [
-          //   curStatus == UserStat.SuperAdmin
-          //       ? superAdminPopUpProfileButton(username: username, curstatus: curStatus,id: id,)
-          //       : curStatus == UserStat.Admin
-          //           ? adminPopUpProfileButton(username: username, curstatus: curStatus,id: id,)
-          //           : userPopUpProfileButton(username: username, curstatus: curStatus,id: id,),
-          // ],
           bottom: const TabBar(
             tabs: [
               Tab(icon: Icon(Icons.home_filled), text: "Home"),

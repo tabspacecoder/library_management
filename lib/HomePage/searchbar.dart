@@ -40,12 +40,12 @@ Widget buildFloatingSearchBar() {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [ListTile(
-              leading: Icon(Icons.favorite),
-              title: Text('Favorites'),
+              leading: const Icon(Icons.favorite),
+              title: const Text('Favorites'),
               onTap: () => null,
             ),
               ListTile(
-                leading: Icon(Icons.person),
+                leading: const Icon(Icons.person),
                 title: Text('Friends'),
                 onTap: () => null,
               ),
