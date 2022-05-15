@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:crypto/crypto.dart';
@@ -959,20 +960,17 @@ class _NavBarState extends State<NavBar> {
                                   child: ElevatedButton(
                                       child: Text('Upload Pdf'),
                                       onPressed: () async {
-                                        var result = await FilePicker.platform
-                                            .pickFiles(
-                                          // type: FileType.values[':pdf'],
-                                          withReadStream:
-                                          true, // this will return PlatformFile object with read stream
-                                        );
+                                        var result = await FilePicker.platform.pickFiles();
                                         if (result != null) {
+                                          print(result);
                                           setState(() {
-                                            objFile = result.files.single;
-                                            pickedFileByteStream =
-                                            objFile.bytes!;
-                                            String toRet =
-                                            pickedFileByteStream
-                                                .toString();
+                                            Uint8List? fileBytes = result.files.first.bytes;
+                                            // var paths = result.files.first.path!;
+                                            // var file = File(paths);
+                                            // objFile =  result.files.single;
+                                            pickedFileByteStream =  fileBytes!;
+                                            String toRet =  pickedFileByteStream.toString();
+                                            // print('toRet $fileBytes');
                                           });
                                         }
                                       }),
@@ -982,19 +980,13 @@ class _NavBarState extends State<NavBar> {
                                   padding: const EdgeInsets.all(8.0),
                                   child: ElevatedButton(
                                       onPressed: () async {
-                                        var result = await FilePicker.platform
-                                            .pickFiles(
-                                          // type: FileType.values[':pdf'],
-                                          withReadStream:
-                                          true, // this will return PlatformFile object with read stream
-                                        );
+                                        var result = await FilePicker.platform.pickFiles();
                                         if (result != null) {
-                                          setState(() {
-                                            objFileTn = result.files.single;
-                                            pickedFileByteStreamTn =
-                                            objFileTn.bytes!;
-                                            String toRet =
-                                            pickedFileByteStreamTn.toString();
+                                          setState(() async{
+                                            Uint8List? fileBytes = result.files.first.bytes;
+                                            // objFileTn = result.files.single;
+                                            pickedFileByteStreamTn = fileBytes!;
+                                            String toRet = pickedFileByteStreamTn.toString();
                                           });
                                         }
                                       },
@@ -1044,12 +1036,10 @@ class _NavBarState extends State<NavBar> {
                                     bookName: BookNameController.text,
                                     isbn: isbnController.text,
                                     author: [authorController.text],
-                                    availability:
-                                    int.parse(availController.text),
+                                    availability: int.parse(availController.text),
                                     type: dropdownvalue=='Online'?Avail.Online:dropdownvalue=='Offline'?Avail.Offline:3,
                                     book: pickedFileByteStream.toString(),
-                                    thumbnail:
-                                    pickedFileByteStreamTn.toString())));
+                                    thumbnail: pickedFileByteStreamTn.toString())));
 
                                 // pickedFileByteStream.toString() -------- filestream for pdf
                                 // pickedFileByteStreamTn.toString()  ----- filestream for thumbnail
