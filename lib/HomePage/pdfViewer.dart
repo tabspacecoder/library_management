@@ -12,13 +12,12 @@ class PdfViewer extends StatefulWidget {
 }
 
 class _PdfViewerState extends State<PdfViewer> {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text(widget.name),),
       body: Container(
-          child: SfPdfViewer.network(widget.link)),
+          child: SfPdfViewer.network(widget.link,canShowScrollHead: true,canShowScrollStatus: true,pageLayoutMode: PdfPageLayoutMode.single,scrollDirection: PdfScrollDirection.vertical)),
     );
   }
 }
