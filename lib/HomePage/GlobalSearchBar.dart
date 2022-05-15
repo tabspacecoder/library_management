@@ -335,7 +335,7 @@ class _SearchBarState extends State<SearchBar> {
                     final channel = WebSocketChannel.connect(webSocket());
                     channel.sink.add(parser(packet(
                         widget.id, Handler.Handler1, Fetch.DigitalBooks,
-                        isbn: "Here asshole")));
+                        isbn: suggestion.ISBN)));
                     channel.stream.listen((event) {
                       event = event.split(Header.Split)[1];
                       var link = jsonDecode(event)["Data"];
