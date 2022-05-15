@@ -25,6 +25,7 @@ class NavBar extends StatefulWidget {
 class _NavBarState extends State<NavBar> {
   late List<BookRequestData> data;
 
+
   void fetch() async {
     final channel = WebSocketChannel.connect(webSocket());
     channel.sink.add(parser(packet(
@@ -188,8 +189,7 @@ class _NavBarState extends State<NavBar> {
   var UsernameController = TextEditingController();
   var BookNameController = TextEditingController();
   var DueDateController = TextEditingController();
-  String IssueDate =
-      "${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}";
+  String IssueDate = "${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}";
   DateTime selectedDate = DateTime.now();
   _selectDate(BuildContext context) async {
     final DateTime? selected = await showDatePicker(
@@ -217,9 +217,8 @@ class _NavBarState extends State<NavBar> {
         UserAccountsDrawerHeader(
           accountName: Text(widget.username),
           accountEmail: Text(widget.curStatus),
-          currentAccountPicture: CircleAvatar(
-            backgroundImage:
-                AssetImage('assets/${widget.username[0].toLowerCase()}.png'),
+          currentAccountPicture:  CircleAvatar(
+            backgroundImage: AssetImage('assets/${widget.username[0].toLowerCase()}.png'),
             // backgroundImage: AssetImage('assets/a.png'),
             radius: 30,
           ),
@@ -580,48 +579,47 @@ class _NavBarState extends State<NavBar> {
                                 dropdownvalue == 'Online' ||
                                         dropdownvalue == 'Both'
                                     ? Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: ElevatedButton(
-                                            child: Text('Upload Pdf'),
-                                            onPressed: () async {
-                                              var result = await FilePicker
-                                                  .platform
-                                                  .pickFiles(
-                                                // type: FileType.values[':pdf'],
-                                                withReadStream:
-                                                    true, // this will return PlatformFile object with read stream
-                                              );
-                                              if (result != null) {
-                                                setState(() {
-                                                  objFile = result.files.single;
-                                                  pickedFileByteStream =
-                                                      objFile.bytes!;
-                                                  String toRet =
-                                                      pickedFileByteStream
-                                                          .toString();
-                                                });
-                                              }
-                                            }),
-                                      )
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: ElevatedButton(
+                                          child: Text('Upload Pdf'),
+                                          onPressed: () async {
+                                            var result = await FilePicker.platform
+                                                .pickFiles(
+                                              // type: FileType.values[':pdf'],
+                                              withReadStream:
+                                                  true, // this will return PlatformFile object with read stream
+                                            );
+                                            if (result != null) {
+                                              setState(() {
+                                                objFile = result.files.single;
+                                                pickedFileByteStream =
+                                                    objFile.bytes!;
+                                                String toRet =
+                                                    pickedFileByteStream
+                                                        .toString();
+                                              });
+                                            }
+                                          }),
+                                    )
                                     : SizedBox(),
                                 Padding(
                                   padding: const EdgeInsets.all(8.0),
                                   child: ElevatedButton(
                                       onPressed: () async {
-                                        var result =
-                                            await FilePicker.platform.pickFiles(
+                                        var result = await FilePicker.platform
+                                            .pickFiles(
                                           // type: FileType.values[':pdf'],
                                           withReadStream:
-                                              true, // this will return PlatformFile object with read stream
+                                          true, // this will return PlatformFile object with read stream
                                         );
                                         if (result != null) {
                                           setState(() {
                                             objFileTn = result.files.single;
                                             pickedFileByteStreamTn =
-                                                objFileTn.bytes!;
+                                            objFileTn.bytes!;
                                             String toRet =
-                                                pickedFileByteStreamTn
-                                                    .toString();
+                                            pickedFileByteStreamTn
+                                                .toString();
                                           });
                                         }
                                       },
@@ -853,7 +851,7 @@ class _NavBarState extends State<NavBar> {
           accountEmail: Text(widget.curStatus),
           currentAccountPicture: CircleAvatar(
             backgroundImage:
-                AssetImage('assets/${widget.username[0].toLowerCase()}.png'),
+            AssetImage('assets/${widget.username[0].toLowerCase()}.png'),
             // backgroundImage: AssetImage('assets/a.png'),
             radius: 30,
           ),
@@ -868,9 +866,9 @@ class _NavBarState extends State<NavBar> {
               context,
               MaterialPageRoute(
                   builder: (context) => opacHome(
-                        id: widget.id,
-                        title: 'Search Book',
-                      ))),
+                    id: widget.id,
+                    title: 'Search Book',
+                  ))),
         ),
         ListTile(
           leading: Icon(Icons.book),
@@ -927,7 +925,7 @@ class _NavBarState extends State<NavBar> {
                                 ),
                                 TextFormField(
                                   controller: availController,
-                                  decoration: const InputDecoration(
+                                  decoration: InputDecoration(
                                     labelText: 'Availablity',
                                     icon: Icon(Icons.category),
                                   ),
@@ -955,54 +953,52 @@ class _NavBarState extends State<NavBar> {
                                   },
                                 ),
                                 dropdownvalue == 'Online' ||
-                                        dropdownvalue == 'Both'
+                                    dropdownvalue == 'Both'
                                     ? Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: ElevatedButton(
-                                            child: const Text('Upload Pdf'),
-                                            onPressed: () async {
-                                              var result = await FilePicker
-                                                  .platform
-                                                  .pickFiles(
-                                                // type: FileType.values[':pdf'],
-                                                withReadStream:
-                                                    true, // this will return PlatformFile object with read stream
-                                              );
-                                              if (result != null) {
-                                                setState(() {
-                                                  objFile = result.files.single;
-                                                  pickedFileByteStream =
-                                                      objFile.bytes!;
-                                                  String toRet =
-                                                      pickedFileByteStream
-                                                          .toString();
-                                                });
-                                              }
-                                            }),
-                                      )
-                                    : const SizedBox(),
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: ElevatedButton(
+                                      child: Text('Upload Pdf'),
+                                      onPressed: () async {
+                                        var result = await FilePicker.platform
+                                            .pickFiles(
+                                          // type: FileType.values[':pdf'],
+                                          withReadStream:
+                                          true, // this will return PlatformFile object with read stream
+                                        );
+                                        if (result != null) {
+                                          setState(() {
+                                            objFile = result.files.single;
+                                            pickedFileByteStream =
+                                            objFile.bytes!;
+                                            String toRet =
+                                            pickedFileByteStream
+                                                .toString();
+                                          });
+                                        }
+                                      }),
+                                )
+                                    : SizedBox(),
                                 Padding(
                                   padding: const EdgeInsets.all(8.0),
                                   child: ElevatedButton(
                                       onPressed: () async {
-                                        var result =
-                                            await FilePicker.platform.pickFiles(
+                                        var result = await FilePicker.platform
+                                            .pickFiles(
                                           // type: FileType.values[':pdf'],
                                           withReadStream:
-                                              true, // this will return PlatformFile object with read stream
+                                          true, // this will return PlatformFile object with read stream
                                         );
                                         if (result != null) {
                                           setState(() {
                                             objFileTn = result.files.single;
                                             pickedFileByteStreamTn =
-                                                objFileTn.bytes!;
+                                            objFileTn.bytes!;
                                             String toRet =
-                                                pickedFileByteStreamTn
-                                                    .toString();
+                                            pickedFileByteStreamTn.toString();
                                           });
                                         }
                                       },
-                                      child: const Text('Upload Thumbnail')),
+                                      child: Text('Upload Thumbnail')),
                                 )
                               ],
                             ),
@@ -1011,51 +1007,37 @@ class _NavBarState extends State<NavBar> {
                         actions: [
                           TextButton(
                             onPressed: () => Navigator.pop(context),
-                            child: const Text('Cancel'),
+                            child: Text('Cancel'),
                           ),
                           TextButton(
-                              child: const Text("Submit"),
-                              onPressed: () async {
-                                if (dropdownvalue == 'Online' ||
-                                    dropdownvalue == 'Both') {
+                              child: Text("Submit"),
+                              onPressed: () {
+                                if (dropdownvalue == 'Online' || dropdownvalue == 'Both') {
                                   showDialog(
                                       context: context,
                                       builder: (BuildContext context) {
                                         return AlertDialog(
-                                          title: const Text('Upload the pdf!'),
+                                          title: Text('Upload the pdf!'),
                                           content: ElevatedButton(
                                               onPressed: () {},
-                                              child: const Text('Upload')),
+                                              child: Text('Upload')),
                                           actions: [
                                             TextButton(
                                               onPressed: () =>
                                                   Navigator.pop(context),
-                                              child: const Text('Cancel'),
+                                              child: Text('Cancel'),
                                             ),
                                             TextButton(
                                               onPressed: () {
                                                 Navigator.pop(context);
                                               },
-                                              child: const Text('Submit'),
+                                              child: Text('Submit'),
                                             ),
                                           ],
                                         );
                                       });
                                 }
-                                final channel =
-                                    WebSocketChannel.connect(webSocket());
-                                channel.sink.add(parser(packet(
-                                    widget.id, Handler.Handler1, Add.BookRecord,
-                                    bookName: BookNameController.text,
-                                    isbn: isbnController.text,
-                                    author: [authorController.text],
-                                    availability:
-                                        int.parse(availController.text),
-                                    type: 1,
-                                    book: pickedFileByteStream.toString(),
-                                    thumbnail:
-                                        pickedFileByteStreamTn.toString())));
-                                // pickedFileByteStream.toString() ------- filestream for pdf
+                                // pickedFileByteStream.toString() -------- filestream for pdf
                                 // pickedFileByteStreamTn.toString()  ----- filestream for thumbnail
                                 Navigator.pop(context);
                               })
@@ -1137,9 +1119,10 @@ class _NavBarState extends State<NavBar> {
                         TextButton(
                           onPressed: () {
                             Navigator.pop(context);
-                            if (userPrevilege == 'Admin') {
+                            if(userPrevilege == 'Admin'){
                               print(Privileges.Admin);
-                            } else {
+                            }
+                            else{
                               print(Privileges.User);
                             }
                           },
