@@ -44,7 +44,8 @@ class _NavBarState extends State<NavBar> {
     });
   }
 
-  void changePasswordAPI(dynamic oldPassController, dynamic newPassController) async {
+  void changePasswordAPI(
+      dynamic oldPassController, dynamic newPassController) async {
     final channel = WebSocketChannel.connect(webSocket());
 
     channel.sink.add(parser(packet(widget.id, Handler.Handler1, Update.Password,
@@ -79,7 +80,9 @@ class _NavBarState extends State<NavBar> {
   }
 
   void addMagazineRequest(String UserName, String Author, String BookName) {
-    final channel = WebSocketChannel.connect(webSocket(),);
+    final channel = WebSocketChannel.connect(
+      webSocket(),
+    );
     channel.sink.add(parser(packet(
         widget.id, Handler.Handler1, Add.MagazineSubscriptionRequest,
         bookName: BookName, username: UserName, author: [Author])));
@@ -200,7 +203,7 @@ class _NavBarState extends State<NavBar> {
       firstDate: DateTime(2010),
       lastDate: DateTime(2025),
     );
-    if (selected != null )
+    if (selected != null)
       setState(() {
         selectedDate = selected;
       });
@@ -676,8 +679,8 @@ class _NavBarState extends State<NavBar> {
           },
         ),
         ListTile(
-          leading: Icon(Icons.add),
-          title: Text('Add new magazine'),
+          leading: const Icon(Icons.add),
+          title: const Text('Add new magazine'),
           onTap: () {
             DueDate =
                 "${selectedDate.day}/${selectedDate.month}/${selectedDate.year}";
@@ -726,7 +729,7 @@ class _NavBarState extends State<NavBar> {
                                   decoration: InputDecoration(
                                     labelText: 'Due Date',
                                     icon: IconButton(
-                                        icon: Icon(Icons.calendar_today),
+                                        icon: const Icon(Icons.calendar_today),
                                         onPressed: () {
                                           _selectDate(context);
                                           DueDateController.text = DueDate;
@@ -735,7 +738,7 @@ class _NavBarState extends State<NavBar> {
                                 ),
                                 TextFormField(
                                   controller: issueController,
-                                  decoration: InputDecoration(
+                                  decoration: const InputDecoration(
                                     labelText: 'Issue',
                                     icon: Icon(Icons.book_outlined),
                                   ),
@@ -747,11 +750,30 @@ class _NavBarState extends State<NavBar> {
                         actions: [
                           TextButton(
                             onPressed: () => Navigator.pop(context),
-                            child: Text('Cancel'),
+                            child: const Text('Cancel'),
                           ),
                           TextButton(
-                              child: Text("Submit"),
-                              onPressed: () {
+                              child: const Text("Submit"),
+                              onPressed: () async {
+                                final channel =
+                                    WebSocketChannel.connect(webSocket());
+                                channel.sink.add(parser(packet(widget.id,
+                                    Handler.Handler1, Add.MagazineRecord,
+                                    bookName: journalController.text,
+                                    author: [authorController.text],
+                                    volume: volumeController.text,
+                                    issue: issueController.text,
+                                    misc: DueDate)));
+                                channel.stream.listen((event) {
+                                  event = event.split(Header.Split)[1];
+                                  event = jsonDecode(event);
+                                  if (event["Header"] == Header.Success) {
+                                    showSnackbar(context, "Magazine uploaded");
+                                  } else {
+                                    showSnackbar(context,
+                                        "Upload failed try after sometime");
+                                  }
+                                });
                                 Navigator.pop(context);
                               })
                         ],
@@ -1413,46 +1435,45 @@ class _NavBarState extends State<NavBar> {
                       actions: [
                         TextButton(
                           onPressed: () async {
-
                             if (userPrevilege == 'Admin') {
                               final channel =
-                              WebSocketChannel.connect(webSocket());
+                                  WebSocketChannel.connect(webSocket());
                               channel.sink.add(parser(packet(
                                   widget.id, Handler.Handler1, Create.Admin,
                                   username: usernameController.text.toString(),
                                   password: sha512
-                                      .convert(utf8.encode(passwordController.text.toString()))
+                                      .convert(utf8.encode(
+                                          passwordController.text.toString()))
                                       .toString())));
                               channel.stream.listen((event) {
                                 event = event.split(Header.Split)[1];
                                 var out = jsonDecode(event);
-                                if(out["Header"] == Header.Success)
-                                  {
-                                    showSnackbar(context, "User Created");
-                                  }
-                                else{
-                                  showSnackbar(context, "Unable to create user");
+                                if (out["Header"] == Header.Success) {
+                                  showSnackbar(context, "User Created");
+                                } else {
+                                  showSnackbar(
+                                      context, "Unable to create user");
                                 }
                                 channel.sink.close();
                               });
                             } else {
                               final channel =
-                              WebSocketChannel.connect(webSocket());
+                                  WebSocketChannel.connect(webSocket());
                               channel.sink.add(parser(packet(
                                   widget.id, Handler.Handler1, Create.User,
                                   username: usernameController.text.toString(),
                                   password: sha512
-                                      .convert(utf8.encode(passwordController.text.toString()))
+                                      .convert(utf8.encode(
+                                          passwordController.text.toString()))
                                       .toString())));
                               channel.stream.listen((event) {
                                 event = event.split(Header.Split)[1];
                                 var out = jsonDecode(event);
-                                if(out["Header"] == Header.Success)
-                                {
+                                if (out["Header"] == Header.Success) {
                                   showSnackbar(context, "User Created");
-                                }
-                                else{
-                                  showSnackbar(context, "Unable to create user");
+                                } else {
+                                  showSnackbar(
+                                      context, "Unable to create user");
                                 }
                                 channel.sink.close();
                               });
