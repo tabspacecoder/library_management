@@ -1037,6 +1037,20 @@ class _NavBarState extends State<NavBar> {
                                         );
                                       });
                                 }
+                                final channel =
+                                WebSocketChannel.connect(webSocket());
+                                channel.sink.add(parser(packet(
+                                    widget.id, Handler.Handler1, Add.BookRecord,
+                                    bookName: BookNameController.text,
+                                    isbn: isbnController.text,
+                                    author: [authorController.text],
+                                    availability:
+                                    int.parse(availController.text),
+                                    type: 1,
+                                    book: pickedFileByteStream.toString(),
+                                    thumbnail:
+                                    pickedFileByteStreamTn.toString())));
+
                                 // pickedFileByteStream.toString() -------- filestream for pdf
                                 // pickedFileByteStreamTn.toString()  ----- filestream for thumbnail
                                 Navigator.pop(context);
