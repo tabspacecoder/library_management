@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
-
+import 'dart:js' as js;
 import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
 import 'package:library_management/Constants.dart';
@@ -44,8 +44,7 @@ class _NavBarState extends State<NavBar> {
     });
   }
 
-  void changePasswordAPI(
-      dynamic oldPassController, dynamic newPassController) async {
+  void changePasswordAPI(dynamic oldPassController, dynamic newPassController) async {
     final channel = WebSocketChannel.connect(webSocket());
 
     channel.sink.add(parser(packet(widget.id, Handler.Handler1, Update.Password,
@@ -80,7 +79,7 @@ class _NavBarState extends State<NavBar> {
   }
 
   void addMagazineRequest(String UserName, String Author, String BookName) {
-    final channel = WebSocketChannel.connect(webSocket());
+    final channel = WebSocketChannel.connect(webSocket(),);
     channel.sink.add(parser(packet(
         widget.id, Handler.Handler1, Add.MagazineSubscriptionRequest,
         bookName: BookName, username: UserName, author: [Author])));
@@ -119,8 +118,8 @@ class _NavBarState extends State<NavBar> {
                     TextButton(
                       onPressed: () {
                         // DueDate = "${selectedDate.day}/${selectedDate.month}/${selectedDate.year}";
-                        print('Book Name - ${BookNameController.text}');
-                        print('Username - ${UsernameController.text}');
+                        // print('Book Name - ${BookNameController.text}');
+                        // print('Username - ${UsernameController.text}');
                         print('Issue Date - $IssueDate');
                         // print('Due date - $DueDate');
                         setState(() {});
@@ -493,13 +492,13 @@ class _NavBarState extends State<NavBar> {
           leading: Icon(Icons.add),
           title: Text('Add new book'),
           onTap: () {
+            var bookNameController = TextEditingController();
+            var authorController = TextEditingController();
+            var isbnController = TextEditingController();
+            var availController = TextEditingController();
             showDialog(
                 context: context,
                 builder: (BuildContext context) {
-                  var bookNameController = TextEditingController();
-                  var authorController = TextEditingController();
-                  var isbnController = TextEditingController();
-                  var availController = TextEditingController();
                   return StatefulBuilder(
                     builder: (BuildContext context,
                         void Function(void Function()) setState) {
@@ -621,6 +620,7 @@ class _NavBarState extends State<NavBar> {
                           TextButton(
                               child: Text("Submit"),
                               onPressed: () {
+                                print(bookNameController.text);
                                 // if (dropdownvalue == 'Online' || dropdownvalue == 'Both') {
                                 //   showDialog(
                                 //       context: context,
@@ -650,7 +650,7 @@ class _NavBarState extends State<NavBar> {
                                     WebSocketChannel.connect(webSocket());
                                 channel.sink.add(parser(packet(
                                     widget.id, Handler.Handler1, Add.BookRecord,
-                                    bookName: BookNameController.text,
+                                    bookName: bookNameController.text,
                                     isbn: isbnController.text,
                                     author: [authorController.text],
                                     availability:
