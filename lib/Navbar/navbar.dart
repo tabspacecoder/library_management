@@ -1050,7 +1050,16 @@ class _NavBarState extends State<NavBar> {
                                     book: pickedFileByteStream.toString(),
                                     thumbnail:
                                     pickedFileByteStreamTn.toString())));
+                                channel.stream.listen((event) {
+                                  event = event.split(Header.Split)[1];
+                                  event = jsonDecode(event);
+                                  if (event["Header"] == Header.Success){
+                                    showSnackbar(context, "Record added for " + BookNameController.text);
+                                  }else{
+                                    showSnackbar(context, "Unable to add record try after sometime");
+                                  }
 
+                                });
                                 // pickedFileByteStream.toString() -------- filestream for pdf
                                 // pickedFileByteStreamTn.toString()  ----- filestream for thumbnail
                                 Navigator.pop(context);
