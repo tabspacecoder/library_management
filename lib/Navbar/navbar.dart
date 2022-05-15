@@ -24,18 +24,7 @@ class NavBar extends StatefulWidget {
 
 class _NavBarState extends State<NavBar> {
   late List<BookRequestData> data;
-  void showSnackbar(BuildContext context, String message) {
-    var snackBar = SnackBar(
-      content: Text(message),
-      action: SnackBarAction(
-        label: 'Ok',
-        onPressed: () {
-          print('undo pressed');
-        },
-      ),
-    );
-    ScaffoldMessenger.of(context).showSnackBar(snackBar);
-  }
+
 
   void fetch() async {
     final channel = WebSocketChannel.connect(webSocket());
@@ -484,11 +473,11 @@ class _NavBarState extends State<NavBar> {
                         title: 'Search Book',
                       ))),
         ),
-        // ListTile(
-        //   leading: Icon(Icons.all_out),
-        //   title: Text('Book Circulation'),
-        //   onTap: () => Navigator.pushNamed(context, '/Circulation'),
-        // ),
+        ListTile(
+          leading: Icon(Icons.book),
+          title: Text('Pending Book Requests'),
+          onTap: () => Navigator.pushNamed(context, '/PendingBookRequests'),
+        ),
         ListTile(
           leading: Icon(Icons.add),
           title: Text('Add new book'),
@@ -653,6 +642,7 @@ class _NavBarState extends State<NavBar> {
                 });
           },
         ),
+
         ListTile(
           leading: Icon(Icons.notifications),
           title: Text('Pending Requests'),

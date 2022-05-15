@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 class Privileges {
   static const int SuperAdmin = 1;
   static const int Admin = 2;
@@ -63,6 +65,18 @@ class SubscriptionRequestData{
   late String UserName;
   late String Email;
   late int Status;
+
+  SubscriptionRequestData(this.JournalName, this.UserName, this.Email,this.Status);
+}
+
+class SubscriptionRequestDataAdmin{
+  late int id;
+  late String JournalName;
+  late String UserName;
+  late String Email;
+  late int Status;
+
+  SubscriptionRequestDataAdmin(this.id,this.JournalName, this.UserName, this.Email,this.Status);
 }
 
 // All the class below here are associated with Header class that of handling  API request and response
@@ -162,3 +176,16 @@ class Upload {
 const String ip = "127.0.0.1";
 const int TCPPort = 24680;
 const int WebPort = 13579;
+
+void showSnackbar(BuildContext context, String message) {
+  var snackBar = SnackBar(
+    content: Text(message),
+    action: SnackBarAction(
+      label: 'Ok',
+      onPressed: () {
+        print('undo pressed');
+      },
+    ),
+  );
+  ScaffoldMessenger.of(context).showSnackBar(snackBar);
+}
