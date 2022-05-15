@@ -775,11 +775,25 @@ class _NavBarState extends State<NavBar> {
                           TextButton(
                               child: Text("Submit"),
                               onPressed: () {
-
-
-                                // connect here da thevdiya
-
-
+                                final channel =
+                                WebSocketChannel.connect(webSocket());
+                                channel.sink.add(parser(packet(widget.id,
+                                    Handler.Handler1, Add.MagazineRecord,
+                                    bookName: journalController.text,
+                                    author: [authorController.text],
+                                    volume: volumeController.text,
+                                    issue: issueController.text,
+                                    misc: DueDate)));
+                                channel.stream.listen((event) {
+                                  event = event.split(Header.Split)[1];
+                                  event = jsonDecode(event);
+                                  if (event["Header"] == Header.Success) {
+                                    showSnackbar(context, "Magazine uploaded");
+                                  } else {
+                                    showSnackbar(context,
+                                        "Upload failed try after sometime");
+                                  }
+                                });
                                 Navigator.pop(context);
                               })
                         ],

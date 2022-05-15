@@ -4,6 +4,7 @@ import 'dart:html' as html;
 import 'package:flutter/material.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:library_management/Constants.dart';
+import 'package:library_management/HomePage/pdfViewer.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
 import 'package:library_management/Network.dart';
@@ -341,7 +342,8 @@ class _SearchBarState extends State<SearchBar> {
                       event = event.split(Header.Split)[1];
                       var link = jsonDecode(event)["Data"];
                       print(link);
-                      js.context.callMethod('open', ['$link']);
+                      Navigator.of(context).push(MaterialPageRoute(builder: (context)=>PdfViewer(name: suggestion.BookName, link: link)));
+                      // js.context.callMethod('open', ['$link']);
                       // html.window.open(link, link);
                       channel.sink.close();
                     });

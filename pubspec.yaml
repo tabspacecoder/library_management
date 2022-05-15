@@ -42,6 +42,7 @@ dependencies:
   flutter_typeahead: ^3.2.4
   flutter_staggered_grid_view:
   file_picker: ^4.5.1
+  syncfusion_flutter_pdfviewer: ^20.1.55-beta
 dev_dependencies:
   flutter_test:
     sdk: flutter
