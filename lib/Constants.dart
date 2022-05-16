@@ -18,20 +18,17 @@ class RequestStatus {
 }
 // Template for complex data
 
-class OutstandingListData{
+class OutstandingListData {
   late String BorrowID;
   late String ISBN;
   late String DueDate;
   late String UserName;
   late String ReturnDate;
-  OutstandingListData( this.BorrowID ,  this.ISBN, this.UserName, this.DueDate, this.ReturnDate);
+  OutstandingListData(
+      this.BorrowID, this.ISBN, this.UserName, this.DueDate, this.ReturnDate);
 }
 
-
-
-
-
-class BookData{
+class BookData {
   late String ISBN;
   late String BookName;
   late String Author;
@@ -43,7 +40,7 @@ class BookData{
       this.Thumbnail);
 }
 
-class BookRequestData{
+class BookRequestData {
   late String Request;
   late String BookName;
   late String Author;
@@ -53,10 +50,9 @@ class BookRequestData{
 
   BookRequestData(this.Request, this.BookName, this.Author, this.RequestedBy,
       this.Status, this.Reason);
-
 }
 
-class MagazineData{
+class MagazineData {
   late String Name;
   late String Volume;
   late String Issue;
@@ -67,7 +63,7 @@ class MagazineData{
       this.Name, this.Volume, this.Issue, this.ReleaseDate, this.Location);
 }
 
-class SubscriptionData{
+class SubscriptionData {
   late String JournalName;
   late String UserName;
   late String Email;
@@ -75,26 +71,28 @@ class SubscriptionData{
   SubscriptionData(this.JournalName, this.UserName, this.Email);
 }
 
-class SubscriptionRequestData{
+class SubscriptionRequestData {
   late String JournalName;
   late String UserName;
   late String Email;
   late int Status;
 
-  SubscriptionRequestData(this.JournalName, this.UserName, this.Email,this.Status);
+  SubscriptionRequestData(
+      this.JournalName, this.UserName, this.Email, this.Status);
 }
 
-class SubscriptionRequestDataAdmin{
+class SubscriptionRequestDataAdmin {
   late int id;
   late String JournalName;
   late String UserName;
   late String Email;
   late int Status;
 
-  SubscriptionRequestDataAdmin(this.id,this.JournalName, this.UserName, this.Email,this.Status);
+  SubscriptionRequestDataAdmin(
+      this.id, this.JournalName, this.UserName, this.Email, this.Status);
 }
 
-class BookIssue{
+class BookIssue {
   late int IssueID;
   late String ISBN;
   late String Username;
@@ -104,6 +102,15 @@ class BookIssue{
   BookIssue(
       this.IssueID, this.ISBN, this.Username, this.DateIssued, this.BookName);
 }
+
+class BookTaken {
+  late String ISBN;
+  late String DateIssued;
+  late String BookName;
+
+  BookTaken(this.ISBN, this.DateIssued, this.BookName);
+}
+
 // All the class below here are associated with Header class that of handling  API request and response
 class Header {
   static const String Split = "||";
@@ -173,8 +180,7 @@ class BookParams {
   static const String Type = "Type";
 }
 
-class MagazineParams
-{
+class MagazineParams {
   static const String Name = "MagazineName";
   static const String Author = "Author";
 }
@@ -194,12 +200,21 @@ class Add {
   static const String BookRequest = "AddBookRequest";
   static const String MagazineRecord = "AddMagazineRecord";
   static const String MagazineSubscriptionRequest = "AddSubscriptionRequest";
+  static const String BookIssue = "AddBookIssue";
+  static const String BookReserve = "AddBookReserve";
+  static const String BookRenewal = "AddBookRenewal";
+  static const String BookReturn = "AddBookReturn";
+  static const String FinePayment = "AddFinePayment";
+  static const String BudgetRecord = "AddBudgetRecord";
+  static const String ExpenditureRecord = "AddExpenditureRecord";
 }
-class UserStat{
+
+class UserStat {
   static const String User = "User";
   static const String Admin = "Librarian";
   static const String SuperAdmin = "HOD";
 }
+
 class Upload {
   static const String DigitalBook = "UploadDigitalBook";
 }

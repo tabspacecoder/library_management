@@ -37,7 +37,7 @@ class _NavBarState extends State<NavBar> {
       for (dynamic i in jsonDecode(event)["Data"]) {
         i = jsonDecode(i);
         BookRequestData temp = BookRequestData(i["RequestID"], i["BookName"],
-            i["Author"], i["RequestBy"], i["Status"],i["Reason"]);
+            i["Author"], i["RequestBy"], i["Status"], i["Reason"]);
         data.add(temp);
       }
       channel.sink.close();
@@ -45,7 +45,8 @@ class _NavBarState extends State<NavBar> {
     });
   }
 
-  void changePasswordAPI(dynamic oldPassController, dynamic newPassController) async {
+  void changePasswordAPI(
+      dynamic oldPassController, dynamic newPassController) async {
     final channel = WebSocketChannel.connect(webSocket());
 
     channel.sink.add(parser(packet(widget.id, Handler.Handler1, Update.Password,
@@ -80,7 +81,9 @@ class _NavBarState extends State<NavBar> {
   }
 
   void addMagazineRequest(String UserName, String Author, String BookName) {
-    final channel = WebSocketChannel.connect(webSocket(),);
+    final channel = WebSocketChannel.connect(
+      webSocket(),
+    );
     channel.sink.add(parser(packet(
         widget.id, Handler.Handler1, Add.MagazineSubscriptionRequest,
         bookName: BookName, username: UserName, author: [Author])));
@@ -118,10 +121,17 @@ class _NavBarState extends State<NavBar> {
                     ),
                     TextButton(
                       onPressed: () {
-                        DueDate = "${selectedDate.day}/${selectedDate.month}/${selectedDate.year}";
-                        print('Book Name - ${BookNameController.text}');
-                        print('Username - ${UsernameController.text}');
-                        print('Issue Date - $IssueDate');
+                        final channel = WebSocketChannel.connect(
+                          webSocket(),
+                        );
+                        channel.sink.add(parser(packet(
+                            widget.id, Handler.Handler1, Add.BookIssue,
+                            isbn: BookNameController.text,
+                            username: UsernameController.text)));
+                        channel.stream.listen((event) {
+                          channel.sink.close();
+                        });
+
                         // print('Due date - $DueDate');
                         setState(() {});
                         Navigator.of(context).pop();
@@ -138,7 +148,7 @@ class _NavBarState extends State<NavBar> {
                           TextFormField(
                             controller: BookNameController,
                             decoration: const InputDecoration(
-                              labelText: 'Enter Book name',
+                              labelText: 'Enter ISBN',
                               icon: Icon(Icons.book),
                             ),
                           ),
@@ -179,7 +189,9 @@ class _NavBarState extends State<NavBar> {
         break;
     }
   }
-  void selectedItemBudget(BuildContext context, int item) {  //////add Budget details here
+
+  void selectedItemBudget(BuildContext context, int item) {
+    //////add Budget details here
     switch (item) {
       case 0:
         showDialog(
@@ -191,15 +203,27 @@ class _NavBarState extends State<NavBar> {
               return StatefulBuilder(builder: (BuildContext context,
                   void Function(void Function()) setState) {
                 return AlertDialog(
-                  title: Text('Add Budget'),
+                  title: const Text('Add Budget'),
                   actions: [
                     TextButton(
                       onPressed: () => Navigator.pop(context),
                       child: const Text('Cancel'),
                     ),
                     TextButton(
-                      onPressed: () {
+                      onPressed: () async {
                         // print('Due date - $DueDate');
+                        final channel = WebSocketChannel.connect(
+                          webSocket(),
+                        );
+                        channel.sink.add(parser(packet(
+                            widget.id, Handler.Handler1, Add.BudgetRecord,
+                            src: srcController.text,
+                            budgetAmt: int.parse(amtController.text),
+                            usedBudgetAmt: int.parse(usedAmtController.text),
+                            budgetType: typeController.text)));
+                        channel.stream.listen((event) {
+                          channel.sink.close();
+                        });
                         setState(() {});
                         Navigator.of(context).pop();
                       },
@@ -278,7 +302,7 @@ class _NavBarState extends State<NavBar> {
               return StatefulBuilder(builder: (BuildContext context,
                   void Function(void Function()) setState) {
                 return AlertDialog(
-                  title: Text('Add Expenditure'),
+                  title: const Text('Add Expenditure'),
                   actions: [
                     TextButton(
                       onPressed: () => Navigator.pop(context),
@@ -287,6 +311,17 @@ class _NavBarState extends State<NavBar> {
                     TextButton(
                       onPressed: () {
                         // print('Due date - $DueDate');
+                        final channel = WebSocketChannel.connect(
+                          webSocket(),
+                        );
+                        channel.sink.add(parser(packet(
+                            widget.id, Handler.Handler1, Add.BudgetRecord,
+                            budgetID: budgetIdController.text,
+                            investedOn: investedController.text,
+                            expAmt: int.parse(amtController.text))));
+                        channel.stream.listen((event) {
+                          channel.sink.close();
+                        });
                         setState(() {});
                         Navigator.of(context).pop();
                       },
@@ -364,6 +399,7 @@ class _NavBarState extends State<NavBar> {
   var UsernameController = TextEditingController();
   var BookNameController = TextEditingController();
   var DueDateController = TextEditingController();
+
   String IssueDate =
       "${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}";
   DateTime selectedDate = DateTime.now();
@@ -374,7 +410,7 @@ class _NavBarState extends State<NavBar> {
       firstDate: DateTime(2010),
       lastDate: DateTime(2025),
     );
-    if (selected != null ) {
+    if (selected != null) {
       setState(() {
         selectedDate = selected;
       });
@@ -750,8 +786,10 @@ class _NavBarState extends State<NavBar> {
                                             onPressed: () async {
                                               var result = await FilePicker
                                                   .platform
-                                                  .pickFiles(type: FileType.custom,
-                                                allowedExtensions: ['pdf'],);
+                                                  .pickFiles(
+                                                type: FileType.custom,
+                                                allowedExtensions: ['pdf'],
+                                              );
                                               if (result != null) {
                                                 Uint8List? fileBytes =
                                                     result.files.first.bytes;
@@ -774,9 +812,11 @@ class _NavBarState extends State<NavBar> {
                                   padding: const EdgeInsets.all(8.0),
                                   child: ElevatedButton(
                                       onPressed: () async {
-                                        var result = await FilePicker.platform
-                                            .pickFiles(type: FileType.custom,
-                                          allowedExtensions: ['jpg'],);
+                                        var result =
+                                            await FilePicker.platform.pickFiles(
+                                          type: FileType.custom,
+                                          allowedExtensions: ['jpg'],
+                                        );
                                         if (result != null) {
                                           Uint8List? fileBytes =
                                               await result.files.first.bytes;
@@ -926,22 +966,26 @@ class _NavBarState extends State<NavBar> {
                                 ),
                                 Padding(
                                   padding: const EdgeInsets.all(8.0),
-                                  child: ElevatedButton(onPressed: () async {
-                                    var result = await FilePicker.platform
-                                        .pickFiles(type: FileType.custom,
-                                      allowedExtensions: ['pdf'],);
-                                    if (result != null) {
-                                      Uint8List? fileBytes =
-                                          await result.files.first.bytes;
-                                      // objFileTn = result.files.single;
-                                      pickedFileMagByteStream = fileBytes!;
-                                      String toRet =
-                                      pickedFileMagByteStream.toString();
-                                    }
-                                    if (pickedFileMagByteStream != null) {
-                                      setState(() {});
-                                    }
-                                  }, child: Text('Upload Magazine!')),
+                                  child: ElevatedButton(
+                                      onPressed: () async {
+                                        var result =
+                                            await FilePicker.platform.pickFiles(
+                                          type: FileType.custom,
+                                          allowedExtensions: ['pdf'],
+                                        );
+                                        if (result != null) {
+                                          Uint8List? fileBytes =
+                                              await result.files.first.bytes;
+                                          // objFileTn = result.files.single;
+                                          pickedFileMagByteStream = fileBytes!;
+                                          String toRet = pickedFileMagByteStream
+                                              .toString();
+                                        }
+                                        if (pickedFileMagByteStream != null) {
+                                          setState(() {});
+                                        }
+                                      },
+                                      child: Text('Upload Magazine!')),
                                 )
                               ],
                             ),
@@ -956,7 +1000,7 @@ class _NavBarState extends State<NavBar> {
                               child: const Text("Submit"),
                               onPressed: () {
                                 final channel =
-                                WebSocketChannel.connect(webSocket());
+                                    WebSocketChannel.connect(webSocket());
                                 channel.sink.add(parser(packet(widget.id,
                                     Handler.Handler1, Add.MagazineRecord,
                                     bookName: journalController.text,
@@ -1314,7 +1358,6 @@ class _NavBarState extends State<NavBar> {
                     child: Icon(Icons.read_more),
                     radius: 30,
                   ),
-
                 ),
               ),
               value: 4,
@@ -1725,46 +1768,45 @@ class _NavBarState extends State<NavBar> {
                       actions: [
                         TextButton(
                           onPressed: () async {
-
                             if (userPrevilege == 'Admin') {
                               final channel =
-                              WebSocketChannel.connect(webSocket());
+                                  WebSocketChannel.connect(webSocket());
                               channel.sink.add(parser(packet(
                                   widget.id, Handler.Handler1, Create.Admin,
                                   username: usernameController.text.toString(),
                                   password: sha512
-                                      .convert(utf8.encode(passwordController.text.toString()))
+                                      .convert(utf8.encode(
+                                          passwordController.text.toString()))
                                       .toString())));
                               channel.stream.listen((event) {
                                 event = event.split(Header.Split)[1];
                                 var out = jsonDecode(event);
-                                if(out["Header"] == Header.Success)
-                                  {
-                                    showSnackbar(context, "User Created");
-                                  }
-                                else{
-                                  showSnackbar(context, "Unable to create user");
+                                if (out["Header"] == Header.Success) {
+                                  showSnackbar(context, "User Created");
+                                } else {
+                                  showSnackbar(
+                                      context, "Unable to create user");
                                 }
                                 channel.sink.close();
                               });
                             } else {
                               final channel =
-                              WebSocketChannel.connect(webSocket());
+                                  WebSocketChannel.connect(webSocket());
                               channel.sink.add(parser(packet(
                                   widget.id, Handler.Handler1, Create.User,
                                   username: usernameController.text.toString(),
                                   password: sha512
-                                      .convert(utf8.encode(passwordController.text.toString()))
+                                      .convert(utf8.encode(
+                                          passwordController.text.toString()))
                                       .toString())));
                               channel.stream.listen((event) {
                                 event = event.split(Header.Split)[1];
                                 var out = jsonDecode(event);
-                                if(out["Header"] == Header.Success)
-                                {
+                                if (out["Header"] == Header.Success) {
                                   showSnackbar(context, "User Created");
-                                }
-                                else{
-                                  showSnackbar(context, "Unable to create user");
+                                } else {
+                                  showSnackbar(
+                                      context, "Unable to create user");
                                 }
                                 channel.sink.close();
                               });

@@ -34,13 +34,12 @@ class _adminPendingRequestsPageMagazinesState extends State<adminPendingRequests
     id= await GetState();
     final channel = WebSocketChannel.connect(webSocket());
     channel.sink.add(parser(
-        packet(id, Handler.Handler1, Fetch.BookRequest, range: [-1, 0])));
+        packet(id, Handler.Handler1, Fetch.MagazineRequest, range: [-1, 0])));
     channel.stream.listen((event) {
       event = event.split(Header.Split)[1];
       for (dynamic i in jsonDecode(event)["Data"]) {
-        i = jsonDecode(i);
-        SubscriptionRequestDataAdmin temp = SubscriptionRequestDataAdmin(i['id'],i["UserName"],i["JournalName"],
-            i["Email"], i["Status"]);
+        SubscriptionRequestDataAdmin temp = SubscriptionRequestDataAdmin(i["Id"],i["UserName"],i["JournalName"],
+            i["Email"].toString(), i["Status"]);
         data.add(temp);
       }
       // setState(() {
@@ -69,7 +68,7 @@ class _adminPendingRequestsPageMagazinesState extends State<adminPendingRequests
   }
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Pending Magazine Requests'),automaticallyImplyLeading: false),
+      appBar: AppBar(title: const Text('Pending Magazine Requests'),automaticallyImplyLeading: false),
       body: !loaded || data==[] ? const Scaffold(body: Center(child: CircularProgressIndicator())) :Container(
         child: Container(
             child: ListView.builder(

@@ -16,30 +16,22 @@ class UserBorrowedBooks extends StatefulWidget {
 }
 
 class _UserBorrowedBooksState extends State<UserBorrowedBooks> {
-
-  late List<OutstandingListData> data ;
-  Future<List<BookRequestData>> fetch() async {
-    String id;
-    bool loaded=false;
-    void update(String id,String Status)async{
-      final channel = WebSocketChannel.connect(webSocket());
-      channel.sink.add(parser(
-          packet(id, Handler.Handler1, Update.BookRequest,misc: id,status: Status.toString())));
+  late String id;
+  List<BookTaken> data = [];
+  bool loaded = false;
+  Future<String> GetState() async {
+    final prefs = await SharedPreferences.getInstance();
+    id = prefs.getString("Id")!;
+    if (id != null) {
+      loaded = true;
+      setState(() {});
     }
+    print(loaded);
+    return id;
+  }
 
-
-    late List<OutstandingListData> data ;
-    Future<String> GetState() async {
-      final prefs = await SharedPreferences.getInstance();
-      id = prefs.getString("Id")!;
-      if(id!=null){
-         loaded=true;
-        setState(() {});
-      }
-      print(loaded);
-      return id;
-    }
-    id= await GetState();
+  Future<List<BookTaken>> fetch() async {
+    id = await GetState();
     final channel = WebSocketChannel.connect(webSocket());
     channel.sink.add(parser(
         packet(id, Handler.Handler1, Fetch.BookRequest, range: [-1, 0])));
@@ -47,81 +39,75 @@ class _UserBorrowedBooksState extends State<UserBorrowedBooks> {
       event = event.split(Header.Split)[1];
       for (dynamic i in jsonDecode(event)["Data"]) {
         i = jsonDecode(i);
-        // BookRequestData temp = BookRequestData(i["RequestID"].toString(), i["BookName"],
-        //     i["Author"], i["RequestBy"], i["Status"]);
-        // data.add(temp);
+        BookTaken temp = BookTaken(i["ISBN"], i["dateIssued"], i["BookName"]);
+        data.add(temp);
       }
-      // setState(() {
-      // });
       channel.sink.close();
-      setState(() {
-
-      });
+      setState(() {});
     });
     return [];
   }
+
   @override
   void initState() {
     // GetState();
-    data=[];
     fetch();
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Borrowed Books')),
+      appBar: AppBar(title: const Text('Borrowed Books')),
       body: Container(
           child: ListView.builder(
               itemCount: data.length,
               itemBuilder: ((context, index) {
-                DateTime tempDate = DateFormat("dd/MM/yy").parse(data[index].DueDate);
+                DateTime tempDate =
+                    DateFormat("dd/MM/yy").parse(data[index].DateIssued);
                 bool isDue = DateTime.now().isAfter(tempDate);
                 return ListTile(
-                  title: Text(data[index].ISBN),
-                  leading: Text(data[index].BorrowID),
-                  subtitle: Text(data[index].UserName),
-                  trailing: Card(child: Padding(
-                    padding: const EdgeInsets.all(3.0),
-                    child: Text(data[index].DueDate,style: TextStyle(
-                      color: Colors.white,
-                    ),),
-                  ),
-                    color: isDue?Colors.red:Colors.green,
+                  title: Text(data[index].BookName),
+                  subtitle: Text(data[index].ISBN),
+                  trailing: Card(
+                    child: Padding(
+                      padding: const EdgeInsets.all(3.0),
+                      child: Text(
+                        data[index].DateIssued,
+                        style: const TextStyle(
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                    color: isDue ? Colors.red : Colors.green,
                   ),
                   onTap: () {
-                    if(isDue){
+                    if (isDue) {
                       showDialog(
                           context: context,
                           builder: (BuildContext context) {
-
                             return StatefulBuilder(
                               builder: (BuildContext context,
-                                  void Function(void Function())
-                                  setState) {
+                                  void Function(void Function()) setState) {
                                 return AlertDialog(
                                   scrollable: true,
-                                  title: Text(
-                                      'Request ID : ${data[index].BorrowID}'),
+                                  title: const Text('Request'),
                                   content: Column(
                                     children: [
-                                      ElevatedButton(onPressed: (){}, child: Text('Pay Fine')),
+                                      ElevatedButton(
+                                          onPressed: () {},
+                                          child: const Text('Pay Fine')),
                                     ],
                                   ),
                                   actions: [
                                     TextButton(
-                                      onPressed: () =>
-                                          Navigator.pop(
-                                              context),
-                                      child: Text('Cancel'),
+                                      onPressed: () => Navigator.pop(context),
+                                      child: const Text('Cancel'),
                                     ),
                                     TextButton(
-                                        child: Text(
-                                            "Update Status"),
+                                        child: const Text("Update Status"),
                                         onPressed: () {
-                                          Navigator.pop(
-                                              context);
-
+                                          Navigator.pop(context);
                                         })
                                   ],
                                 );
@@ -129,12 +115,9 @@ class _UserBorrowedBooksState extends State<UserBorrowedBooks> {
                             );
                           });
                     }
-
-
                   },
                 );
               }))),
-
     );
   }
 }
