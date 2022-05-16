@@ -535,6 +535,12 @@ class _NavBarState extends State<NavBar> {
             onTap: () {
               Navigator.pushNamed(context, "/MagazineRequestStatus");
             }),
+        ListTile(
+            leading: const Icon(Icons.book),
+            title: const Text("Borrowed Books"),
+            onTap: () {
+              // Navigator.pushNamed(context, "/MagazineRequestStatus");
+            }),
         const Divider(),
         ListTile(
           leading: const Icon(Icons.password),
