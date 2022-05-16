@@ -6,6 +6,7 @@ import 'dart:js' as js;
 import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
 import 'package:library_management/Constants.dart';
+import 'package:library_management/Navbar/DeleteHisttory.dart';
 import 'package:library_management/Navbar/adminPendingRequests.dart';
 import 'package:library_management/Navbar/outStandingBooksPage.dart';
 import 'package:library_management/Navbar/userBorrowedBooks.dart';
@@ -901,6 +902,55 @@ class _NavBarState extends State<NavBar> {
                     },
                   );
                 });
+          },
+        ),
+        ListTile(
+          leading: Icon(Icons.account_circle),
+          title: Text('Delete Book'),
+          onTap: () => {
+            showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  var ISBNController = TextEditingController();
+                  return StatefulBuilder(builder: (BuildContext context,
+                      void Function(void Function()) setState) {
+                    return AlertDialog(
+                      scrollable: true,
+                      title: const Text('Delete Book'),
+                      content: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Form(
+                          child: Column(
+                            children: <Widget>[
+                              TextFormField(
+                                controller: ISBNController,
+                                decoration: const InputDecoration(
+                                  labelText: 'ISBN',
+                                  icon: Icon(Icons.book),
+                                ),
+                              ),
+
+                            ],
+                          ),
+                        ),
+                      ),
+                      actions: [
+                        TextButton(onPressed: (){Navigator.pop(context);}, child: Text('Delete Book')),
+                        TextButton(
+                          onPressed: () => Navigator.pop(context),
+                          child: Text('Cancel'),
+                        ),
+                      ],
+                    );
+                  });
+                })
+          },
+        ), //delete book
+        ListTile(
+          leading: Icon(Icons.history),
+          title: Text('Delete Book History'),
+          onTap: () => {
+            Navigator.pushNamed(context, '/History')
           },
         ),
         ListTile(
