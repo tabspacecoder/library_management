@@ -1032,220 +1032,6 @@ class _NavBarState extends State<NavBar> {
                 });
           },
         ),
-        // ListTile(
-        //   leading: Icon(Icons.add),
-        //   title: Text('Add new book'),
-        //   onTap: () {
-        //     showDialog(
-        //         context: context,
-        //         builder: (BuildContext context) {
-        //           var bookNameController = TextEditingController();
-        //           var authorController = TextEditingController();
-        //           var isbnController = TextEditingController();
-        //           var availController = TextEditingController();
-        //           return StatefulBuilder(
-        //             builder: (BuildContext context,
-        //                 void Function(void Function()) setState) {
-        //               return AlertDialog(
-        //                 scrollable: true,
-        //                 title: Text('Add Book'),
-        //                 content: Padding(
-        //                   padding: const EdgeInsets.all(8.0),
-        //                   child: Form(
-        //                     child: Column(
-        //                       children: <Widget>[
-        //                         TextFormField(
-        //                           controller: bookNameController,
-        //                           decoration: const InputDecoration(
-        //                             labelText: 'Name',
-        //                             icon: Icon(Icons.drive_file_rename_outline),
-        //                           ),
-        //                         ),
-        //                         TextFormField(
-        //                           controller: isbnController,
-        //                           decoration: const InputDecoration(
-        //                             labelText: 'ISBN',
-        //                             icon: Icon(Icons.add),
-        //                           ),
-        //                         ),
-        //                         TextFormField(
-        //                           controller: authorController,
-        //                           decoration: const InputDecoration(
-        //                             labelText: 'Author',
-        //                             icon: Icon(Icons.account_box),
-        //                           ),
-        //                         ),
-        //                         TextFormField(
-        //                           controller: availController,
-        //                           decoration: InputDecoration(
-        //                             labelText: 'Availablity',
-        //                             icon: Icon(Icons.category),
-        //                           ),
-        //                         ),
-        //                         // CheckboxListTile(
-        //                         //   title: Text('Online : '),
-        //                         //   value: online_avail,
-        //                         //   onChanged: (value) {
-        //                         //     setState(() {
-        //                         //       online_avail = value!;
-        //                         //     });
-        //                         //     setState(() {});
-        //                         //   },
-        //                         // ),
-        //                         // CheckboxListTile(
-        //                         //   title: Text('Offline : '),
-        //                         //   value: offline_avail,
-        //                         //   onChanged: (value) {
-        //                         //     setState(() {
-        //                         //       print(1);
-        //                         //       offline_avail = value!;
-        //                         //     });},
-        //                         // ),
-        //                         DropdownButton(
-        //                           // Initial Value
-        //                           value: dropdownvalue,
-        //
-        //                           // Down Arrow Icon
-        //                           icon: const Icon(Icons.keyboard_arrow_down),
-        //
-        //                           // Array list of items
-        //                           items: items.map((String items) {
-        //                             return DropdownMenuItem(
-        //                               value: items,
-        //                               child: Text(items),
-        //                             );
-        //                           }).toList(),
-        //                           // After selecting the desired option,it will
-        //                           // change button value to selected value
-        //                           onChanged: (String? newValue) {
-        //                             setState(() {
-        //                               dropdownvalue = newValue!;
-        //                             });
-        //                           },
-        //                         ),
-        //                         dropdownvalue == 'Online' ||
-        //                                 dropdownvalue == 'Both'
-        //                             ? Padding(
-        //                               padding: const EdgeInsets.all(8.0),
-        //                               child: ElevatedButton(
-        //                                   child: Text('Upload Pdf'),
-        //                                   onPressed: () async {
-        //                                     var result = await FilePicker.platform
-        //                                         .pickFiles(
-        //                                       // type: FileType.values[':pdf'],
-        //                                       withReadStream:
-        //                                           true, // this will return PlatformFile object with read stream
-        //                                     );
-        //                                     if (result != null) {
-        //                                       setState(() {
-        //                                         objFile = result.files.single;
-        //                                         pickedFileByteStream =
-        //                                             objFile.bytes!;
-        //                                         String toRet =
-        //                                             pickedFileByteStream
-        //                                                 .toString();
-        //                                       });
-        //                                     }
-        //                                   }),
-        //                             )
-        //                             : SizedBox(),
-        //                         Padding(
-        //                           padding: const EdgeInsets.all(8.0),
-        //                           child: ElevatedButton(
-        //                               onPressed: () async {
-        //                                 var result = await FilePicker.platform
-        //                                     .pickFiles(
-        //                                   // type: FileType.values[':pdf'],
-        //                                   withReadStream:
-        //                                   true, // this will return PlatformFile object with read stream
-        //                                 );
-        //                                 if (result != null) {
-        //                                   setState(() {
-        //                                     objFileTn = result.files.single;
-        //                                     pickedFileByteStreamTn =
-        //                                     objFileTn.bytes!;
-        //                                     String toRet =
-        //                                     pickedFileByteStreamTn
-        //                                         .toString();
-        //                                   });
-        //                                 }
-        //                               },
-        //                               child: Text('Upload Thumbnail')),
-        //                         )
-        //                       ],
-        //                     ),
-        //                   ),
-        //                 ),
-        //                 actions: [
-        //                   TextButton(
-        //                     onPressed: () => Navigator.pop(context),
-        //                     child: Text('Cancel'),
-        //                   ),
-        //                   TextButton(
-        //                       child: Text("Submit"),
-        //                       onPressed: () {
-        //                         if (dropdownvalue == 'Online' ||
-        //                             dropdownvalue == 'Both') {
-        //                           showDialog(
-        //                               context: context,
-        //                               builder: (BuildContext context) {
-        //                                 return AlertDialog(
-        //                                   title: Text('Upload the pdf!'),
-        //                                   content: ElevatedButton(
-        //                                       onPressed: () {},
-        //                                       child: Text('Upload')),
-        //                                   actions: [
-        //                                     TextButton(
-        //                                       onPressed: () =>
-        //                                           Navigator.pop(context),
-        //                                       child: Text('Cancel'),
-        //                                     ),
-        //                                     TextButton(
-        //                                       onPressed: () {
-        //                                         Navigator.pop(context);
-        //                                       },
-        //                                       child: Text('Submit'),
-        //                                     ),
-        //                                   ],
-        //                                 );
-        //                               });
-        //                         }
-        //                         Navigator.pop(context);
-        //                       })
-        //                 ],
-        //               );
-        //             },
-        //           );
-        //         });
-        //   },
-        // ),
-
-        // ListTile(
-        //   leading: Icon(Icons.notifications),
-        //   title: Text('Pending Requests'),
-        //   onTap: () => Navigator.push(
-        //       context,
-        //       MaterialPageRoute(
-        //           builder: (context) => adminPendingRequestsPage(
-        //                 id: widget.id,
-        //               ))),
-        //   trailing: ClipOval(
-        //     child: Container(
-        //       color: Colors.red,
-        //       width: 20,
-        //       height: 20,
-        //       child: const Center(
-        //         child: Text(
-        //           '8',
-        //           style: TextStyle(
-        //             color: Colors.white,
-        //             fontSize: 12,
-        //           ),
-        //         ),
-        //       ),
-        //     ),
-        //   ),
-        // ),
         PopupMenuButton<int>(
           child: ListTile(
             leading: Icon(Icons.all_out),
@@ -1488,7 +1274,7 @@ class _NavBarState extends State<NavBar> {
           accountEmail: Text(widget.curStatus),
           currentAccountPicture: CircleAvatar(
             backgroundImage:
-                AssetImage('assets/${widget.username[0].toLowerCase()}.png'),
+            AssetImage('assets/${widget.username[0].toLowerCase()}.png'),
             // backgroundImage: AssetImage('assets/a.png'),
             radius: 30,
           ),
@@ -1503,9 +1289,9 @@ class _NavBarState extends State<NavBar> {
               context,
               MaterialPageRoute(
                   builder: (context) => opacHome(
-                        id: widget.id,
-                        title: 'Search Book',
-                      ))),
+                    id: widget.id,
+                    title: 'Search Book',
+                  ))),
         ),
         ListTile(
           leading: Icon(Icons.book),
@@ -1517,17 +1303,18 @@ class _NavBarState extends State<NavBar> {
           title: Text('Pending Magazine Requests'),
           onTap: () => Navigator.pushNamed(context, '/PendingMagazineRequests'),
         ),
+        Divider(),
         ListTile(
           leading: Icon(Icons.add),
           title: Text('Add new book'),
           onTap: () {
+            var bookNameController = TextEditingController();
+            var authorController = TextEditingController();
+            var isbnController = TextEditingController();
+            var availController = TextEditingController();
             showDialog(
                 context: context,
                 builder: (BuildContext context) {
-                  var bookNameController = TextEditingController();
-                  var authorController = TextEditingController();
-                  var isbnController = TextEditingController();
-                  var availController = TextEditingController();
                   return StatefulBuilder(
                     builder: (BuildContext context,
                         void Function(void Function()) setState) {
@@ -1590,52 +1377,58 @@ class _NavBarState extends State<NavBar> {
                                   },
                                 ),
                                 dropdownvalue == 'Online' ||
-                                        dropdownvalue == 'Both'
+                                    dropdownvalue == 'Both'
                                     ? Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: ElevatedButton(
-                                            child: const Text('Upload Pdf'),
-                                            onPressed: () async {
-                                              var result = await FilePicker
-                                                  .platform
-                                                  .pickFiles();
-                                              if (result != null) {
-                                                Uint8List? fileBytes =
-                                                    result.files.first.bytes;
-                                                pickedFileByteStream =
-                                                    (fileBytes)!;
-                                                // var paths = result.files.first.path!;
-                                                // var file = File(paths);
-                                                // objFile =  result.files.single;
-                                                // String toRet =  pickedFileByteStream.toString();
-                                                // print('toRet $fileBytes');
-                                              }
-                                              if (pickedFileByteStream !=
-                                                  null) {
-                                                setState(() {});
-                                              }
-                                            }),
-                                      )
-                                    : const SizedBox(),
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: ElevatedButton(
+                                      child: Text('Upload Pdf'),
+                                      onPressed: () async {
+                                        var result = await FilePicker
+                                            .platform
+                                            .pickFiles(
+                                          type: FileType.custom,
+                                          allowedExtensions: ['pdf'],
+                                        );
+                                        if (result != null) {
+                                          Uint8List? fileBytes =
+                                              result.files.first.bytes;
+                                          pickedFileByteStream =
+                                          (fileBytes)!;
+                                          // var paths = result.files.first.path!;
+                                          // var file = File(paths);
+                                          // objFile =  result.files.single;
+                                          // String toRet =  pickedFileByteStream.toString();
+                                          // print('toRet $fileBytes');
+                                        }
+                                        if (pickedFileByteStream !=
+                                            null) {
+                                          setState(() {});
+                                        }
+                                      }),
+                                )
+                                    : SizedBox(),
                                 Padding(
                                   padding: const EdgeInsets.all(8.0),
                                   child: ElevatedButton(
                                       onPressed: () async {
-                                        var result = await FilePicker.platform
-                                            .pickFiles(type: FileType.image);
+                                        var result =
+                                        await FilePicker.platform.pickFiles(
+                                          type: FileType.custom,
+                                          allowedExtensions: ['jpg'],
+                                        );
                                         if (result != null) {
                                           Uint8List? fileBytes =
-                                              await result.files.first.bytes;
+                                          await result.files.first.bytes;
                                           // objFileTn = result.files.single;
                                           pickedFileByteStreamTn = fileBytes!;
                                           String toRet =
-                                              pickedFileByteStreamTn.toString();
+                                          pickedFileByteStreamTn.toString();
                                         }
                                         if (pickedFileByteStreamTn != null) {
                                           setState(() {});
                                         }
                                       },
-                                      child: const Text('Upload Thumbnail')),
+                                      child: Text('Upload Thumbnail')),
                                 )
                               ],
                             ),
@@ -1647,8 +1440,9 @@ class _NavBarState extends State<NavBar> {
                             child: const Text('Cancel'),
                           ),
                           TextButton(
-                              child: const Text("Submit"),
+                              child: Text("Submit"),
                               onPressed: () {
+                                print(bookNameController.text);
                                 // if (dropdownvalue == 'Online' || dropdownvalue == 'Both') {
                                 //   showDialog(
                                 //       context: context,
@@ -1675,22 +1469,22 @@ class _NavBarState extends State<NavBar> {
                                 //       });
                                 // }
                                 final channel =
-                                    WebSocketChannel.connect(webSocket());
+                                WebSocketChannel.connect(webSocket());
                                 channel.sink.add(parser(packet(
                                     widget.id, Handler.Handler1, Add.BookRecord,
-                                    bookName: BookNameController.text,
+                                    bookName: bookNameController.text,
                                     isbn: isbnController.text,
                                     author: [authorController.text],
                                     availability:
-                                        int.parse(availController.text),
+                                    int.parse(availController.text),
                                     type: dropdownvalue == 'Online'
                                         ? Avail.Online
                                         : dropdownvalue == 'Offline'
-                                            ? Avail.Offline
-                                            : 3,
+                                        ? Avail.Offline
+                                        : 3,
                                     book: pickedFileByteStream.toString(),
                                     thumbnail:
-                                        pickedFileByteStreamTn.toString())));
+                                    pickedFileByteStreamTn.toString())));
 
                                 // pickedFileByteStream.toString() -------- filestream for pdf
                                 // pickedFileByteStreamTn.toString()  ----- filestream for thumbnail
@@ -1703,6 +1497,276 @@ class _NavBarState extends State<NavBar> {
                 });
           },
         ),
+        ListTile(
+          leading: Icon(Icons.add),
+          title: Text('Add new magazine'),
+          onTap: () {
+            DueDate =
+            "${selectedDate.day}/${selectedDate.month}/${selectedDate.year}";
+            showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  var journalController = TextEditingController();
+                  var authorController = TextEditingController();
+                  var volumeController = TextEditingController();
+                  var releaseDateController = TextEditingController();
+                  var issueController = TextEditingController();
+                  Uint8List pickedFileMagByteStream = Uint8List.fromList([]);
+                  return StatefulBuilder(
+                    builder: (BuildContext context,
+                        void Function(void Function()) setState) {
+                      return AlertDialog(
+                        scrollable: true,
+                        title: Text('Add Magazine'),
+                        content: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Form(
+                            child: Column(
+                              children: <Widget>[
+                                TextFormField(
+                                  controller: journalController,
+                                  decoration: const InputDecoration(
+                                    labelText: 'Journal Name',
+                                    icon: Icon(Icons.drive_file_rename_outline),
+                                  ),
+                                ),
+                                TextFormField(
+                                  controller: volumeController,
+                                  decoration: const InputDecoration(
+                                    labelText: 'Volume',
+                                    icon: Icon(Icons.add),
+                                  ),
+                                ),
+                                TextFormField(
+                                  controller: authorController,
+                                  decoration: const InputDecoration(
+                                    labelText: 'Author',
+                                    icon: Icon(Icons.account_box),
+                                  ),
+                                ),
+                                TextFormField(
+                                  controller: DueDateController,
+                                  decoration: InputDecoration(
+                                    labelText: 'Published Date',
+                                    icon: IconButton(
+                                        icon: Icon(Icons.calendar_today),
+                                        onPressed: () {
+                                          _selectDate(context);
+                                          DueDateController.text = DueDate;
+                                        }),
+                                  ),
+                                ),
+                                TextFormField(
+                                  controller: issueController,
+                                  decoration: const InputDecoration(
+                                    labelText: 'Issue',
+                                    icon: Icon(Icons.book_outlined),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: ElevatedButton(
+                                      onPressed: () async {
+                                        var result =
+                                        await FilePicker.platform.pickFiles(
+                                          type: FileType.custom,
+                                          allowedExtensions: ['pdf'],
+                                        );
+                                        if (result != null) {
+                                          Uint8List? fileBytes =
+                                          await result.files.first.bytes;
+                                          // objFileTn = result.files.single;
+                                          pickedFileMagByteStream = fileBytes!;
+                                          String toRet = pickedFileMagByteStream
+                                              .toString();
+                                        }
+                                        if (pickedFileMagByteStream != null) {
+                                          setState(() {});
+                                        }
+                                      },
+                                      child: Text('Upload Magazine!')),
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                        actions: [
+                          TextButton(
+                            onPressed: () => Navigator.pop(context),
+                            child: Text('Cancel'),
+                          ),
+                          TextButton(
+                              child: const Text("Submit"),
+                              onPressed: () {
+                                final channel =
+                                WebSocketChannel.connect(webSocket());
+                                channel.sink.add(parser(packet(widget.id,
+                                    Handler.Handler1, Add.MagazineRecord,
+                                    bookName: journalController.text,
+                                    author: [authorController.text],
+                                    volume: volumeController.text,
+                                    issue: issueController.text,
+                                    misc: DueDateController.text)));
+                                channel.stream.listen((event) {
+                                  event = event.split(Header.Split)[1];
+                                  event = jsonDecode(event);
+                                  if (event["Header"] == Header.Success) {
+                                    showSnackbar(context, "Magazine uploaded");
+                                  } else {
+                                    showSnackbar(context,
+                                        "Upload failed try after sometime");
+                                  }
+                                });
+                                Navigator.pop(context);
+                              })
+                        ],
+                      );
+                    },
+                  );
+                });
+          },
+        ),
+        Divider(),
+        PopupMenuButton<int>(
+          child: ListTile(
+            leading: Icon(Icons.all_out),
+            title: Text('Book Circulation'),
+          ),
+          itemBuilder: (context) => [
+            PopupMenuItem(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: ListTile(
+                  title: Text('New Book Borrowal'),
+                  leading: CircleAvatar(
+                    child: Icon(Icons.add),
+                    radius: 30,
+                  ),
+                ),
+              ),
+              value: 0,
+            ),
+            PopupMenuItem(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: ListTile(
+                  title: Text('Outstanding Books'),
+                  leading: CircleAvatar(
+                    child: Icon(Icons.outbond),
+                    radius: 30,
+                  ),
+                ),
+              ),
+              value: 1,
+            ),
+            // PopupMenuItem(
+            //   child: Padding(
+            //     padding: const EdgeInsets.all(8.0),
+            //     child: ListTile(
+            //       title: Text('Post due!'),
+            //       leading: CircleAvatar(
+            //         child: Icon(Icons.warning),
+            //         radius: 30,
+            //       ),
+            //     ),
+            //   ),
+            //   value: 2,
+            // ),
+          ],
+          onSelected: (item) {
+            selectedItemCirculation(context, item);
+          },
+        ),
+        PopupMenuButton<int>(
+          child: ListTile(
+            leading: Icon(Icons.money),
+            title: Text('Budget Allocation'),
+          ),
+          itemBuilder: (context) => [
+            PopupMenuItem(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: ListTile(
+                  title: Text('Add Budget Details'),
+                  leading: CircleAvatar(
+                    child: Icon(Icons.add),
+                    radius: 30,
+                  ),
+                ),
+              ),
+              value: 0,
+            ),
+            PopupMenuItem(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: ListTile(
+                  title: Text('Add Expenditure Details'),
+                  leading: CircleAvatar(
+                    child: Icon(Icons.outbond),
+                    radius: 30,
+                  ),
+                ),
+              ),
+              value: 1,
+            ),
+            PopupMenuItem(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: ListTile(
+                  title: Text('Budget Distribution'),
+                  leading: CircleAvatar(
+                    child: Icon(Icons.outbond),
+                    radius: 30,
+                  ),
+                ),
+              ),
+              value: 2,
+            ),
+            PopupMenuItem(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: ListTile(
+                  title: Text('Total Budget'),
+                  leading: CircleAvatar(
+                    child: Icon(Icons.all_inclusive),
+                    radius: 30,
+                  ),
+                ),
+              ),
+              value: 3,
+            ),
+            PopupMenuItem(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: ListTile(
+                  title: Text('Remaining Budget'),
+                  leading: CircleAvatar(
+                    child: Icon(Icons.read_more),
+                    radius: 30,
+                  ),
+                ),
+              ),
+              value: 4,
+            ),
+            // PopupMenuItem(
+            //   child: Padding(
+            //     padding: const EdgeInsets.all(8.0),
+            //     child: ListTile(
+            //       title: Text('Post due!'),
+            //       leading: CircleAvatar(
+            //         child: Icon(Icons.warning),
+            //         radius: 30,
+            //       ),
+            //     ),
+            //   ),
+            //   value: 2,
+            // ),
+          ],
+          onSelected: (item) {
+            selectedItemBudget(context, item);
+          },
+        ),
+        Divider(),
         ListTile(
           leading: Icon(Icons.account_circle),
           title: Text('Add User'),
@@ -1775,13 +1839,13 @@ class _NavBarState extends State<NavBar> {
                           onPressed: () async {
                             if (userPrevilege == 'Admin') {
                               final channel =
-                                  WebSocketChannel.connect(webSocket());
+                              WebSocketChannel.connect(webSocket());
                               channel.sink.add(parser(packet(
                                   widget.id, Handler.Handler1, Create.Admin,
                                   username: usernameController.text.toString(),
                                   password: sha512
                                       .convert(utf8.encode(
-                                          passwordController.text.toString()))
+                                      passwordController.text.toString()))
                                       .toString())));
                               channel.stream.listen((event) {
                                 event = event.split(Header.Split)[1];
@@ -1796,13 +1860,13 @@ class _NavBarState extends State<NavBar> {
                               });
                             } else {
                               final channel =
-                                  WebSocketChannel.connect(webSocket());
+                              WebSocketChannel.connect(webSocket());
                               channel.sink.add(parser(packet(
                                   widget.id, Handler.Handler1, Create.User,
                                   username: usernameController.text.toString(),
                                   password: sha512
                                       .convert(utf8.encode(
-                                          passwordController.text.toString()))
+                                      passwordController.text.toString()))
                                       .toString())));
                               channel.stream.listen((event) {
                                 event = event.split(Header.Split)[1];
@@ -1830,80 +1894,125 @@ class _NavBarState extends State<NavBar> {
                 })
           },
         ),
-        // ListTile(
-        //   leading: Icon(Icons.notifications),
-        //   title: Text('Pending Requests'),
-        //   onTap: () => Navigator.push(
-        //       context,
-        //       MaterialPageRoute(
-        //           builder: (context) => adminPendingRequestsPage(
-        //             id: widget.id,
-        //           ))),
-        //   trailing: ClipOval(
-        //     child: Container(
-        //       color: Colors.red,
-        //       width: 20,
-        //       height: 20,
-        //       child: const Center(
-        //         child: Text(
-        //           '8',
-        //           style: TextStyle(
-        //             color: Colors.white,
-        //             fontSize: 12,
-        //           ),
-        //         ),
-        //       ),
-        //     ),
-        //   ),
-        // ),
-        PopupMenuButton<int>(
-          child: ListTile(
-            leading: Icon(Icons.all_out),
-            title: Text('Book Circulation'),
-          ),
-          itemBuilder: (context) => [
-            PopupMenuItem(
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: ListTile(
-                  title: Text('New Book Borrowal'),
-                  leading: CircleAvatar(
-                    child: Icon(Icons.add),
-                    radius: 30,
-                  ),
-                ),
-              ),
-              value: 0,
-            ),
-            PopupMenuItem(
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: ListTile(
-                  title: Text('Outstanding Books'),
-                  leading: CircleAvatar(
-                    child: Icon(Icons.outbond),
-                    radius: 30,
-                  ),
-                ),
-              ),
-              value: 1,
-            ),
-            PopupMenuItem(
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: ListTile(
-                  title: Text('Post due!'),
-                  leading: CircleAvatar(
-                    child: Icon(Icons.warning),
-                    radius: 30,
-                  ),
-                ),
-              ),
-              value: 2,
-            ),
-          ],
-          onSelected: (item) {
-            selectedItemCirculation(context, item);
+        ListTile(
+          leading: Icon(Icons.account_circle),
+          title: Text('Delete User'),
+          onTap: () => {
+            showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  String userPrevilege = 'User';
+                  // List<DropdownMenuItem> items = [DropdownMenuItem(child: Text('User')),DropdownMenuItem(child: Text('Admin'))];
+                  var items = [
+                    'User',
+                    'Admin',
+                  ];
+                  var usernameController = TextEditingController();
+                  var passwordController = TextEditingController();
+                  return StatefulBuilder(builder: (BuildContext context,
+                      void Function(void Function()) setState) {
+                    return AlertDialog(
+                      scrollable: true,
+                      title: const Text('Delete User'),
+                      content: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Form(
+                          child: Column(
+                            children: <Widget>[
+                              TextFormField(
+                                controller: usernameController,
+                                decoration: const InputDecoration(
+                                  labelText: 'User Name',
+                                  icon: Icon(Icons.drive_file_rename_outline),
+                                ),
+                              ),
+
+                            ],
+                          ),
+                        ),
+                      ),
+                      actions: [
+                        TextButton(onPressed: (){Navigator.pop(context);}, child: Text('Delete User')),
+                        TextButton(
+                          onPressed: () => Navigator.pop(context),
+                          child: Text('Cancel'),
+                        ),
+                      ],
+                    );
+                  });
+                })
+          },
+        ),
+        ListTile(
+          leading: Icon(Icons.account_circle),
+          title: Text('Edit User'),
+          onTap: () => {
+            showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  String userPrevilege = 'User';
+                  // List<DropdownMenuItem> items = [DropdownMenuItem(child: Text('User')),DropdownMenuItem(child: Text('Admin'))];
+                  var items = [
+                    'User',
+                    'Admin',
+                  ];
+                  var usernameController = TextEditingController();
+                  return StatefulBuilder(builder: (BuildContext context,
+                      void Function(void Function()) setState) {
+                    return AlertDialog(
+                      scrollable: true,
+                      title: const Text('Edit User'),
+                      content: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Form(
+                          child: Column(
+                            children: <Widget>[
+                              TextFormField(
+                                controller: usernameController,
+                                decoration: const InputDecoration(
+                                  labelText: 'User Name',
+                                  icon: Icon(Icons.drive_file_rename_outline),
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: DropdownButton(
+                                  // Initial Value
+                                  value: userPrevilege,
+                                  // Down Arrow Icon
+                                  icon: const Icon(Icons.keyboard_arrow_down),
+                                  // Array list of items
+                                  items: items.map((String items) {
+                                    return DropdownMenuItem(
+                                      value: items,
+                                      child: Text(items),
+                                    );
+                                  }).toList(),
+                                  // After selecting the desired option,it will
+                                  // change button value to selected value
+                                  onChanged: (String? newValue) {
+                                    setState(() {
+                                      userPrevilege = newValue!;
+                                    });
+                                  },
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      actions: [
+                        TextButton(onPressed: (){
+                          Navigator.pop(context);
+                        }, child: Text('Edit User')),
+                        TextButton(
+                          onPressed: () => Navigator.pop(context),
+                          child: Text('Cancel'),
+                        ),
+                      ],
+                    );
+                  });
+                })
           },
         ),
         Divider(),
@@ -2006,3 +2115,5 @@ class _NavBarState extends State<NavBar> {
     );
   }
 }
+
+
