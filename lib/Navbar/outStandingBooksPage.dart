@@ -16,43 +16,36 @@ class OutStandingRequests extends StatefulWidget {
 }
 
 class _OutStandingRequestsState extends State<OutStandingRequests> {
-
-
-  Future<List<BookRequestData>> fetch() async {
-    String id;
-
-    Future<String> GetState() async {
-      final prefs = await SharedPreferences.getInstance();
-      id = prefs.getString("Id")!;
-      if(id!=null){
-        loaded=true;
-        setState(() {});
-      }
-      print(loaded);
-      return id;
+  late String id;
+  Future<String> GetState() async {
+    final prefs = await SharedPreferences.getInstance();
+    id = prefs.getString("Id")!;
+    if(id!=null){
+      loaded=true;
+      setState(() {});
     }
-    id= await GetState();
+    print(loaded);
+    return id;
+  }
+
+  Future<List<BookIssue>> fetch() async {
+    await GetState();
     final channel = WebSocketChannel.connect(webSocket());
+    List<BookIssue> data = [];
     channel.sink.add(parser(
-        packet(id, Handler.Handler1, Fetch.BookRequest, range: [-1, 0])));
+        packet(id, Handler.Handler1, Fetch.DueUsers, range: [-1, 0])));
     channel.stream.listen((event) {
       event = event.split(Header.Split)[1];
       for (dynamic i in jsonDecode(event)["Data"]) {
-        i = jsonDecode(i);
-        // BookRequestData temp = BookRequestData(i["RequestID"].toString(), i["BookName"],
-        //     i["Author"], i["RequestBy"], i["Status"]);
-        // data.add(temp);
+        BookIssue temp = BookIssue(i["IssueID"], i["ISBN"],i["IssuedTo"], i["dateIssued"], i["BookName"]);
+        data.add(temp);
       }
-      // setState(() {
-      // });
       channel.sink.close();
       setState(() {
 
       });
     });
-
-    print(data);
-    return [];
+    return data;
   }
 
   @override

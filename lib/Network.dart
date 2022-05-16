@@ -27,7 +27,14 @@ String packet(String id, String handler, String header,
     List<int> range = const [],
     String email = "",
     String volume = "",
-    String issue = ""}) {
+    String issue = "",
+    String reasons = "",
+    int budgetAmt = 0,
+    int usedBudgetAmt = 0,
+    String budgetType = "",
+    String investedOn = "",
+    String budgetID = "",
+    int expAmt = 0}) {
   var data = {
     "ID": id,
     "Handler": handler,
@@ -51,7 +58,14 @@ String packet(String id, String handler, String header,
     "Status": status,
     "Email": email,
     "Volume": volume,
-    "Issue": issue
+    "Issue": issue,
+    "Reason": reasons,
+    "BudgetAmt": budgetAmt,
+    "UsedBudgetAmt": usedBudgetAmt,
+    "BudgetType": budgetType,
+    "InvestedOn": investedOn,
+    "BudgetID": budgetID,
+    "ExpAmt": expAmt
   };
 
   return jsonEncode(data);
@@ -61,10 +75,10 @@ Uri webSocket() {
   return Uri.parse("ws:" + ip + ":" + WebPort.toString());
 }
 
-void communicate(String packet,Function process){
+void communicate(String packet, Function process) {
   final channel = WebSocketChannel.connect(webSocket());
   channel.sink.add(parser(packet));
-  channel.stream.listen((event) async{
+  channel.stream.listen((event) async {
     event = event.split(Header.Split)[1];
     var out = jsonDecode(event);
     await process(out);

@@ -39,7 +39,7 @@ class _BookRequestStatusState extends State<BookRequestStatus> {
       for (dynamic i in jsonDecode(event)["Data"]) {
         i = jsonDecode(i);
         BookRequestData temp = BookRequestData(i["RequestID"].toString(),
-            i["BookName"], i["Author"], i["RequestBy"], i["Status"].toString());
+            i["BookName"], i["Author"], i["RequestBy"], i["Status"].toString(),i["Reason"]);
         data.add(temp);
       }
       channel.sink.close();

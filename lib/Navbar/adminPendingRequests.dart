@@ -16,29 +16,33 @@ class adminPendingRequestsPage extends StatefulWidget {
 }
 
 class _adminPendingRequestsPageState extends State<adminPendingRequestsPage> {
-  late List<BookRequestData> data ;
+  late List<BookRequestData> data;
   // void initState(){
   //   fetch();
   //   super.initState();
   // }
   Future<List<BookRequestData>> fetch() async {
     final channel = WebSocketChannel.connect(webSocket());
-    channel.sink.add(parser(
-        packet(widget.id, Handler.Handler1, Fetch.BookRequest, range: [-1, 0])));
+    channel.sink.add(parser(packet(
+        widget.id, Handler.Handler1, Fetch.BookRequest,
+        range: [-1, 0])));
     channel.stream.listen((event) {
       event = event.split(Header.Split)[1];
       for (dynamic i in jsonDecode(event)["Data"]) {
         i = jsonDecode(i);
-        BookRequestData temp = BookRequestData(i["RequestID"].toString(), i["BookName"],
-            i["Author"], i["RequestBy"], i["Status"]);
+        BookRequestData temp = BookRequestData(
+            i["RequestID"].toString(),
+            i["BookName"],
+            i["Author"],
+            i["RequestBy"],
+            i["Status"],
+            i["Reason"]);
         data.add(temp);
       }
       // setState(() {
       // });
       channel.sink.close();
-setState(() {
-
-});
+      setState(() {});
     });
 
     print(data);
@@ -47,15 +51,11 @@ setState(() {
 
   @override
   void initState() {
-    data=[];
+    data = [];
     fetch();
     super.initState();
   }
-  void update(String id,int Status)async{
-    final channel = WebSocketChannel.connect(webSocket());
-    channel.sink.add(parser(
-        packet(widget.id, Handler.Handler1, Update.BookRequest,misc: id,status: Status.toString())));
-  }
+
   // Future<ListView> pendingBooksList(data) async {
   //   return ListView.builder(
   //       itemCount: data.length,
@@ -189,17 +189,15 @@ setState(() {
                         ];
                         String dropdownvalue = items[0];
                         if (int.parse(data[index].Status) &
-                        RequestStatus.processing ==
+                                RequestStatus.processing ==
                             RequestStatus.processing) {
                           dropdownvalue = items[0];
-                        } else if (int.parse(
-                            data[index].Status) &
-                        RequestStatus.approved ==
+                        } else if (int.parse(data[index].Status) &
+                                RequestStatus.approved ==
                             RequestStatus.approved) {
                           dropdownvalue = items[1];
-                        } else if (int.parse(
-                            data[index].Status) &
-                        RequestStatus.declined ==
+                        } else if (int.parse(data[index].Status) &
+                                RequestStatus.declined ==
                             RequestStatus.declined) {
                           dropdownvalue = items[2];
                         } else {
@@ -209,8 +207,7 @@ setState(() {
                           title: Text(data[index].BookName),
                           leading: Text(data[index].Request),
                           subtitle: Text(data[index].Author),
-                          trailing:
-                          Text(data[index].RequestedBy),
+                          trailing: Text(data[index].RequestedBy),
                           onTap: () {
                             showDialog(
                                 context: context,
@@ -218,15 +215,13 @@ setState(() {
                                   return StatefulBuilder(
                                     builder: (BuildContext context,
                                         void Function(void Function())
-                                        setState) {
+                                            setState) {
                                       return AlertDialog(
                                         scrollable: true,
                                         title: Text(
                                             'Request ID : ${data[index].Request}'),
                                         content: Padding(
-                                          padding:
-                                          const EdgeInsets.all(
-                                              8.0),
+                                          padding: const EdgeInsets.all(8.0),
                                           child: DropdownButton(
                                             onChanged: (value) {
                                               setState(() {
@@ -234,8 +229,7 @@ setState(() {
                                                     value.toString();
                                               });
                                             },
-                                            items: items
-                                                .map((String items) {
+                                            items: items.map((String items) {
                                               return DropdownMenuItem(
                                                 value: items,
                                                 child: Text(items),
@@ -247,33 +241,43 @@ setState(() {
                                         actions: [
                                           TextButton(
                                             onPressed: () =>
-                                                Navigator.pop(
-                                                    context),
-                                            child: Text('Cancel'),
+                                                Navigator.pop(context),
+                                            child: const Text('Cancel'),
                                           ),
                                           TextButton(
-                                              child: Text(
-                                                  "Update Status"),
+                                              child:
+                                                  const Text("Update Status"),
                                               onPressed: () {
                                                 int toRet;
-                                                dropdownvalue ==
-                                                    items[0]
+                                                dropdownvalue == items[0]
                                                     ? toRet =
-                                                    RequestStatus
-                                                        .processing
-                                                    : dropdownvalue ==
-                                                    items[1]
-                                                    ? toRet =
-                                                    RequestStatus
-                                                        .approved
-                                                    : toRet =
-                                                    RequestStatus
-                                                        .declined;
+                                                        RequestStatus.processing
+                                                    : dropdownvalue == items[1]
+                                                        ? toRet = RequestStatus
+                                                            .approved
+                                                        : toRet = RequestStatus
+                                                            .declined;
 
                                                 // code here!!
-                                                update(data[index].Request, toRet);
-                                                Navigator.pop(
-                                                    context);
+                                                final channel =
+                                                    WebSocketChannel.connect(
+                                                        webSocket());
+                                                channel.sink.add(parser(packet(
+                                                    "",
+                                                    Handler.Handler1,
+                                                    Update.MagazineRequest,
+                                                    status: toRet.toString(),
+                                                    misc:
+                                                        data[index].Request)));
+                                                channel.stream.listen((event) {
+                                                  event = event
+                                                      .split(Header.Split)[1];
+
+                                                  channel.sink.close();
+                                                  setState(() {});
+
+                                                  Navigator.pop(context);
+                                                });
                                               })
                                         ],
                                       );

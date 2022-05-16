@@ -46,7 +46,7 @@ class _userRequestsPageState extends State<userRequestsPage> {
         i = jsonDecode(i);
         print(i);
         BookRequestData temp = BookRequestData(i["RequestID"].toString(), i["BookName"],
-            i["Author"], i["RequestBy"], i["Status"].toString());
+            i["Author"], i["RequestBy"], i["Status"].toString(),i["Reason"]);
         data.add(temp);
       }
       channel.sink.close();

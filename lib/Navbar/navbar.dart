@@ -37,7 +37,7 @@ class _NavBarState extends State<NavBar> {
       for (dynamic i in jsonDecode(event)["Data"]) {
         i = jsonDecode(i);
         BookRequestData temp = BookRequestData(i["RequestID"], i["BookName"],
-            i["Author"], i["RequestBy"], i["Status"]);
+            i["Author"], i["RequestBy"], i["Status"],i["Reason"]);
         data.add(temp);
       }
       channel.sink.close();
@@ -110,7 +110,7 @@ class _NavBarState extends State<NavBar> {
               return StatefulBuilder(builder: (BuildContext context,
                   void Function(void Function()) setState) {
                 return AlertDialog(
-                  title: Text('New Book Borrowal'),
+                  title: const Text('New Book Borrowal'),
                   actions: [
                     TextButton(
                       onPressed: () => Navigator.pop(context),
@@ -374,10 +374,11 @@ class _NavBarState extends State<NavBar> {
       firstDate: DateTime(2010),
       lastDate: DateTime(2025),
     );
-    if (selected != null )
+    if (selected != null ) {
       setState(() {
         selectedDate = selected;
       });
+    }
     setState(() {});
   }
 
@@ -797,7 +798,7 @@ class _NavBarState extends State<NavBar> {
                         actions: [
                           TextButton(
                             onPressed: () => Navigator.pop(context),
-                            child: Text('Cancel'),
+                            child: const Text('Cancel'),
                           ),
                           TextButton(
                               child: Text("Submit"),
@@ -918,7 +919,7 @@ class _NavBarState extends State<NavBar> {
                                 ),
                                 TextFormField(
                                   controller: issueController,
-                                  decoration: InputDecoration(
+                                  decoration: const InputDecoration(
                                     labelText: 'Issue',
                                     icon: Icon(Icons.book_outlined),
                                   ),
@@ -952,7 +953,7 @@ class _NavBarState extends State<NavBar> {
                             child: Text('Cancel'),
                           ),
                           TextButton(
-                              child: Text("Submit"),
+                              child: const Text("Submit"),
                               onPressed: () {
                                 final channel =
                                 WebSocketChannel.connect(webSocket());
@@ -962,7 +963,7 @@ class _NavBarState extends State<NavBar> {
                                     author: [authorController.text],
                                     volume: volumeController.text,
                                     issue: issueController.text,
-                                    misc: DueDate)));
+                                    misc: DueDateController.text)));
                                 channel.stream.listen((event) {
                                   event = event.split(Header.Split)[1];
                                   event = jsonDecode(event);

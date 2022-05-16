@@ -49,9 +49,11 @@ class BookRequestData{
   late String Author;
   late String RequestedBy;
   late String Status;
+  late String Reason;
 
-  BookRequestData(
-      this.Request, this.BookName, this.Author, this.RequestedBy, this.Status);
+  BookRequestData(this.Request, this.BookName, this.Author, this.RequestedBy,
+      this.Status, this.Reason);
+
 }
 
 class MagazineData{
@@ -92,6 +94,16 @@ class SubscriptionRequestDataAdmin{
   SubscriptionRequestDataAdmin(this.id,this.JournalName, this.UserName, this.Email,this.Status);
 }
 
+class BookIssue{
+  late int IssueID;
+  late String ISBN;
+  late String Username;
+  late String DateIssued;
+  late String BookName;
+
+  BookIssue(
+      this.IssueID, this.ISBN, this.Username, this.DateIssued, this.BookName);
+}
 // All the class below here are associated with Header class that of handling  API request and response
 class Header {
   static const String Split = "||";
@@ -140,6 +152,13 @@ class Fetch {
   static const String MySubscription = "FetchMySubscription";
   static const String MagazineRequest = "FetchSubscriptionRequest";
   static const String CurrentSubscription = "FetchCurrentSubscription";
+  static const String DueUsers = "FetchDueUsers";
+  static const String TotalBudget = "FetchTotalBudget";
+  static const String RemainingBudget = "FetchRemainingBudget";
+  static const String BudgetDistribution = "FetchBudgetDistribution";
+  static const String BookSuggestion = "FetchBookSuggestion";
+  static const String BooksIssuedToUser = "FetchBooksIssuedToUser";
+  static const String UserIssuedBook = "FetchUserIssuedBook";
 }
 
 class Search {
