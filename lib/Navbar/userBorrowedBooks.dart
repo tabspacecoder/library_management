@@ -34,7 +34,7 @@ class _UserBorrowedBooksState extends State<UserBorrowedBooks> {
     id = await GetState();
     final channel = WebSocketChannel.connect(webSocket());
     channel.sink.add(parser(
-        packet(id, Handler.Handler1, Fetch.BookRequest, range: [-1, 0])));
+        packet(id, Handler.Handler1, Fetch.UserIssuedBook, range: [-1, 0])));
     channel.stream.listen((event) {
       event = event.split(Header.Split)[1];
       for (dynamic i in jsonDecode(event)["Data"]) {
