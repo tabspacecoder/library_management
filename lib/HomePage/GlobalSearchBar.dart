@@ -345,12 +345,12 @@ class _SearchBarState extends State<SearchBar> {
                       event = event.split(Header.Split)[1];
                       var link = jsonDecode(event)["Data"];
                       print(link);
-                      // js.context.callMethod('open', ['$link']);
+                      js.context.callMethod('open', ['$link']);
                       // var file = await DefaultCacheManager().downloadFile(link);
                       // print(file.file.uri);
                       // final blob = html.Blob([file.file.path], 'application/pdf');
                       // var bytestream = await file.file.readAsBytes();
-                      Navigator.of(context).push(MaterialPageRoute(builder: (context)=>PdfViewer(name: suggestion.BookName, link: link)));
+                      // Navigator.of(context).push(MaterialPageRoute(builder: (context)=>PdfViewer(name: suggestion.BookName, link: link)));
                       // html.window.open(url, '_blank');
                       // PdftronFlutter.openDocument(link);
                       channel.sink.close();

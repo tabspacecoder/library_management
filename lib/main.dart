@@ -8,6 +8,8 @@ import 'package:library_management/Login/Login.dart';
 import 'package:library_management/Navbar/DeleteHisttory.dart';
 import 'package:library_management/Navbar/adminPendingRequestsBooks.dart';
 import 'package:library_management/Navbar/adminPendingRequestsMagazines.dart';
+import 'package:library_management/Navbar/outStandingBooksPage.dart';
+import 'package:library_management/Navbar/userBorrowedBooks.dart';
 import 'HomePage/Books/BookRequestStatus.dart';
 import 'HomePage/Books/BookRequests.dart';
 import 'HomePage/Magazines/MyMagazine.dart';
@@ -30,6 +32,8 @@ void main() {
       '/PendingBookRequests':(context)=>adminPendingRequestsPageBooks(),
       '/PendingMagazineRequests' : (context) =>adminPendingRequestsPageMagazines(),
       '/History' : (context) => HistoryPage(),
+      '/OutStandingRequests' : (context) =>OutStandingRequests(),
+      '/UserBorrowedBooks':(context) =>UserBorrowedBooks(),
     },
     initialRoute: "/",
   ));

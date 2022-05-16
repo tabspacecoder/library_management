@@ -108,7 +108,8 @@ class _NavBarState extends State<NavBar> {
     switch (item) {
       case 1:
         print('View Profile');
-        Navigator.push(context, MaterialPageRoute(builder: (context)=>OutStandingRequests()));
+        // Navigator.push(context, MaterialPageRoute(builder: (context)=>OutStandingRequests()));
+        Navigator.pushNamed(context, '/OutStandingRequests');
         setState(() {});
         break;
       case 0:
@@ -580,8 +581,8 @@ class _NavBarState extends State<NavBar> {
             leading: const Icon(Icons.book),
             title: const Text("Borrowed Books"),
             onTap: () {
-              // Navigator.pushNamed(context, "/MagazineRequestStatus");
-              Navigator.push(context, MaterialPageRoute(builder: (context)=>UserBorrowedBooks()));
+              Navigator.pushNamed(context, "/UserBorrowedBooks");
+              // Navigator.push(context, MaterialPageRoute(builder: (context)=>UserBorrowedBooks()));
               // Navigator.push(context, MaterialPageRoute(builder: (context)=>UserBorrowedBooks()));
             }),
         const Divider(),
@@ -689,17 +690,6 @@ class _NavBarState extends State<NavBar> {
           decoration: const BoxDecoration(
             color: Colors.blue,
           ),
-        ),
-        ListTile(
-          leading: Icon(Icons.category),
-          title: Text('OPAC'),
-          onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => opacHome(
-                        id: widget.id,
-                        title: 'Search Book',
-                      ))),
         ),
         ListTile(
           leading: Icon(Icons.book),
@@ -1331,17 +1321,6 @@ class _NavBarState extends State<NavBar> {
           decoration: const BoxDecoration(
             color: Colors.blue,
           ),
-        ),
-        ListTile(
-          leading: Icon(Icons.category),
-          title: Text('OPAC'),
-          onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => opacHome(
-                    id: widget.id,
-                    title: 'Search Book',
-                  ))),
         ),
         ListTile(
           leading: Icon(Icons.book),
