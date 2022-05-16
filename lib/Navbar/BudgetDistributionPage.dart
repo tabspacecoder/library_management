@@ -53,7 +53,6 @@ class _BudgetDistributionPageState extends State<BudgetDistributionPage> {
 
   @override
   void initState() {
-    // TODO: implement initState
     fetch();
     super.initState();
   }

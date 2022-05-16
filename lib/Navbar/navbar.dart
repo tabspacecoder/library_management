@@ -320,7 +320,7 @@ class _NavBarState extends State<NavBar> {
                           webSocket(),
                         );
                         channel.sink.add(parser(packet(
-                            widget.id, Handler.Handler1, Add.BudgetRecord,
+                            widget.id, Handler.Handler1, Add.ExpenditureRecord,
                             budgetID: budgetIdController.text,
                             investedOn: investedController.text,
                             expAmt: int.parse(amtController.text))));
@@ -919,13 +919,27 @@ class _NavBarState extends State<NavBar> {
                                   icon: Icon(Icons.book),
                                 ),
                               ),
-
                             ],
                           ),
                         ),
                       ),
                       actions: [
-                        TextButton(onPressed: (){Navigator.pop(context);}, child: Text('Delete Book')),
+                        TextButton(
+                            onPressed: () async {
+                              final channel =
+                                  WebSocketChannel.connect(webSocket());
+                              channel.sink.add(parser(packet(widget.id,
+                                  Handler.Handler1, Remove.DeleteBook,
+                                  isbn: ISBNController.text)));
+                              channel.stream.listen((event) {
+                                event = event.split(Header.Split)[1];
+                                print(event);
+                                channel.sink.close();
+                                setState(() {});
+                              });
+                              Navigator.pop(context);
+                            },
+                            child: Text('Delete Book')),
                         TextButton(
                           onPressed: () => Navigator.pop(context),
                           child: Text('Cancel'),
@@ -937,15 +951,13 @@ class _NavBarState extends State<NavBar> {
           },
         ), //delete book
         ListTile(
-          leading: Icon(Icons.history),
-          title: Text('Delete Book History'),
-          onTap: () => {
-            Navigator.pushNamed(context, '/History')
-          },
+          leading: const Icon(Icons.history),
+          title: const Text('Delete Book History'),
+          onTap: () => {Navigator.pushNamed(context, '/History')},
         ),
         ListTile(
-          leading: Icon(Icons.add),
-          title: Text('Add new magazine'),
+          leading: const Icon(Icons.add),
+          title: const Text('Add new magazine'),
           onTap: () {
             DueDate =
                 "${selectedDate.day}/${selectedDate.month}/${selectedDate.year}";
@@ -963,7 +975,7 @@ class _NavBarState extends State<NavBar> {
                         void Function(void Function()) setState) {
                       return AlertDialog(
                         scrollable: true,
-                        title: Text('Add Magazine'),
+                        title: const Text('Add Magazine'),
                         content: Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Form(
@@ -1314,7 +1326,7 @@ class _NavBarState extends State<NavBar> {
           accountEmail: Text(widget.curStatus),
           currentAccountPicture: CircleAvatar(
             backgroundImage:
-            AssetImage('assets/${widget.username[0].toLowerCase()}.png'),
+                AssetImage('assets/${widget.username[0].toLowerCase()}.png'),
             // backgroundImage: AssetImage('assets/a.png'),
             radius: 30,
           ),
@@ -1406,52 +1418,52 @@ class _NavBarState extends State<NavBar> {
                                   },
                                 ),
                                 dropdownvalue == 'Online' ||
-                                    dropdownvalue == 'Both'
+                                        dropdownvalue == 'Both'
                                     ? Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: ElevatedButton(
-                                      child: Text('Upload Pdf'),
-                                      onPressed: () async {
-                                        var result = await FilePicker
-                                            .platform
-                                            .pickFiles(
-                                          type: FileType.custom,
-                                          allowedExtensions: ['pdf'],
-                                        );
-                                        if (result != null) {
-                                          Uint8List? fileBytes =
-                                              result.files.first.bytes;
-                                          pickedFileByteStream =
-                                          (fileBytes)!;
-                                          // var paths = result.files.first.path!;
-                                          // var file = File(paths);
-                                          // objFile =  result.files.single;
-                                          // String toRet =  pickedFileByteStream.toString();
-                                          // print('toRet $fileBytes');
-                                        }
-                                        if (pickedFileByteStream !=
-                                            null) {
-                                          setState(() {});
-                                        }
-                                      }),
-                                )
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: ElevatedButton(
+                                            child: Text('Upload Pdf'),
+                                            onPressed: () async {
+                                              var result = await FilePicker
+                                                  .platform
+                                                  .pickFiles(
+                                                type: FileType.custom,
+                                                allowedExtensions: ['pdf'],
+                                              );
+                                              if (result != null) {
+                                                Uint8List? fileBytes =
+                                                    result.files.first.bytes;
+                                                pickedFileByteStream =
+                                                    (fileBytes)!;
+                                                // var paths = result.files.first.path!;
+                                                // var file = File(paths);
+                                                // objFile =  result.files.single;
+                                                // String toRet =  pickedFileByteStream.toString();
+                                                // print('toRet $fileBytes');
+                                              }
+                                              if (pickedFileByteStream !=
+                                                  null) {
+                                                setState(() {});
+                                              }
+                                            }),
+                                      )
                                     : SizedBox(),
                                 Padding(
                                   padding: const EdgeInsets.all(8.0),
                                   child: ElevatedButton(
                                       onPressed: () async {
                                         var result =
-                                        await FilePicker.platform.pickFiles(
+                                            await FilePicker.platform.pickFiles(
                                           type: FileType.custom,
                                           allowedExtensions: ['jpg'],
                                         );
                                         if (result != null) {
                                           Uint8List? fileBytes =
-                                          await result.files.first.bytes;
+                                              await result.files.first.bytes;
                                           // objFileTn = result.files.single;
                                           pickedFileByteStreamTn = fileBytes!;
                                           String toRet =
-                                          pickedFileByteStreamTn.toString();
+                                              pickedFileByteStreamTn.toString();
                                         }
                                         if (pickedFileByteStreamTn != null) {
                                           setState(() {});
@@ -1498,22 +1510,22 @@ class _NavBarState extends State<NavBar> {
                                 //       });
                                 // }
                                 final channel =
-                                WebSocketChannel.connect(webSocket());
+                                    WebSocketChannel.connect(webSocket());
                                 channel.sink.add(parser(packet(
                                     widget.id, Handler.Handler1, Add.BookRecord,
                                     bookName: bookNameController.text,
                                     isbn: isbnController.text,
                                     author: [authorController.text],
                                     availability:
-                                    int.parse(availController.text),
+                                        int.parse(availController.text),
                                     type: dropdownvalue == 'Online'
                                         ? Avail.Online
                                         : dropdownvalue == 'Offline'
-                                        ? Avail.Offline
-                                        : 3,
+                                            ? Avail.Offline
+                                            : 3,
                                     book: pickedFileByteStream.toString(),
                                     thumbnail:
-                                    pickedFileByteStreamTn.toString())));
+                                        pickedFileByteStreamTn.toString())));
 
                                 // pickedFileByteStream.toString() -------- filestream for pdf
                                 // pickedFileByteStreamTn.toString()  ----- filestream for thumbnail
@@ -1531,7 +1543,7 @@ class _NavBarState extends State<NavBar> {
           title: Text('Add new magazine'),
           onTap: () {
             DueDate =
-            "${selectedDate.day}/${selectedDate.month}/${selectedDate.year}";
+                "${selectedDate.day}/${selectedDate.month}/${selectedDate.year}";
             showDialog(
                 context: context,
                 builder: (BuildContext context) {
@@ -1597,13 +1609,13 @@ class _NavBarState extends State<NavBar> {
                                   child: ElevatedButton(
                                       onPressed: () async {
                                         var result =
-                                        await FilePicker.platform.pickFiles(
+                                            await FilePicker.platform.pickFiles(
                                           type: FileType.custom,
                                           allowedExtensions: ['pdf'],
                                         );
                                         if (result != null) {
                                           Uint8List? fileBytes =
-                                          await result.files.first.bytes;
+                                              await result.files.first.bytes;
                                           // objFileTn = result.files.single;
                                           pickedFileMagByteStream = fileBytes!;
                                           String toRet = pickedFileMagByteStream
@@ -1628,7 +1640,7 @@ class _NavBarState extends State<NavBar> {
                               child: const Text("Submit"),
                               onPressed: () {
                                 final channel =
-                                WebSocketChannel.connect(webSocket());
+                                    WebSocketChannel.connect(webSocket());
                                 channel.sink.add(parser(packet(widget.id,
                                     Handler.Handler1, Add.MagazineRecord,
                                     bookName: journalController.text,
@@ -1868,13 +1880,13 @@ class _NavBarState extends State<NavBar> {
                           onPressed: () async {
                             if (userPrevilege == 'Admin') {
                               final channel =
-                              WebSocketChannel.connect(webSocket());
+                                  WebSocketChannel.connect(webSocket());
                               channel.sink.add(parser(packet(
                                   widget.id, Handler.Handler1, Create.Admin,
                                   username: usernameController.text.toString(),
                                   password: sha512
                                       .convert(utf8.encode(
-                                      passwordController.text.toString()))
+                                          passwordController.text.toString()))
                                       .toString())));
                               channel.stream.listen((event) {
                                 event = event.split(Header.Split)[1];
@@ -1889,13 +1901,13 @@ class _NavBarState extends State<NavBar> {
                               });
                             } else {
                               final channel =
-                              WebSocketChannel.connect(webSocket());
+                                  WebSocketChannel.connect(webSocket());
                               channel.sink.add(parser(packet(
                                   widget.id, Handler.Handler1, Create.User,
                                   username: usernameController.text.toString(),
                                   password: sha512
                                       .convert(utf8.encode(
-                                      passwordController.text.toString()))
+                                          passwordController.text.toString()))
                                       .toString())));
                               channel.stream.listen((event) {
                                 event = event.split(Header.Split)[1];
@@ -1925,7 +1937,7 @@ class _NavBarState extends State<NavBar> {
         ),
         ListTile(
           leading: Icon(Icons.account_circle),
-          title: Text('Delete User'),
+          title: const Text('Delete User'),
           onTap: () => {
             showDialog(
                 context: context,
@@ -1949,13 +1961,26 @@ class _NavBarState extends State<NavBar> {
                                   icon: Icon(Icons.drive_file_rename_outline),
                                 ),
                               ),
-
                             ],
                           ),
                         ),
                       ),
                       actions: [
-                        TextButton(onPressed: (){Navigator.pop(context);}, child: Text('Delete User')),
+                        TextButton(
+                            onPressed: () async{
+                              final channel = WebSocketChannel.connect(webSocket());
+                              channel.sink.add(parser(
+                                  packet(widget.id, Handler.Handler1, Remove.UserRecord,username: UsernameController.text)));
+                              channel.stream.listen((event) {
+                                event = event.split(Header.Split)[1];
+                                channel.sink.close();
+                                setState(() {});
+                              });
+
+                              Navigator.pop(context);
+
+                            },
+                            child: Text('Delete User')),
                         TextButton(
                           onPressed: () => Navigator.pop(context),
                           child: Text('Cancel'),
@@ -2025,12 +2050,30 @@ class _NavBarState extends State<NavBar> {
                         ),
                       ),
                       actions: [
-                        TextButton(onPressed: (){
-                          Navigator.pop(context);
-                        }, child: Text('Edit User')),
+                        TextButton(
+                            onPressed: () {
+                              final channel = WebSocketChannel.connect(webSocket());
+                              if(userPrevilege == "User"){
+                                channel.sink.add(parser(
+                                    packet(widget.id, Handler.Handler1, Update.UserStatus,username: usernameController.text,status: Privileges.User.toString())));
+                              }
+                              else{
+                                channel.sink.add(parser(
+                                    packet(widget.id, Handler.Handler1, Update.UserStatus,username: usernameController.text,status: Privileges.Admin.toString())));
+                              }
+
+                              channel.stream.listen((event) {
+                                event = event.split(Header.Split)[1];
+                                channel.sink.close();
+                                setState(() {});
+                              });
+
+                              Navigator.pop(context);
+                            },
+                            child: const Text('Edit User')),
                         TextButton(
                           onPressed: () => Navigator.pop(context),
-                          child: Text('Cancel'),
+                          child: const Text('Cancel'),
                         ),
                       ],
                     );
@@ -2138,5 +2181,3 @@ class _NavBarState extends State<NavBar> {
     );
   }
 }
-
-

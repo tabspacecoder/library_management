@@ -55,11 +55,11 @@ class _OutStandingRequestsState extends State<OutStandingRequests> {
     fetch();
     super.initState();
   }
-  void update(String id,String Status)async{
-    final channel = WebSocketChannel.connect(webSocket());
-    channel.sink.add(parser(
-        packet(id, Handler.Handler1, Update.BookRequest,misc: id,status: Status.toString())));
-  }
+  // void update(String id,String Status)async{
+  //   final channel = WebSocketChannel.connect(webSocket());
+  //   channel.sink.add(parser(
+  //       packet(id, Handler.Handler1, Update.BookRequest,misc: id,status: Status.toString())));
+  // }
 
 
   late List<OutstandingListData> data ;
@@ -139,18 +139,16 @@ class _OutStandingRequestsState extends State<OutStandingRequests> {
                                     child: Text('Cancel'),
                                   ),
                                   TextButton(
-                                      child: Text(
+                                      child: const Text(
                                           "Update Status"),
                                       onPressed: () {
-
                                           //add comments text field here
-
-                                          String DueDate = "${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}";
-                                          dropdownvalue == items[0] ? data[index].ReturnDate = DueDate:data[index].ReturnDate='';
-
-                                          update(data[index].BorrowID, data[index].ReturnDate);
-                                          Navigator.pop(
-                                              context);
+                                          // String DueDate = "${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}";
+                                          // dropdownvalue == items[0] ? data[index].ReturnDate = DueDate:data[index].ReturnDate='';
+                                          //
+                                          // update(data[index].BorrowID, data[index].ReturnDate);
+                                          // Navigator.pop(
+                                          //     context);
 
                                       })
                                 ],

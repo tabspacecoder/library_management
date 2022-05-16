@@ -17,14 +17,42 @@ class HistoryPage extends StatefulWidget {
 }
 
 class _HistoryPageState extends State<HistoryPage> {
+  List<BookData> data = [];
+  bool loaded = false;
 
-  List<BookData> data=[];
+  late String id;
+  Future<String> GetState() async {
+    final prefs = await SharedPreferences.getInstance();
+    id = prefs.getString("Id")!;
+    if (id != null) {
+      loaded = true;
+      setState(() {});
+    }
+    print(loaded);
+    return id;
+  }
 
+  Future<List<BookData>> fetch() async {
+    await GetState();
+    final channel = WebSocketChannel.connect(webSocket());
+    channel.sink.add(parser(
+        packet(id, Handler.Handler1, Fetch.DeleteHistory, range: [-1, 0])));
+    channel.stream.listen((event) {
+      event = event.split(Header.Split)[1];
+      for (dynamic i in jsonDecode(event)["Data"]) {
+        BookData temp = BookData(i["ISBN"], i["BookName"], i["Author"],
+            i["Availability"], i["Type"], i["Thumbnail"]);
+        data.add(temp);
+      }
+      channel.sink.close();
+      setState(() {});
+    });
+    return data;
+  }
 
   @override
   void initState() {
-    // TODO: implement initState
-
+    fetch();
     super.initState();
   }
 
@@ -37,47 +65,57 @@ class _HistoryPageState extends State<HistoryPage> {
         ),
         body: ListView.builder(
           itemCount: data.length,
-          itemBuilder: ((context, index) {return BookListTile(ontap: (){
-            showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return StatefulBuilder(
-                    builder: (BuildContext context,
-                        void Function(void Function()) setState) {
-                      return AlertDialog(
-                        scrollable: true,
-                        title: Text('Permanent delete'),
-                        content: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Form(
-                            child: Column(
-                              children: <Widget>[
-                                Text('Are you Sure you want to delete the Book??')
+          itemBuilder: ((context, index) {
+            return BookListTile(
+                ontap: () {
+                  showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return StatefulBuilder(
+                          builder: (BuildContext context,
+                              void Function(void Function()) setState) {
+                            return AlertDialog(
+                              scrollable: true,
+                              title: Text('Permanent delete'),
+                              content: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Form(
+                                  child: Column(
+                                    children: const <Widget>[
+                                      Text(
+                                          'Are you Sure you want to delete the Book??')
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              actions: [
+                                TextButton(
+                                  onPressed: () => Navigator.pop(context),
+                                  child: const Text('No'),
+                                ),
+                                TextButton(
+                                    child: Text("Yes"),
+                                    onPressed: () async{
+                                      final channel = WebSocketChannel.connect(webSocket());
+                                      channel.sink.add(parser(
+                                          packet(id, Handler.Handler1, Remove.DeleteHistory, isbn: data[index].ISBN)));
+                                      channel.stream.listen((event) {
+                                        channel.sink.close();
+                                        setState(() {});
+                                      });
+                                      Navigator.pop(context);
+                                    })
                               ],
-                            ),
-                          ),
-                        ),
-                        actions: [
-                          TextButton(
-                            onPressed: () => Navigator.pop(context),
-                            child: const Text('No'),
-                          ),
-                          TextButton(
-                              child: Text("Yes"),
-                              onPressed: () {
-                                // to delete book
-                                Navigator.pop(context);
-                              })
-                        ],
-                      );
-                    },
-                  );
-                });
-          }, curBook: data[index]); }),
+                            );
+                          },
+                        );
+                      });
+                },
+                curBook: data[index]);
+          }),
         ));
   }
 }
-
 
 class BookListTile extends StatefulWidget {
   Function ontap;

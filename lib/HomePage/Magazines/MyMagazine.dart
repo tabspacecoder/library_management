@@ -32,7 +32,7 @@ class _MyMagazineState extends State<MyMagazine> {
     final channel = WebSocketChannel.connect(webSocket());
     await set();
     channel.sink.add(parser(packet(
-      id, Handler.Handler1, Fetch.MyMagazineRequest,
+      id, Handler.Handler1, Fetch.MySubscription,
       range: [-1, 0], username: username, status: RequestStatus.approved.toString(),)));
     channel.stream.listen((event) {
       event = event.split(Header.Split)[1];

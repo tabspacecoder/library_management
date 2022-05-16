@@ -170,6 +170,7 @@ class Update {
 class Remove {
   static const String UserRecord = "RemoveUserRecord";
   static const String DeleteHistory = "RemoveDeleteHistory";
+  static const String DeleteBook = "RemoveBook";
 }
 
 class Fetch {
