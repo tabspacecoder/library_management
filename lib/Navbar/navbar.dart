@@ -104,6 +104,8 @@ class _NavBarState extends State<NavBar> {
   ];
   String DueDate = '';
   void selectedItemCirculation(BuildContext context, int item) {
+    var UsernameController = TextEditingController();
+    var BookNameController = TextEditingController();
     switch (item) {
       case 1:
         print('View Profile');
@@ -399,9 +401,7 @@ class _NavBarState extends State<NavBar> {
     }
   }
 
-  var UsernameController = TextEditingController();
-  var BookNameController = TextEditingController();
-  var DueDateController = TextEditingController();
+
 
   String IssueDate =
       "${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}";
@@ -706,8 +706,8 @@ class _NavBarState extends State<NavBar> {
           onTap: () => Navigator.pushNamed(context, '/PendingBookRequests'),
         ),
         ListTile(
-          leading: Icon(Icons.library_books),
-          title: Text('Pending Magazine Requests'),
+          leading: const Icon(Icons.library_books),
+          title: const Text('Pending Magazine Requests'),
           onTap: () => Navigator.pushNamed(context, '/PendingMagazineRequests'),
         ),
         ListTile(
@@ -907,8 +907,9 @@ class _NavBarState extends State<NavBar> {
           leading: Icon(Icons.add),
           title: Text('Add new magazine'),
           onTap: () {
-            DueDate =
-                "${selectedDate.day}/${selectedDate.month}/${selectedDate.year}";
+            var UsernameController = TextEditingController();
+            var BookNameController = TextEditingController();
+            var DueDateController = TextEditingController();
             showDialog(
                 context: context,
                 builder: (BuildContext context) {
@@ -1032,6 +1033,61 @@ class _NavBarState extends State<NavBar> {
                 });
           },
         ),
+        ListTile(leading: const Icon(Icons.remove),title: const Text("Remove Book"),onTap: (){
+          var BookNameController = TextEditingController();
+          showDialog(
+              builder: (BuildContext context) {
+                return StatefulBuilder(builder: (BuildContext context,
+                    void Function(void Function()) setState) {
+                  return AlertDialog(
+                    title: const Text('Remove Book'),
+                    actions: [
+                      TextButton(
+                        onPressed: () => Navigator.pop(context),
+                        child: const Text('Cancel'),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          final channel = WebSocketChannel.connect(
+                            webSocket(),
+                          );
+                          channel.sink.add(parser(packet(
+                              widget.id, Handler.Handler1, "",
+                              isbn: BookNameController.text)));
+                          channel.stream.listen((event) {
+                            channel.sink.close();
+                          });
+
+                          // print('Due date - $DueDate');
+                          setState(() {});
+                          Navigator.of(context).pop();
+                        },
+                        child: const Text('Add record'),
+                      ),
+                    ],
+                    scrollable: true,
+                    content: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Form(
+                        child: Column(
+                          children: <Widget>[
+                            TextFormField(
+                              controller: BookNameController,
+                              decoration: const InputDecoration(
+                                labelText: 'Enter ISBN',
+                                icon: Icon(Icons.book),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  );
+                });
+              },
+              context: context);
+          setState(() {});
+        },),
         // ListTile(
         //   leading: Icon(Icons.add),
         //   title: Text('Add new book'),
@@ -1649,31 +1705,7 @@ class _NavBarState extends State<NavBar> {
                           TextButton(
                               child: const Text("Submit"),
                               onPressed: () {
-                                // if (dropdownvalue == 'Online' || dropdownvalue == 'Both') {
-                                //   showDialog(
-                                //       context: context,
-                                //       builder: (BuildContext context) {
-                                //         return AlertDialog(
-                                //           title: Text('Upload the pdf!'),
-                                //           content: ElevatedButton(
-                                //               onPressed: () {},
-                                //               child: Text('Upload')),
-                                //           actions: [
-                                //             TextButton(
-                                //               onPressed: () =>
-                                //                   Navigator.pop(context),
-                                //               child: Text('Cancel'),
-                                //             ),
-                                //             TextButton(
-                                //               onPressed: () {
-                                //                 Navigator.pop(context);
-                                //               },
-                                //               child: Text('Submit'),
-                                //             ),
-                                //           ],
-                                //         );
-                                //       });
-                                // }
+                                var BookNameController = TextEditingController();
                                 final channel =
                                     WebSocketChannel.connect(webSocket());
                                 channel.sink.add(parser(packet(

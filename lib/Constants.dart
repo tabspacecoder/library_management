@@ -111,6 +111,23 @@ class BookTaken {
   BookTaken(this.ISBN, this.DateIssued, this.BookName);
 }
 
+class TotalBudget {
+  late String type;
+  late String BudgetID, Src, Amount, UsedAmt;
+  TotalBudget(this.BudgetID, this.Src, this.Amount, this.UsedAmt, this.type);
+}
+
+class remainingBudget{
+  late String type;
+  late String sum;
+  remainingBudget(this.type,this.sum);
+}
+
+class BudgetDistribution{
+  late String InvestedOn;
+  late String Amount;
+  BudgetDistribution(this.InvestedOn,this.Amount);
+}
 // All the class below here are associated with Header class that of handling  API request and response
 class Header {
   static const String Split = "||";
@@ -147,6 +164,12 @@ class Update {
   static const String BookRequest = "UpdateBookRequestStatus";
   static const String MagazineRequest = "UpdateMagazineRequestStatus";
   static const String MagazineRecord = "UpdateMagazineRecordStatus";
+  static const String UserStatus = "UpdateUserStatus";
+}
+
+class Remove {
+  static const String UserRecord = "RemoveUserRecord";
+  static const String DeleteHistory = "RemoveDeleteHistory";
 }
 
 class Fetch {
@@ -166,6 +189,7 @@ class Fetch {
   static const String BookSuggestion = "FetchBookSuggestion";
   static const String BooksIssuedToUser = "FetchBooksIssuedToUser";
   static const String UserIssuedBook = "FetchUserIssuedBook";
+  static const String DeleteHistory = "FetchDeleteHistory";
 }
 
 class Search {
