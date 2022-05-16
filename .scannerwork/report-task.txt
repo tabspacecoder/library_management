@@ -1,0 +1,6 @@
+projectKey=fluttersonar
+serverUrl=http://localhost:8029
+serverVersion=9.4.0.54424
+dashboardUrl=http://localhost:8029/dashboard?id=fluttersonar
+ceTaskId=AYDOeWyEqoMtY-EgaTTw
+ceTaskUrl=http://localhost:8029/api/ce/task?id=AYDOeWyEqoMtY-EgaTTw
