@@ -179,6 +179,187 @@ class _NavBarState extends State<NavBar> {
         break;
     }
   }
+  void selectedItemBudget(BuildContext context, int item) {  //////add Budget details here
+    switch (item) {
+      case 0:
+        showDialog(
+            builder: (BuildContext context) {
+              var srcController = TextEditingController();
+              var amtController = TextEditingController();
+              var usedAmtController = TextEditingController();
+              var typeController = TextEditingController();
+              return StatefulBuilder(builder: (BuildContext context,
+                  void Function(void Function()) setState) {
+                return AlertDialog(
+                  title: Text('Add Budget'),
+                  actions: [
+                    TextButton(
+                      onPressed: () => Navigator.pop(context),
+                      child: const Text('Cancel'),
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        // print('Due date - $DueDate');
+                        setState(() {});
+                        Navigator.of(context).pop();
+                      },
+                      child: const Text('Add record'),
+                    ),
+                  ],
+                  scrollable: true,
+                  content: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Form(
+                      child: Column(
+                        children: <Widget>[
+                          TextFormField(
+                            controller: srcController,
+                            decoration: const InputDecoration(
+                              labelText: 'Source',
+                              icon: Icon(Icons.book),
+                            ),
+                          ),
+                          TextFormField(
+                            controller: amtController,
+                            decoration: const InputDecoration(
+                              labelText: 'Amount',
+                              icon: Icon(Icons.account_circle),
+                            ),
+                          ),
+                          TextFormField(
+                            controller: usedAmtController,
+                            decoration: const InputDecoration(
+                              labelText: 'Used Amount',
+                              icon: Icon(Icons.account_circle),
+                            ),
+                          ),
+                          TextFormField(
+                            controller: typeController,
+                            decoration: const InputDecoration(
+                              labelText: 'Type',
+                              icon: Icon(Icons.account_circle),
+                            ),
+                          ),
+                          // ListTile(
+                          //   title: Text('Due Date'),
+                          //   subtitle: Text(
+                          //       '${selectedDate.day}/${selectedDate.month}/${selectedDate.year}'),
+                          //   leading: IconButton(
+                          //     icon: Icon(Icons.calendar_today),
+                          //     onPressed: () {
+                          //       _selectDate(context);
+                          //     },
+                          //   ),
+                          // ),
+                          // TextFormField(
+                          //   controller: DueDateController,
+                          //   decoration: InputDecoration(
+                          //     labelText: 'Due Date',
+                          //     icon: IconButton(icon:Icon(Icons.calendar_today), onPressed: () {_selectDate(context);},),
+                          //   ),
+                          // ),
+                        ],
+                      ),
+                    ),
+                  ),
+                );
+              });
+            },
+            context: context);
+        setState(() {});
+
+        break;
+      case 1:
+        showDialog(
+            builder: (BuildContext context) {
+              var budgetIdController = TextEditingController();
+              var amtController = TextEditingController();
+              var investedController = TextEditingController();
+              return StatefulBuilder(builder: (BuildContext context,
+                  void Function(void Function()) setState) {
+                return AlertDialog(
+                  title: Text('Add Expenditure'),
+                  actions: [
+                    TextButton(
+                      onPressed: () => Navigator.pop(context),
+                      child: const Text('Cancel'),
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        // print('Due date - $DueDate');
+                        setState(() {});
+                        Navigator.of(context).pop();
+                      },
+                      child: const Text('Add record'),
+                    ),
+                  ],
+                  scrollable: true,
+                  content: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Form(
+                      child: Column(
+                        children: <Widget>[
+                          TextFormField(
+                            controller: budgetIdController,
+                            decoration: const InputDecoration(
+                              labelText: 'Budget ID',
+                              icon: Icon(Icons.book),
+                            ),
+                          ),
+                          TextFormField(
+                            controller: amtController,
+                            decoration: const InputDecoration(
+                              labelText: 'Amount',
+                              icon: Icon(Icons.account_circle),
+                            ),
+                          ),
+                          TextFormField(
+                            controller: investedController,
+                            decoration: const InputDecoration(
+                              labelText: 'Invested On',
+                              icon: Icon(Icons.account_circle),
+                            ),
+                          ),
+
+                          // ListTile(
+                          //   title: Text('Due Date'),
+                          //   subtitle: Text(
+                          //       '${selectedDate.day}/${selectedDate.month}/${selectedDate.year}'),
+                          //   leading: IconButton(
+                          //     icon: Icon(Icons.calendar_today),
+                          //     onPressed: () {
+                          //       _selectDate(context);
+                          //     },
+                          //   ),
+                          // ),
+                          // TextFormField(
+                          //   controller: DueDateController,
+                          //   decoration: InputDecoration(
+                          //     labelText: 'Due Date',
+                          //     icon: IconButton(icon:Icon(Icons.calendar_today), onPressed: () {_selectDate(context);},),
+                          //   ),
+                          // ),
+                        ],
+                      ),
+                    ),
+                  ),
+                );
+              });
+            },
+            context: context);
+        setState(() {});
+        break;
+      case 2:
+        print('view');
+        break;
+      case 3:
+        print('view');
+        break;
+      case 4:
+        print('view');
+        break;
+    }
+  }
 
   var UsernameController = TextEditingController();
   var BookNameController = TextEditingController();
@@ -1057,6 +1238,96 @@ class _NavBarState extends State<NavBar> {
           ],
           onSelected: (item) {
             selectedItemCirculation(context, item);
+          },
+        ),
+        PopupMenuButton<int>(
+          child: ListTile(
+            leading: Icon(Icons.money),
+            title: Text('Budget Allocation'),
+          ),
+          itemBuilder: (context) => [
+            PopupMenuItem(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: ListTile(
+                  title: Text('Add Budget Details'),
+                  leading: CircleAvatar(
+                    child: Icon(Icons.add),
+                    radius: 30,
+                  ),
+                ),
+              ),
+              value: 0,
+            ),
+            PopupMenuItem(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: ListTile(
+                  title: Text('Add Expenditure Details'),
+                  leading: CircleAvatar(
+                    child: Icon(Icons.outbond),
+                    radius: 30,
+                  ),
+                ),
+              ),
+              value: 1,
+            ),
+            PopupMenuItem(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: ListTile(
+                  title: Text('Budget Distribution'),
+                  leading: CircleAvatar(
+                    child: Icon(Icons.outbond),
+                    radius: 30,
+                  ),
+                ),
+              ),
+              value: 2,
+            ),
+            PopupMenuItem(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: ListTile(
+                  title: Text('Total Budget'),
+                  leading: CircleAvatar(
+                    child: Icon(Icons.all_inclusive),
+                    radius: 30,
+                  ),
+                ),
+              ),
+              value: 3,
+            ),
+            PopupMenuItem(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: ListTile(
+                  title: Text('Remaining Budget'),
+                  leading: CircleAvatar(
+                    child: Icon(Icons.read_more),
+                    radius: 30,
+                  ),
+
+                ),
+              ),
+              value: 4,
+            ),
+            // PopupMenuItem(
+            //   child: Padding(
+            //     padding: const EdgeInsets.all(8.0),
+            //     child: ListTile(
+            //       title: Text('Post due!'),
+            //       leading: CircleAvatar(
+            //         child: Icon(Icons.warning),
+            //         radius: 30,
+            //       ),
+            //     ),
+            //   ),
+            //   value: 2,
+            // ),
+          ],
+          onSelected: (item) {
+            selectedItemBudget(context, item);
           },
         ),
         Divider(),
