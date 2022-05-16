@@ -24,7 +24,7 @@ class OutstandingListData{
   late String DueDate;
   late String UserName;
   late String ReturnDate;
-  OutstandingListData({required this.BorrowID , required this.ISBN,required this.UserName,required this.DueDate,required this.ReturnDate})
+  OutstandingListData( this.BorrowID ,  this.ISBN, this.UserName, this.DueDate, this.ReturnDate);
 }
 
 

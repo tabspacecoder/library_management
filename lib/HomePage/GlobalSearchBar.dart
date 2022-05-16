@@ -7,6 +7,7 @@ import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:library_management/Constants.dart';
 import 'package:library_management/HomePage/pdfViewer.dart';
+
 import 'package:web_socket_channel/web_socket_channel.dart';
 
 import 'package:library_management/Network.dart';
@@ -345,11 +346,13 @@ class _SearchBarState extends State<SearchBar> {
                       var link = jsonDecode(event)["Data"];
                       print(link);
                       // js.context.callMethod('open', ['$link']);
-                      var file = await DefaultCacheManager().downloadFile(link);
-                      print(file.file.uri);
-                      final blob = html.Blob([file.file.path], 'application/pdf');
-                      Navigator.of(context).push(MaterialPageRoute(builder: (context)=>PdfViewer(name: suggestion.BookName, link: file.file)));
+                      // var file = await DefaultCacheManager().downloadFile(link);
+                      // print(file.file.uri);
+                      // final blob = html.Blob([file.file.path], 'application/pdf');
+                      // var bytestream = await file.file.readAsBytes();
+                      Navigator.of(context).push(MaterialPageRoute(builder: (context)=>PdfViewer(name: suggestion.BookName, link: link)));
                       // html.window.open(url, '_blank');
+                      // PdftronFlutter.openDocument(link);
                       channel.sink.close();
                     });
                   },
