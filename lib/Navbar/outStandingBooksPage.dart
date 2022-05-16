@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:library_management/Constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
@@ -70,6 +71,7 @@ class _OutStandingRequestsState extends State<OutStandingRequests> {
 
   late List<OutstandingListData> data ;
   bool loaded=false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -80,11 +82,20 @@ class _OutStandingRequestsState extends State<OutStandingRequests> {
           child: ListView.builder(
               itemCount: data.length,
               itemBuilder: ((context, index) {
+                DateTime tempDate = DateFormat("dd/MM/yy").parse(data[index].DueDate);
+                bool isDue = DateTime.now().isAfter(tempDate);
                 return ListTile(
                   title: Text(data[index].ISBN),
                   leading: Text(data[index].BorrowID),
                   subtitle: Text(data[index].UserName),
-                  trailing: Text(data[index].DueDate),
+                  trailing: Card(child: Padding(
+                    padding: const EdgeInsets.all(3.0),
+                    child: Text(data[index].DueDate,style: TextStyle(
+                      color: Colors.white,
+                    ),),
+                  ),
+                    color: isDue?Colors.red:Colors.green,
+                  ),
                   onTap: () {
                     List<String> items = [
                       'NotReturned',

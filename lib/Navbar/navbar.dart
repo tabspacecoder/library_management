@@ -177,14 +177,6 @@ class _NavBarState extends State<NavBar> {
             context: context);
         setState(() {});
         break;
-      case 2:
-        print('logout');
-
-        break;
-
-      case 3:
-        print('My requests');
-        break;
     }
   }
 
@@ -1049,19 +1041,19 @@ class _NavBarState extends State<NavBar> {
               ),
               value: 1,
             ),
-            PopupMenuItem(
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: ListTile(
-                  title: Text('Post due!'),
-                  leading: CircleAvatar(
-                    child: Icon(Icons.warning),
-                    radius: 30,
-                  ),
-                ),
-              ),
-              value: 2,
-            ),
+            // PopupMenuItem(
+            //   child: Padding(
+            //     padding: const EdgeInsets.all(8.0),
+            //     child: ListTile(
+            //       title: Text('Post due!'),
+            //       leading: CircleAvatar(
+            //         child: Icon(Icons.warning),
+            //         radius: 30,
+            //       ),
+            //     ),
+            //   ),
+            //   value: 2,
+            // ),
           ],
           onSelected: (item) {
             selectedItemCirculation(context, item);
