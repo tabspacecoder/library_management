@@ -7,6 +7,8 @@ import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
 import 'package:library_management/Constants.dart';
 import 'package:library_management/Navbar/adminPendingRequests.dart';
+import 'package:library_management/Navbar/outStandingBooksPage.dart';
+import 'package:library_management/Navbar/userBorrowedBooks.dart';
 import 'package:library_management/Network.dart';
 import 'package:library_management/opac/opac_main.dart';
 import 'package:file_picker/file_picker.dart';
@@ -105,6 +107,7 @@ class _NavBarState extends State<NavBar> {
     switch (item) {
       case 1:
         print('View Profile');
+        Navigator.push(context, MaterialPageRoute(builder: (context)=>OutStandingRequests()));
         setState(() {});
         break;
       case 0:
@@ -577,6 +580,8 @@ class _NavBarState extends State<NavBar> {
             title: const Text("Borrowed Books"),
             onTap: () {
               // Navigator.pushNamed(context, "/MagazineRequestStatus");
+              Navigator.push(context, MaterialPageRoute(builder: (context)=>UserBorrowedBooks()));
+              // Navigator.push(context, MaterialPageRoute(builder: (context)=>UserBorrowedBooks()));
             }),
         const Divider(),
         ListTile(
