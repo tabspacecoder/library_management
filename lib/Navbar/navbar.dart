@@ -390,13 +390,13 @@ class _NavBarState extends State<NavBar> {
         setState(() {});
         break;
       case 2:
-        print('view');
+        Navigator.pushNamed(context, '/BudgetDistributionPage');
         break;
       case 3:
-        print('view');
+        Navigator.pushNamed(context, '/TotalBudgetPage');
         break;
       case 4:
-        print('view');
+        Navigator.pushNamed(context, '/RemainingBudgetPage');
         break;
     }
   }
