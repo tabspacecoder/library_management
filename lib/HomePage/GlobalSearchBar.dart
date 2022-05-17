@@ -519,7 +519,7 @@ class _MagListTileState extends State<MagListTile> {
             ),
           ],
         ),
-        subtitle: Text(widget.curBook.ReleaseDate),
+        subtitle: Text('Release date - ${widget.curBook.ReleaseDate}'),
         trailing: Text(widget.curBook.Issue),
         onTap: () {
           widget.ontap();
