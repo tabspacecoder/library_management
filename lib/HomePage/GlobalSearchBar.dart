@@ -335,7 +335,7 @@ class _SearchBarState extends State<SearchBar> {
               return data;
             },
             itemBuilder: (context, dynamic suggestion) {
-              return BookListTile(
+              return dropdownvalue == items[0] ? BookListTile(
                   ontap: () async {
                     final channel = WebSocketChannel.connect(webSocket());
                     channel.sink.add(parser(packet(
@@ -356,7 +356,7 @@ class _SearchBarState extends State<SearchBar> {
                       channel.sink.close();
                     });
                   },
-                  curBook: suggestion);
+                  curBook: suggestion):MagListTile(ontap: (){}, curBook: suggestion);
             },
             onSuggestionSelected: (dynamic suggestion) {
               print(suggestion);
@@ -469,5 +469,58 @@ class _BookListTileState extends State<BookListTile> {
             widget.ontap();
           });
     }
+  }
+}
+
+
+class MagListTile extends StatefulWidget {
+  Function ontap;
+  MagazineData curBook;
+  MagListTile({required this.ontap, required this.curBook});
+
+  @override
+  _MagListTileState createState() => _MagListTileState();
+}
+
+class _MagListTileState extends State<MagListTile> {
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+        leading: const Card(
+          color: Colors.green,
+          child: Padding(
+            padding: EdgeInsets.all(8.0),
+            child: Text('Online'),
+          ),
+        ),
+        title: Row(
+          children: [
+            Text(widget.curBook.Name),
+            Padding(
+              padding: const EdgeInsets.only(left: 5.0),
+              child: ClipOval(
+                child: Container(
+                  color: Colors.red,
+                  width: 20,
+                  height: 20,
+                  child: Center(
+                    child: Text(
+                      widget.curBook.Volume.toString(),
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 12,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+        subtitle: Text(widget.curBook.Location),
+        trailing: Text(widget.curBook.Issue),
+        onTap: () {
+          widget.ontap();
+        });
   }
 }
