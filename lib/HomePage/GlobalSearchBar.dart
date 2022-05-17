@@ -356,7 +356,9 @@ class _SearchBarState extends State<SearchBar> {
                       channel.sink.close();
                     });
                   },
-                  curBook: suggestion):MagListTile(ontap: (){}, curBook: suggestion);
+                  curBook: suggestion):MagListTile(ontap: (){
+                js.context.callMethod('open', ['${suggestion.Location}']);
+              }, curBook: suggestion);
             },
             onSuggestionSelected: (dynamic suggestion) {
               print(suggestion);
