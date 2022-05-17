@@ -35,11 +35,15 @@ class _BookRequestStatusState extends State<BookRequestStatus> {
         range: [-1, 0], username: username)));
     channel.stream.listen((event) {
       event = event.split(Header.Split)[1];
-      print(event);
       for (dynamic i in jsonDecode(event)["Data"]) {
         i = jsonDecode(i);
+        print(i);
+        String O = "";
+        if(i["Reason"] != null){
+          O =i["Reason"];
+        }
         BookRequestData temp = BookRequestData(i["RequestID"].toString(),
-            i["BookName"], i["Author"], i["RequestBy"], i["Status"].toString(),i["Reason"]);
+            i["BookName"], i["Author"], i["RequestBy"], i["Status"].toString(),O);
         data.add(temp);
       }
       channel.sink.close();
