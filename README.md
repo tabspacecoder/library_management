@@ -1,6 +1,6 @@
 # library_management
 
-An app for library management.
+An application for department library management.
 
 ## Getting Started
 
